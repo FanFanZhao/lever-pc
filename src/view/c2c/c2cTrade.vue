@@ -1,8 +1,12 @@
 <template>
     <div id="c2c-box" class="flex">
         <div class="c2c-l">
+            <left></left>
             
-            <ul>
+        </div>
+        <div class="c2c-r">
+            <div class="top">
+              <ul>
                 <li class="flex" v-for="(item,index) in currency_list" :key="index" :class="index == active?'bg_active':''" :data-id="item.id" @click="currency_click(item.id,item.name,index)">
                     <div class="flex">
                         <div>{{item.name}}/CNY</div>
@@ -11,9 +15,6 @@
                     <span>></span>
                 </li>
             </ul>
-        </div>
-        <div class="c2c-r">
-            <div class="top">
                 <div class="top-title flex">
                     <div>
                         <router-link tag="span" to="/c2c" class="link-span">tether {{currency_name}}</router-link>
@@ -446,7 +447,11 @@
 </template>
 
 <script>
+import left from '@/view/c2c/leftc2c'
 export default {
+  components:{
+      left 
+  },
   data() {
     return {
       token: "",
