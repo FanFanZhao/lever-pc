@@ -43,9 +43,13 @@
         <ul class="content">
           <li v-for="item in buyList" :key="item.id" class="flex">
             <div>{{item.currency_name}}</div>
-            <div>{{item.total_number}}</div>
+            <div>{{item.total_number}}{{item.currency_name}}</div>
             <div>{{item.price}}</div>
-            <div>{{item.way_name}}</div>
+            <div>
+              <img v-if="item.way_name == 'ali_pay'" src="../../assets/images/zfb_icon.png" />
+              <img v-if="item.way_name == 'we_chat'" src="../../assets/images/wx_icon.png" />
+              <img v-if="item.way_name == 'bank'" src="../../assets/images/bank_icon.png" />
+              </div>
             <div>
             <button type="button">撤回</button>
             <button type="button">查看订单</button>

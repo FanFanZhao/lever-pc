@@ -28,9 +28,9 @@
             </div>
             <div class="tc">{{item.price}}</div>
             <div class="tc">
-              <img v-if="item.way_name == '支付宝'" src="../../assets/images/zfb_icon.png" />
-              <img v-if="item.way_name == '微信'" src="../../assets/images/wx_icon.png" />
-              <img v-if="item.way_name == '银行'" src="../../assets/images/bank_icon.png" />
+              <img v-if="item.way == 'ali_pay'" src="../../assets/images/zfb_icon.png" />
+              <img v-if="item.way == 'we_chat'" src="../../assets/images/wx_icon.png" />
+              <img v-if="item.way == 'bank'" src="../../assets/images/bank_icon.png" />
             </div>
             <div class="tr">
               <button class="btn" @click="order(item.id)">{{classify}}</button>
