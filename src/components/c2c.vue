@@ -38,35 +38,35 @@
                                 <span>单价CNY</span>
                                 <input type="number" v-model="price">
                             </div>
-                            <div class="inp-box">
+                            <!-- <div class="inp-box">
                                 <span>姓名</span>
                                 <input type="text" v-model="user_name">
                             </div>
                             <div class="inp-box">
                                 <span>详细内容</span>
                                 <input type="text" v-model="content">
-                            </div>
+                            </div> -->
                         </div>
                         <div class="pay-opts flex">
                             <div>支付方式</div>
                             <div>
                     
                                 <label >
-                                    <input type="radio" name="pay" value="支付宝" v-model="pay">
+                                    <input type="radio" name="pay" value="ali_pay" v-model="pay">
                                     支付宝
                                 </label>
                             </div>
                             <div>
                     
                                 <label >
-                                    <input type="radio" name="pay" value="微信" v-model="pay">
+                                    <input type="radio" name="pay" value="we_chat" v-model="pay">
                                     微信
                                 </label>
                             </div>
                             <div>
                     
                                 <label >
-                                    <input type="radio" name="pay" value="银行卡" v-model="pay">
+                                    <input type="radio" name="pay" value="bank" v-model="pay">
                                     银行转账
                                 </label>
                             </div>
@@ -94,35 +94,35 @@
                                 <span>单价CNY</span>
                                 <input type="number" v-model="price01">
                             </div>
-                             <div class="inp-box">
+                             <!-- <div class="inp-box">
                                 <span>姓名</span>
                                 <input type="text" v-model="user_name01">
                             </div>
                             <div class="inp-box">
                                 <span>详细内容</span>
                                 <input type="text" v-model="content01" />
-                            </div>
+                            </div> -->
                         </div>
                         <div class="pay-opts flex">
                             <div>支付方式</div>
                             <div>
                     
                                 <label >
-                                    <input type="radio" name="pay01" value="支付宝" v-model="pay01">
+                                    <input type="radio" name="pay01" value="ali_pay" v-model="pay01">
                                     支付宝
                                 </label>
                             </div>
                             <div>
                     
                                 <label >
-                                    <input type="radio" name="pay01" value="微信" v-model="pay01">
+                                    <input type="radio" name="pay01" value="we_chat" v-model="pay01">
                                     微信
                                 </label>
                             </div>
                             <div>
                     
                                 <label >
-                                    <input type="radio" name="pay01" value="银行卡" v-model="pay01">
+                                    <input type="radio" name="pay01" value="bank" v-model="pay01">
                                     银行转账
                                 </label>
                             </div>
@@ -135,91 +135,6 @@
                     </div>
                     
                 </div>
-            </div>
-        </div>
-        <!-- <div class="rightcontent contentBK">
-               
-        </div> -->
-        <!-- =========详情弹窗========== -->
-        <div class="mask" v-if="showDetail">
-            <div class="m-content">
-                <div class="title">
-                    <div>详情</div>
-                    <div @click="showDetail = false">x</div>
-                </div>
-                <div class="list">
-                    
-                    
-                    <!-- <div class="c2c-detail" v-if="detail.type=='c2c'">
-                        <div>
-                            <span>买家账号：</span><span>{{detail.user_info.phone}}</span>
-                        </div>
-                        <div>
-                            <span>买家姓名：</span><span>{{detail.c2c.name}}</span>
-                        </div>
-                    </div> -->
-                    <div class="myC2cDetail" v-if="detail.type=='myC2c'">
-                      
-                        <!-- <div>
-                            <span>我的账号：</span><span>{{detail.user_info.phone}}</span>
-                        </div>
-                        <div>
-                            <span>交易类型：</span><span>{{detail.c2c.type_name}}</span>
-                        </div>
-                        <div>
-                            <span>币  种：</span><span>{{detail.c2c.token}}</span>
-                        </div>
-                        <div>
-                            <span>价  格：</span><span>{{detail.c2c.price}}</span>
-                        </div>
-                        <div>
-                            <span>详  情：</span><span>{{detail.c2c.content}}</span>
-                        </div> -->
-                    </div>
-                    <div class="trade-detail" v-if="detail.type=='trade' || detail.type=='c2c'">
-                        <div>
-                            <span v-if="detail.type == 'trade'">交易人：</span>
-                            <span v-if="detail.type == 'c2c'">账号：</span>
-                            <span v-if="detail.user.account_number">{{detail.user.account_number}}</span>
-                            <span v-else-if="detail.user.phone">{{detail.user.phone}}</span>
-                            <span v-else>{{detail.user.email}}</span>
-                        </div>
-                        <div>
-                            <span>类型：</span><span>{{detail.typeName}}</span>
-                        </div>
-                        <div>
-                            <span>币  种：</span><span>{{detail.token}}</span>
-                        </div>
-                        <div>
-                            <span>详  情：</span><span>{{detail.content}}</span>
-                        </div>
-                        
-                        
-                        <div v-if="detail.user.cash.wechat_account">
-                            <span>微信账号：</span><span>{{detail.user.cash.wechat_account}}</span>
-                        </div>
-                        <div v-if="detail.user.cash.alipay_account">
-                            <span>支付宝账号 ：</span><span>{{detail.user.cash.alipay_account}}</span>
-                        </div>
-                        <div v-if="detail.user.cash.bank_account">
-                            <span>银行卡 ：</span><span>{{detail.user.cash.bank_account}}</span>
-                        </div>
-                    </div>
-                    <div class="create-date">
-                        <span>创建时间：</span><span>{{detail.create_date}}</span>
-                    </div>
-                    <div class="create-date">
-                        <span>数量：</span><span>{{detail.surplus_number}}</span>
-                    </div>
-                    <div class="create-date">
-                        <span>价格：</span><span>{{detail.price}}</span>
-                    </div>
-                    <div class="create-date">
-                        <span>支付方式：</span><span>{{detail.payMode}}</span>
-                    </div>
-                    
-                </div>
-                
             </div>
         </div>
     </div>
@@ -235,26 +150,22 @@ export default {
     return {
       token: "",
       nowList: "listIn",
-      listIn: { page: 1, list: [], hasMore: true },
-      listOut: { page: 1, list: [], hasMore: true },
-      myAdd: { page: 1, list: [], hasMore: true },
-      myBuySell: { page: 1, list: [], hasMore: true },
       active: 0,
       currency_list: [],
       currency_name: "",
+      currency_id:'',
       id: "",
       price: "",
       num: "",
-      pay: "支付宝",
+      pay: "",
       user_name: "",
       content: "",
       price01: "",
       num01: "",
-      pay01: "支付宝",
+      pay01: "",
       user_name01: "",
       content01: "",
       currency_list: [],
-      currency_name: "",
       showList: true,
       showDetail: false,
       detail: {}, //li详情,
@@ -277,10 +188,6 @@ export default {
       this.$router.push("/components/login");
     }
     this.get_currency();
-    this.getList(1);
-    this.getList(0);
-    this.getMy("myAdd");
-    // this.getMy("myBuySell");
   },
   
   
@@ -301,20 +208,6 @@ export default {
         
         
       }
-    },
-    reloadC2c() {
-      this.listIn = { page: 1, list: [], hasMore: true };
-      this.listOut = { page: 1, list: [], hasMore: true };
-      this.getList(1);
-      this.getList(0);
-    },
-    reloadMyAdd() {
-      this.myAdd = { page: 1, list: [], hasMore: true };
-      this.getMy("myAdd");
-    },
-    reloadMyBuySell() {
-      this.myBuySell = { page: 1, list: [], hasMore: true };
-      this.getMy("myBuySell");
     },
     // 获取币种列表
     get_currency() {
@@ -337,269 +230,98 @@ export default {
       this.active = index;
       this.id = id;
     },
-    // 获取c2clist
-    getList(type) {
-      let page = 1;
-      page = type == 1 ? this.listOut.page : this.listIn.page;
-      //////consolelog(type);
-      // let i = layer.load();
-      // this.$http({
-      //   url: "/api/c2c/list?type=" + type + "&page=" + page,
-
-      //   method: "get",
-      //   headers: { Authorization: this.token }
-      // }).then(res => {
-      //   layer.close(i);
-      //   if (res.data.type == "ok") {
-      //     let list = res.data.message;
-      //     //////consolelog(list);
-
-      //     if (list.length != 0) {
-      //       // ////consolelog(list);
-
-      //       if (type == 1) {
-      //         this.listOut.list = this.listOut.list.concat(list);
-      //         this.listOut.hasMore = true;
-      //         this.listOut.page += 1;
-      //         //   ////consolelog(this.listOut);
-      //       } else {
-      //         //   ////consolelog(this.listIn.list);
-      //         this.listIn.hasMore = true;
-      //         this.listIn.list = this.listIn.list.concat(list);
-      //         // ////consolelog( this.listIn.list);
-
-      //         // ////consolelog(this.listIn);
-
-      //         this.listIn.page += 1;
-      //         // ////consolelog([].concat(list));
-      //       }
-      //     } else {
-      //       type == 1
-      //         ? (this.listOut.hasMore = false)
-      //         : (this.listIn.hasMore = false);
-      //     }
-      //   }
-      // });
-    },
-    // c2c列表买入卖出
-    buySell() {
-      var num = this.$refs.usdtNum.value;
-      if (num == "") {
-        return;
-      } else if ((num - 0) > (this.tradeParams.total - 0)) {
-        layer.msg("数量不能大于" + this.tradeParams.total);
-        return;
-      }
-      //consolelog(this.tradeParams);
-
-      // let i = layer.load();
-      // this.showDetail  = false;
-      let data = {};
-      let type = this.tradeParams.type;
-      data.buynumber = num;
-
-      data.id = this.tradeParams.id;
-      data.number = this.tradeParams.total;
-      var index = this.tradeParams.index;
-      // this.$http({
-      //   url: "/api/c2c/" + type,
-      //   method: "post",
-      //   data: data,
-      //   headers: { Authorization: this.token }
-      // }).then(res => {
-      //   layer.close(i);
-      //   layer.msg(res.data.message);
-      //   if (res.data.type == "ok") {
-      //     if (type == "buy") {
-      //       // this.listOut.list[index].total_number -= this.tradeParams.num;
-      //       this.listOut = { hasMore: true, list: [], page: 1 };
-      //       this.getList(1);
-      //     } else {
-      //       this.listIn = { hasMore: true, list: [], page: 1 };
-      //       this.getList(0);
-      //     }
-      //     this.myBuySell = { hasMore: true, list: [], page: 1 };
-      //     this.getMy("myBuySell"); //更新我交易的c2c
-      //     //   ////consolelog(res.data);
-      //   }
-      //   if (res.data.type == "error") {
-      //   }
-      //   this.showTradeBox = false;
-      // });
-    },
-    getMy(type) {
-      let t = "";
-      t = type == "myAdd" ? "my_add" : "my_transaction";
-      this.showTradeList = { show: false, index: "none" };
-      // let i = layer.load();
-      // this.$http({
-      //   url: "/api/c2c/" + t + "?page=" + this[type].page,
-
-      //   headers: { Authorization: this.token }
-      // }).then(res => {
-      //   ////consolelog(res);
-      //   layer.close(i);
-      //   if (res.data.type == "ok") {
-      //     if (res.data.message.length == 0) {
-      //       this[type]["hasMore"] = false;
-      //     } else {
-      //       let list = res.data.message;
-      //       this[type]["hasMore"] = true;
-      //       this[type]["list"] = this[type]["list"].concat(list);
-      //       this[type]["page"] += 1;
-      //       ////consolelog(this[type]);
-      //     }
-      //   }
-      // });
-    },
-    /* 显示交易列表 */
-    switchTrade(index) {
-      if (this.showTradeList.show == false) {
-        this.showTradeList.show = true;
-        this.showTradeList.index = index;
-      } else {
-        if (index == this.showTradeList.index) {
-          this.showTradeList.show = false;
-          return;
-        } else {
-          this.showTradeList.index = index;
-        }
-      }
-      //consolelog(this.showTradeList);
-    },
-    cancelComplete(type, id, index) {
-      // this.showDetail = false;
-      // var i = layer.load();
-      // this.$http({
-      //   url: "/api/c2c/" + type,
-      //   method: "post",
-      //   data: { id: id },
-      //   headers: { Authorization: this.token }
-      // }).then(res => {
-      //   layer.close(i);
-      //   layer.msg(res.data.message);
-      //   if (res.data.type == "ok") {
-      //     ////consolelog(res);
-      //     if (type == "complete") {
-      //       this.myBuySell = { hasMore: true, list: [], page: 1 };
-      //       this.myAdd = { hasMore: true, list: [], page: 1 };
-      //       this.getMy("myBuySell");
-      //       this.getMy("myAdd");
-      //     } else {
-      //       this.myAdd = { hasMore: true, list: [], page: 1 };
-      //       this.getMy("myAdd");
-      //     }
-      //   }
-      // });
-    },
-    getDetail(id, type, e) {
-      if (e.target.className != "detailit") {
-        return;
-      }
-
-      // this.$http({
-      //   url: "/api/c2c/detail?id=" + id,
-      //   headers: { Authorization: this.token }
-      // }).then(res => {
-
-      //   if (res.data.type == "ok") {
-      //     let msg = res.data.message;
-      //     if (type == "trade"||type == "c2c") {
-      //       this.detail.user = msg.user;
-
-      //       this.detail.typeName = msg.type_name;
-      //       this.detail.token = msg.token;
-      //       // return;
-      //     }
-      //     this.detail.create_date = msg.create_date || "";
-      //     this.detail.content = msg.content || "";
-      //     this.detail.price = msg.price || "";
-      //     this.detail.payMode = msg.pay_mode || "";
-      //     this.detail.surplus_number = msg.surplus_number || "";
-      //     ////consolelog(res.data.message);
-      //     // this.detail.c2c = res.data.message.c2c;
-      //     // this.detail.account_info = res.data.message.account_info;
-      //     // this.detail.user_info = res.data.message.user_info;
-      //     // this.detail.type = type;
-      //     // if (res.data.message.transaction_user) {
-      //     //   this.detail.transaction_user = res.data.message.transaction_user;
-      //     // }
-      //     //consolelog(this.detail);
-      //     this.detail.type = type;
-      //     this.showDetail = true;
-      //   }
-      // });
-    },
     //添加买入
     bui_in() {
-      // this.$http({
-      //   url: "/api/c2c/add",
-      //   method: "post",
-      //   data: {
-      //     // price:this.price,
-      //     // number:this.num,
-      //     // name:this.user_name,
-      //     // pay_mode:'微信',
-      //     // content:this.content,
-      //     // token:this.currency_name
-      //     price: this.price,
-      //     number: this.num,
-      //     name: this.user_name,
-      //     pay_mode: this.pay,
-      //     content: this.content,
-      //     token: this.currency_name,
-      //     type: 0
-      //   },
-      //   headers: { Authorization: this.token }
-      // }).then(res => {
-      //   ////consolelog(res);
-      //   layer.msg(res.data.message);
-      //   this.price = "";
-      //   this.num = "";
-      //   this.user_name = "";
-
-      //   this.content = "";
-      //   this.listIn = { page: 1, list: [], hasMore: true };
-      //   this.getList(0);
-      //   this.myAdd = { hasMore: true, list: [], page: 1 };
-      //   this.getMy("myAdd");
-      // });
+      let that = this;
+      if(!that.num){
+          layer.msg('请输入买入数量');
+          return false;
+      }
+      if(!that.price){
+          layer.msg('请输入单价');
+          return false;
+      }
+      if(!that.pay){
+          layer.msg('请选择支付方式');
+          return false;
+      }
+      this.$http({
+        url: "/api/c2c_send",
+        method: "post",
+        data: {
+          price: that.price,
+          total_number: that.num,
+          way: that.pay,
+          currency_id: that.id,
+          type: "buy"
+        },
+        headers: { Authorization: this.token }
+      })
+        .then(res => {
+          console.log(res);
+          if(res.data.type == 'ok'){
+            layer.msg(res.data.message);
+            setTimeout(function(){
+               that.$router.push("/c2cRelease");
+            },500)
+          }else{
+            layer.msg(res.data.message);
+            that.price = "";
+            that.num = "";
+            that.pay = '';
+          }
+        })
+        .catch(res => {
+          layer.msg(res.data.message);
+        });
     },
     //添加卖出
     sell_out() {
-      // this.$http({
-      //   url: "/api/c2c/add",
-      //   method: "post",
-      //   data: {
-      //     price: this.price01,
-      //     number: this.num01,
-      //     name: this.user_name01,
-      //     pay_mode: this.pay01,
-      //     content: this.content01,
-      //     token: this.currency_name,
-      //     type: 1
-      //   },
-      //   headers: { Authorization: this.token }
-      // })
-      //   .then(res => {
-      //     ////consolelog(res);
-      //     layer.msg(res.data.message);
-      //     this.price01 = "";
-      //     this.num01 = "";
-      //     this.user_name01 = "";
-
-      //     this.content01 = "";
-      //     this.listOut = { page: 1, list: [], hasMore: true };
-      //     this.getList(1);
-      //     this.myAdd = { hasMore: true, list: [], page: 1 };
-      //     this.getMy("myAdd");
-      //   })
-      //   .catch(res => {
-      //     layer.msg(res.data.message);
-      //   });
+      let that = this;
+      if(!that.num01){
+          layer.msg('请输入卖出数量');
+          return false;
+      }
+      if(!that.price01){
+          layer.msg('请输入单价');
+          return false;
+      }
+      if(!that.pay01){
+          layer.msg('请选择支付方式');
+          return false;
+      }
+      this.$http({
+        url: "/api/c2c_send",
+        method: "post",
+        data: {
+          price: that.price01,
+          total_number: that.num01,
+          way: that.pay01,
+          currency_id: that.id,
+          type: "sell"
+        },
+        headers: { Authorization: this.token }
+      })
+        .then(res => {
+          console.log(res);
+          if(res.data.type == 'ok'){
+            layer.msg(res.data.message);
+            setTimeout(function(){
+               that.$router.push("/c2cRelease");
+            },500)
+          }else{
+            layer.msg(res.data.message);
+            that.price01 = "";
+            that.num01 = "";
+            that.pay01 = '';
+          }
+        })
+        .catch(res => {
+          layer.msg(res.data.message);
+        });
     }
   }
-};
+}
 </script>
 
 <style lang='scss'>
