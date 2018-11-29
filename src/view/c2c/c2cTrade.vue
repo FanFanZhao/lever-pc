@@ -41,7 +41,7 @@
               <div v-if="item.is_sure==3">已付款</div>
             </div>
             <div class="tr">
-              <button class="btn">详情</button>
+              <button class="btn" @click="getDetail(item.id)">详情</button>
             </div>
           </li>
         </ul>
@@ -51,25 +51,27 @@
     <div class="mask" v-if="showDetail">
       <div class="m-content">
         <div class="title">
-            <div>详情</div>
-            <div @click="showDetail = false">x</div>
+          <div>详情</div>
+          <div @click="showDetail = false">x</div>
         </div>
-        <div class="list">
-          <div class="create-date">
-            <span>创建时间：</span><span>2018-05-06</span>
-          </div>
+        <div >
+          <span>状态</span><span></span>
         </div>
-        <!-- 我发布的内容 -->
-        <div class="myC2cDetail">
-            <div>
-              <span>交易类型：</span><span>liuluil</span>
-            </div>
-            <div>
-              <span>币  种：</span><span>luiolyl</span>
-            </div>
-          </div>
-        </div>            
-      </div>
+        <div>
+          <span>状态</span><span></span>
+        </div>
+        <div>
+          <span>状态</span><span></span>
+        </div>
+        <div>
+          <span>状态</span><span></span>
+        </div>
+        <div>
+          <span>时间</span><span>{{detail.time}}</span>
+        </div>
+
+      
+      </div>            
     </div>
   </div>
 </template>
@@ -91,7 +93,8 @@ export default {
         legal_id:'',
         classify:'求购',
         topType:[{'title':"求购","type":"buy"},{'title':"出售","type":"sell"}],
-        showDetail:true
+        showDetail:false,
+        detail:{}
       }
     },
     created(){
@@ -130,6 +133,27 @@ export default {
           }
         });
       },
+      // 详情
+      getDetail(id) {
+        // var i=layer.load();
+        // this.$http({
+        //   url: "/api/c2c_deal?id=" + id,
+        //   headers: { Authorization: this.token }
+        // }).then(res => {
+        //   console.log(res);
+        //   layer.close(i);
+        //   if (res.data.type == "ok") {
+        //     console.log(res.data.message);
+        //     var msg=res.data.message;
+        //     this.detail.time=msg.format_create_time;
+        //     this.detail.status=msg.is_sure;
+        //     this.detail.number=msg.number;
+        //     this.detail.status=msg.is_sure;
+        //     this.detail.money=msg.deal_money;
+        //     this.showDetail = true;
+        //   }
+        // });
+    },
 
       // 下单请求
       sureOrder(id){
@@ -248,6 +272,8 @@ export default {
     position: fixed;
     width: 100%;
     height: 100%;
+    left: 0;
+    top: 0;
     z-index: 999;
     background: rgba(0, 0, 0, 0.7);
     > .m-content {
@@ -258,7 +284,6 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%);
       padding: 40px 20px 30px;
-      // min-height: 400px;
       max-height: 550px;
       width: 400px;
       > .title {
@@ -282,7 +307,6 @@ export default {
       }
       > div:not(.title) {
         line-height: 32px;
-        // border-top: 1px solid #eaecef;
       }
       div {
         span:first-child {
