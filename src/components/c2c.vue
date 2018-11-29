@@ -264,6 +264,16 @@ export default {
             setTimeout(function(){
                that.$router.push("/c2cRelease");
             },500)
+          }else if(res.data.type == '997'){
+            layer.msg(res.data.message);
+            setTimeout(function(){
+               that.$router.push("/userSetting");
+            },500)
+          }else if(res.data.type == '998'){
+            layer.msg(res.data.message);
+            setTimeout(function(){
+               that.$router.push("/authentication");
+            },500)
           }else{
             layer.msg(res.data.message);
             that.price = "";
