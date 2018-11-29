@@ -8,7 +8,7 @@
         <p v-for="(item,index) in topType" :class="{'active':index==current}" @click='changeType(index,item.type,item.title)'>{{item.title}}</p>
       </div>
       <div class="coin-select mt20 flex">
-        <p v-for="(item,index) in coinList" :class="{'select':index==select}" @click="getnew(item.id)">{{item.name}}</p>
+        <p v-for="(item,index) in coinList" :class="{'select':index==select}" @click="getnew(index,item.id)">{{item.name}}</p>
       </div>
       
       <div class="listbox">
@@ -84,9 +84,10 @@ export default {
         this.page=1;
         this.getList(type);
       },
-      getnew(id){
+      getnew(index,id){
+        this.select=index;
         this.legal_id=id;
-        this.select=
+        this.list=[];
         this.getList(this.type);
       },
       // 获取币种列表
