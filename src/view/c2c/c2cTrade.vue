@@ -54,20 +54,33 @@
           <div>详情</div>
           <div @click="showDetail = false">x</div>
         </div>
-        <div >
-          <span>状态</span><span></span>
+        <div v-if="detail.status==0">
+          <span>状态</span><span>待付款</span>
+        </div>
+        <div v-if="detail.status==1">
+          <span>状态</span><span>已完成</span>
+        </div>
+        <div v-if="detail.status==2">
+          <span>状态</span><span>已取消</span>
+        </div>
+        <div v-if="detail.status==3">
+          <span>状态</span><span>已付款</span>
         </div>
         <div>
-          <span>状态</span><span></span>
+          <span>买家：</span><span>{{detail.id}}</span>
         </div>
         <div>
-          <span>状态</span><span></span>
+          <span>数量：</span><span></span>
         </div>
         <div>
-          <span>状态</span><span></span>
+          <span>单价：</span><span></span>
         </div>
         <div>
-          <span>时间</span><span>{{detail.time}}</span>
+          <span>总额：</span> <span ref="update"></span>
+        </span>
+        </div>
+        <div>
+          <!-- <span>时间：</span><span>{{detail.created_time}}</span> -->
         </div>
 
       
@@ -94,7 +107,8 @@ export default {
         classify:'求购',
         topType:[{'title':"求购","type":"buy"},{'title':"出售","type":"sell"}],
         showDetail:false,
-        detail:{}
+        detail:{},
+        sell_cash_info:{},
       }
     },
     created(){
@@ -135,24 +149,29 @@ export default {
       },
       // 详情
       getDetail(id) {
-        // var i=layer.load();
-        // this.$http({
-        //   url: "/api/c2c_deal?id=" + id,
-        //   headers: { Authorization: this.token }
-        // }).then(res => {
-        //   console.log(res);
-        //   layer.close(i);
-        //   if (res.data.type == "ok") {
-        //     console.log(res.data.message);
-        //     var msg=res.data.message;
-        //     this.detail.time=msg.format_create_time;
-        //     this.detail.status=msg.is_sure;
-        //     this.detail.number=msg.number;
-        //     this.detail.status=msg.is_sure;
-        //     this.detail.money=msg.deal_money;
-        //     this.showDetail = true;
-        //   }
-        // });
+        var i=layer.load();
+        var that =this;
+        console.log(this)
+        this.$http({
+          url: "/api/c2c_deal?id=" + id,
+          headers: { Authorization: this.token }
+        }).then(res => {
+          console.log(res);
+          layer.close(i);
+          if (res.data.type == "ok") {
+            console.log(res.data.message);
+
+            // this.detail.sell_cash=msg.sell_cash_info;
+            // this.detail.time=msg.format_create_time;
+            // this.detail.status=msg.is_sure;
+            // this.detail.number=msg.number;
+            // this.detail.status=msg.is_sure;
+            // this.detail.money=msg.deal_money;
+
+            // console.log(this.detail.sell_cash)
+            this.showDetail = true;
+          }
+        });
     },
 
       // 下单请求
