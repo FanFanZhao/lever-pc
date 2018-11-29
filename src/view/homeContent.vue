@@ -143,7 +143,7 @@
               <span>安全有保障</span>
               <span>资金托管</span>
             </div>
-            <router-link to="/components/register" tag="div" class="btn">立即加入</router-link>
+            <router-link to="/components/register" tag="div" class="btn curPer">立即加入</router-link>
             <div>
               <img src="https://ztstatic.oss-cn-hangzhou.aliyuncs.com/zg72/img/home-zg-pic-$.d1d0840.jpg" alt="">
             </div>
@@ -156,18 +156,18 @@
         <div class="notice flex">
           <div>
             <div class="notpic1"></div>
-            <div>MTS力量，中国力量！</div>
-            <div>透明公开的MTS区块链慈善基金，您的每一笔交易都能帮助改善偏远山区儿童的生活与学习</div>
+            <div>安全可信赖</div>
+            <div>5 年数字资产金融服务经验专业分布式架构和防 DDOS 攻击系统</div>
           </div>
           <div>
             <div class="notpic2"></div>
-            <div>MTS持续分红+奖励</div>
-            <div>MTS每个月将平台50%利润用于用户分红奖励，大力回馈用户是MTS生态建设的重要计划</div>
+            <div>全球生态布局</div>
+            <div>多个国家设立本土化交易服务中心,打造多业务形态为一体的区块链生态圈</div>
           </div>
           <div>
             <div class="notpic3"></div>
             <div>极速交易安全稳定</div>
-            <div>超高性能撮合交易技术架构，多级数据灾备，1:1准备金仓储，MTS不仅仅是交易所也是您的高级资产安全管理钱包！</div>
+            <div>超高性能技术架构，多级数据灾备，1:1准备金仓储，MTS不仅仅是交易所也是您的高级资产安全管理钱包！</div>
           </div>
           <div>
             <div class="notpic4"></div>
@@ -510,7 +510,7 @@ footer{
   }
   > div:nth-child(2) {
     padding-top: 60px;
-    background: url("https://ztstatic.oss-cn-hangzhou.aliyuncs.com/zg72/img/home-zg-bg-1.5159fa3.jpg")
+    background: url("../assets/images/zg.jpg")
       right top/ 832px 432px no-repeat;
     height: 500px;
     > div:first-child {
@@ -541,7 +541,8 @@ footer{
     width: 100%;
     height: 1px;
     background: rgba(255, 255, 255, 0.05);
-    top: 185px;
+    top: 105px;
+    z-index: 9;
   }
   > .items {
     width: 1500px;
