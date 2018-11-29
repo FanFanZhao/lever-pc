@@ -2,33 +2,17 @@
     <div class="indexBlackes home-box">
         <div class="swiper-container banner_wrap swiper-container-horizontal">
             <div class="swiper-wrapper">
-
-               <div class="swiper-slide sliders" v-for="(item,index) in swiperImgs" :key="index">
+              <div class="swiper-slide sliders">
+               <!-- <div class="swiper-slide sliders" v-for="(item,index) in swiperImgs" :key="index"> -->
                    <a href="">
-                   <img :src="item.thumbnail" />
+                   <!-- <img :src="item.thumbnail" /> -->
+                   <img src="http://www.2kex.com/upload/1543204418600761.jpg" alt="">
                    </a>
                </div>
-               <!-- <div class="swiper-slide sliders">
-                   <a href="">
-                   <img src="../../static/imgs/bg01.png" />
-                   </a>
-               </div>
-                <div class="swiper-slide sliders">
-                   <a href="">
-                   <img src="../../static/imgs/bg02.png" />
-                   </a>
-               </div>
-               <div class="swiper-slide sliders">
-                   <a href="">
-                   <img src="../../static/imgs/bg03.png" />
-                   </a>
-               </div> -->
             </div>
              <div class="swiper-pagination swiper-pagination02"></div>
         </div>
-       
-       
-       
+      
         <div class="coins-list">
           <div class="coin-tab">
             <ul class="coins">
@@ -41,7 +25,6 @@
             <span>今日</span>
             <span>涨幅</span>
           </div>
-          
           <ul class="list-con" v-for="(item,index) in quotation" :key="index" v-if="nowCoin == item.name">
             <li v-for="(li,inde) in item.quotation" :key="inde" :data-name='item.name+"/"+li.name'>
               <div class="two-coin">
@@ -59,63 +42,6 @@
               </div>
             </li>
           </ul>
-        </div>
-        <div class="coinTable" style='display:none'>
-            <div class="tabhang">
-                <div class="tabul">
-                    <ul class="clearfix">
-                        <li :class="{active:index==curCoinTab}" v-for="(tab,index) in quotation" :key="index" @click="getCurrent(index)" >{{tab.name}}</li> 
-                    </ul>
-                </div>
-                <div class="tabtable">
-                    <ul class="table-nav">
-                        <div class="nav_left">
-                        <li style="width:220px;text-align:left;">交易市场</li>
-                        <!-- <li>最新成交价</li>
-                        <li>涨跌</li> -->
-                        <li style="width:220px;text-align:center;">最高价 ( 24h )</li>
-                        <li style="width:220px;text-align:center;">最低价 ( 24h )</li>
-                        <li style="width:220px;text-align:center;">最新价</li>
-                        <!-- <li>成交量</li> -->
-                        </div>
-                        <li class="last tc fr">操作</li>
-                    </ul>
-                    <div class="scroll list-list">
-                      <ul class="content" v-for="(coin,index) in coin_list" :key="index">
-                          <div class="con_left">
-                          <li class="hovertd" style="width:220px;text-align:left;">
-                              <i class="iconfont icon-BTCUSDT-copy" style="float:initial;"></i>
-                              <!-- <span class="hover">{{coin.symbol}}</span><br> -->
-                              <span>{{coin.name}}</span>
-                          </li>
-                          <!-- <li> -->
-                              <!-- <span >¥ {{coin.quotes.USD.price}}</span> -->
-                              <!-- <span>{{coin.name}}</span> -->
-                              <!-- / ¥ {{coin.quotes.USD.price}} -->
-                              <!-- <i class="iconfont icon-arrow-down"></i> -->
-                          <!-- </li> -->
-                          <li style="width:220px;text-align:center;">{{coin.min_price}}</li>
-                          <li style="width:220px;text-align:center;">{{coin.max_price}}</li>
-                          <li style="width:220px;text-align:center;">{{coin.new_price}}≈0.00CNY</li>
-                          <!-- <li class="red" :class="{green:coin.quotes.USD.percent_change_24h.toString().substr(0, 1)=='-'}">
-                              <i v-if="coin.quotes.USD.percent_change_24h.toString().substr(0, 1)=='-'" class="iconfont icon-arrow-down"></i>
-                              <i v-else class="iconfont icon-arrow-up"></i>
-                              {{coin.quotes.USD.percent_change_24h}}%
-                              </li> -->
-                          <!-- <li>{{coin.highest}}</li>
-                          <li>{{coin.lowest}}</li> -->
-                          <!-- <li>{{coin.total_supply}}</li> -->
-                          </div>
-                          <li class="last fr">
-                              <a class="baseColor">充币</a>
-                              <a class="baseColor withdraw">提币</a>
-                              <a class="baseColor">兑换</a>
-                              <!-- <button>交易</button> -->
-                          </li>
-                      </ul>
-                    </div>  
-                </div>
-            </div>
         </div>
         <!-- <div class="feature_wrap">
             <h2>全球领先的数字资产金融服务商</h2>
@@ -174,16 +100,14 @@
             <div>贵宾级客户服务</div>
             <div>7X24X365天及时响应1V1客服服务！为您的数字资产安全交易保驾护航！</div>
           </div>
-          
-          
         </div>
         <div class="mb">
           <img src="../assets/images/homemb.jpg" alt="">
            <div>
-             <div> 随时随地 不错过任何机会</div>
-           <p> 实时交易：买入、卖出、杠杆</p>
-           <p> 随身充提：充值、提现</p>
-           <p>实时提醒：行情提醒、事件提醒</p>
+            <div> 随时随地 不错过任何机会</div>
+            <p> 实时交易：买入、卖出、杠杆</p>
+            <p> 随身充提：充值、提现</p>
+            <p>实时提醒：行情提醒、事件提醒</p>
            </div>
         </div>
         <div class="news">
@@ -191,15 +115,12 @@
           <div class="line"></div>
           <div class="items">
             <div class="item" v-for='(item,index) in noticeList' :key="index">
-              <!-- <div class="date">{{item.update_time}}</div> -->
               <div class="content">
                 <img src="../assets/images/notbg.jpg" alt="">
                 <div class="title">{{item.title}}</div>
                 <p v-html="item.content"></p>
               </div>
             </div>
-            
-            
           </div>
         </div>
         <footer>
@@ -215,16 +136,9 @@
               <router-link to="/components/register" tag="dd">注册</router-link>
               <router-link to="/forgetPwd" tag="dd">找回密码</router-link>
             </dl>
-            <dl>
-              <!-- <dt>
-                app下载
-                </dt>
-              <dd></dd> -->
-            </dl>
           </div>
         </footer>
     </div>
-    
 </template>
 
 
