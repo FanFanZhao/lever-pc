@@ -9,12 +9,11 @@
           <h4>购买</h4>
           <ul>
             <li
-              class="flex"
               v-for="(item,index) in currency_list"
               :key="index"
               :class="index == active?'bg_active':''"
               :data-id="item.id"
-              @click="currency_click(item.id,item.name,index)"
+              @click="currency_click(item.id,item.name,index,'buy')"
             >{{item.name}}</li>
           </ul>
         </div>
@@ -22,12 +21,11 @@
           <h4>出售</h4>
           <ul>
             <li
-              class="flex"
               v-for="(item,index) in currency_list"
               :key="index"
-              :class="index == active?'bg_active':''"
+              :class="index == actives?'bg_active':''"
               :data-id="item.id"
-              @click="currency_click(item.id,item.name,index)"
+              @click="currency_click(item.id,item.name,index,'sell')"
             >{{item.name}}</li>
           </ul>
         </div>
@@ -60,7 +58,7 @@
           <img src="../../assets/images/nodata.png" alt>
           <p class="fColor2 ft18">暂无数据</p>
         </div>
-        <button class="more" @click="moreData();" v-html="moreText"></button>
+        <button class="more" @click="moreData()">{{moreText}}</button>
       </div>
     </div>
   </div>
@@ -76,6 +74,7 @@ export default {
     return {
       token: "",
       active: 0,
+      actives:-1,
       currency_list: [],
       currency_name: "",
       id: "",
@@ -95,7 +94,6 @@ export default {
       this.$router.push("/components/login");
     }
     this.get_currency();
-    this.getBuyList();
   },
 
   methods: {
@@ -112,28 +110,34 @@ export default {
           this.currency_list = res.data.message.legal;
           this.currency_name = res.data.message.legal[0].name;
           this.id = res.data.message.legal[0].id;
+          this.getBuyList();
         }
       });
     },
     //选择币种
-    currency_click(id, name, index) {
+    currency_click(id, name, index,type) {
       this.currency_name = name;
-      this.active = index;
       this.id = id;
+      this.types = type;
+      if(type == 'buy'){
+        this.active = index;
+        this.actives = -1;
+      }else{
+        this.actives = index;
+        this.active = -1;
+      }
+      this.page = 1;
+      this.getBuyList();
     },
 
     // 获取购买币种数据列表
     getBuyList() {
       let i = layer.load();
       let that = this;
-      this.$http({
-        url: "/api/c2c/seller_trade",
+      console.log(that.id);
+      that.$http({
+        url: "/api/c2c/seller_trade?type=" + that.types + "&page=" + that.page+"&currency_id="+that.id,
         method: "get",
-        data: {
-          type: that.types,
-          currency_id: that.id,
-          page: that.page
-        },
         headers: { Authorization: this.token }
       }).then(res => {
         layer.close(i);
@@ -142,6 +146,9 @@ export default {
           if (listData.length > 0) {
             that.buyList = that.buyList.concat(listData);
           } else if (that.page == 1 && listData.length == 0) {
+             that.moreText = '';
+          }else{
+            that.moreText = '没有更多数据';
           }
         }
       });
@@ -208,6 +215,41 @@ export default {
       > .top-title {
         font-size: 24px;
         line-height: 2;
+      }
+      .top-left{
+        width: 49.55%;
+        display: inline-block;
+        color: #c7cce6;
+        font-size: 15px;
+        h4{
+          font-size: 17px;
+        }
+        li{
+          display: inline-block;
+          margin-top: 10px;
+          margin-right: 5px;
+        }
+        .bg_active {
+          color: #7a98f7;
+          border-bottom: 1px solid #7a98f7;
+        }
+      }
+      .top-right{
+        width: 49.55%;
+        display: inline-block;
+        color: #c7cce6;
+        h4{
+          font-size: 17px;
+        }
+        li{
+          display: inline-block;
+          margin-top: 10px;
+          margin-right: 5px;
+        }
+        .bg_active {
+          color: #7a98f7;
+          border-bottom: 1px solid #7a98f7;
+        }
       }
     }
     > .bot {
