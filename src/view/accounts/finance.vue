@@ -1,7 +1,10 @@
 <template>
     <div class="">
         <div class="header fColor1">
-            <p class="fl">总资产折合：<span class="asset_num">{{totle}}</span><span class="asset_name"> USDT</span><span class="ft12 baseColor"> ≈ <span>{{totle*usprice}}</span>CNY</span>
+            <p class="fl">总资产折合：<span class="asset_num">{{totle | toFixeds}}</span><span class="asset_name"> USDT</span>
+            <!-- <span class="ft12 baseColor"> ≈ <span> -->
+              <!-- {{totle*usprice}} -->
+              <!-- {{totle}}</span>CNY</span> -->
             <!-- <label class="min_lab ft14"><input type="checkbox" />隐藏小额资产</label><i></i><label class="inp_lab"><input  type="text"/><i></i></label> -->
             </p>
             <p class="fr right_text">
@@ -115,6 +118,12 @@ import "@/lib/clipboard.min.js";
 import "@/lib/jquery.qrcode.min.js";
 export default {
   name: "finance",
+  filters: {
+			toFixeds: function(value) {
+				value = Number(value);
+				return value.toFixed(2);
+			}
+		},
   data() {
     return {
       totle: "",
@@ -367,25 +376,25 @@ export default {
           console.log(res.data);
           if(res.data.type == 'ok'){
 
-              that.asset_list = res.data.message.change_wallet.balance;
-              this.totle = res.data.message.change_wallet.totle;
+              that.asset_list = res.data.message.lever_wallet.balance;
+              this.totle = res.data.message.lever_wallet.totle;
               console.log(this.totle);
           } else {
               return;
           }
-          this.asset_list.forEach((item, index) => {
-            this.$http({
-              url: "/api/wallet/legal_log",
-              method: "post",
-              data: { type: "change", currency: item.currency },
-              headers: { Authorization: this.token }
-            }).then(res => {
-              console.log(res);
-              if (res.data.type == "ok") {
-                this.recData[index] = res.data.message.list;
-              }
-            });
-          });
+          // this.asset_list.forEach((item, index) => {
+          //   this.$http({
+          //     url: "/api/wallet/legal_log",
+          //     method: "post",
+          //     data: { type: "change", currency: item.currency },
+          //     headers: { Authorization: this.token }
+          //   }).then(res => {
+          //     console.log(res);
+          //     if (res.data.type == "ok") {
+          //       this.recData[index] = res.data.message.list;
+          //     }
+          //   });
+          // });
         })
         .catch(error => {
           console.log(error);

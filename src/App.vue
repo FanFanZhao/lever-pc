@@ -14,7 +14,7 @@ export default {
           data:{},
           headers: {'Authorization':  localStorage.getItem('token')}, 
 				}).then(res=>{
-                    // console.log(res);
+                    console.log(res);
                     if(res.data.type == 'ok'){
                       this.tabList = res.data.message;
                       var msg = res.data.message;

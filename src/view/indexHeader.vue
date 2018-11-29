@@ -4,12 +4,12 @@
 			<div class="fl"><img src="@/assets/images/logo.gif" class="navbar-logo" style="width:40px;"></div>
 			<ul  class="navbar-item fl mouseDefault ml20">
 				<li  class="base" :class="{active:index==current}"  v-for="(tabs,index) in tabList" :key="index"  @click="goto(index,tabs.page)">{{tabs.title}}</li>
-        <li class="base downapp" @click="showapp">APP下载
+        <!-- <li class="base downapp" @click="showapp">APP下载
           <div class="appcode tc" v-show="appshow">
             <span></span>
             <p><img src="@/assets/images/code.jpg" alt=""></p>
           </div>
-        </li>
+        </li> -->
 			</ul>
 			<div class="fr">
 				<div class="account-box fl positionR curPer flex">
@@ -127,12 +127,12 @@ export default {
         //   title: "承兑商",
         //   page: "aceite"
         // },
-        {
-          src1: require("@/assets/images/s0.png"),
-          src2: require("@/assets/images/s1.png"),
-          title: "区域代理",
-          page: "region"
-        },
+        // {
+        //   src1: require("@/assets/images/s0.png"),
+        //   src2: require("@/assets/images/s1.png"),
+        //   title: "区域代理",
+        //   page: "region"
+        // },
         {
           src1: require("@/assets/images/icon_news.png"),
 					src2: require("@/assets/images/icon_news_s.png"),

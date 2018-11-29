@@ -47,7 +47,7 @@
                                 </span>
                                 <span class="flex1">{{item.address}}</span>
                                 <span class="flex1">{{item.notes}}</span>
-                                <span class="flex1" @click="delAddress(item.id,index)">撤销</span>
+                                <span class="flex1" @click="delAddress(item.id,index)">删除</span>
                             </div>
                        </div>
                         <div class="none color1 tc" v-if="!list.length" style="padding: 20px 0">

@@ -44,6 +44,14 @@
         </ul>
       </div>
     </div>
+
+    <!-- 详情弹窗 -->
+    <div class="modals">
+      <div class="mask"></div>
+      <div class="modals-content">
+        
+      </div>
+    </div>
   </div>
 </template>
 <script>

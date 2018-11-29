@@ -15,13 +15,13 @@
 			return {
 				curActive:0,
 				array:[
-					{
-						src1: require("@/assets/images/icon_mine.png"),
-						src2: require("@/assets/images/icon_mine_s.png"),
-						text: '交易账户',
-						page:'finance',
-						children:['finance']
-					},
+					// {
+					// 	src1: require("@/assets/images/icon_mine.png"),
+					// 	src2: require("@/assets/images/icon_mine_s.png"),
+					// 	text: '交易账户',
+					// 	page:'finance',
+					// 	children:['finance']
+					// },
 
 					{
 						src1: require("@/assets/images/icon_delegate.png"),
@@ -30,13 +30,13 @@
 						page:'lever',
 						children:['lever']
 					},
-					{
-						src1: require("@/assets/images/icon_delegate.png"),
-						src2: require("@/assets/images/icon_delegate_s.png"),
-						text: '法币账户',
-						page:'legal',
-						children:['legal']
-					}
+					// {
+					// 	src1: require("@/assets/images/icon_delegate.png"),
+					// 	src2: require("@/assets/images/icon_delegate_s.png"),
+					// 	text: '法币账户',
+					// 	page:'legal',
+					// 	children:['legal']
+					// }
 					
 				],
 			}
