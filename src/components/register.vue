@@ -5,7 +5,7 @@
             <div class="title">注册</div>
             <div class="tab">
                 <span :class='{active:isMb}' @click="setIsMb(true)">手机号注册</span>
-                <span :class="{active:!isMb}" @click="setIsMb(false)">邮箱注册</span>
+                <!-- <span :class="{active:!isMb}" @click="setIsMb(false)">邮箱注册</span> -->
             </div>
             <div class="step-one" v-show="!codeTrue">
 
@@ -19,14 +19,14 @@
                     <input type="text" v-model="code" class="code">
                     <button type='button' class="code-btn curPer" @click="sendCode">发送验证码</button>
                 </div>
-                <div class="invite-box">
+                <!-- <div class="invite-box">
                     <div class="tip">邀请码</div>
                     <input type="text" v-model="invite" class="invite-input">
-                </div>
+                </div> -->
                 <button class="confirm-btn curPer" @click="checkCode" type="button">确认</button>
             </div>
             <div class="setpass" v-show="codeTrue">
-                <div class="title">设置地区</div>
+                <!-- <div class="title">设置地区</div>
                 <div class="area-box">
                   <div class="area">
                     <div :class="['province',{light:showList == 'provinces'}]" @click="showList = showList?false:'provinces'">{{province.name}}</div>
@@ -44,7 +44,7 @@
                       <li v-for="(item,index) in districts" :key="index" @click="getRegion(item.id,'',item.region_name)">{{item.region_name}}</li>
                     </ul>
                   </div>
-                </div>
+                </div> -->
                 
                 <div class="title">设置密码</div>
                 <div class="pwd-box">
@@ -54,6 +54,10 @@
                 <div class="repwd-box">
                     <div class="tip">请再次输入密码</div>
                     <input type="password" v-model="repwd" class="repwd-input" placeholder="请再次输入密码">
+                </div>
+                <div class="invite-box">
+                    <div class="tip">邀请码</div>
+                    <input type="text" v-model="invite" class="invite-input" placeholder="请输入邀请码">
                 </div>
                 <button type="button" @click="register" class="reg-btn confirm-btn curPer">确认</button>
             </div>
@@ -265,14 +269,7 @@ export default {
     },
     // 注册
     register() {
-      if (
-        this.province.id == "" ||
-        this.city.id == "" ||
-        this.district.id == ""
-      ) {
-        layer.msg("请设置地区");
-        return;
-      }
+
       if (this.pwd == "") {
         layer.msg("请输入密码");
         return;
@@ -285,12 +282,11 @@ export default {
       } else if (this.pwd !== this.repwd) {
         layer.msg("两次输入的密码不一致");
         return;
-      } else {
+      } else if(this.invite == '') {
+        layer.msg("请输入邀请码");
+        return;
       }
       var data = {};
-      data.province_id = this.province.id;
-      data.city_id = this.city.id;
-      data.district_id = this.district.id;
       var isMb = this.isMb;
       data.type = isMb ? "mobile" : "email";
       data.user_string = this.account;

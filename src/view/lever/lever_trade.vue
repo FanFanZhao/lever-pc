@@ -73,10 +73,10 @@
           </div>
           <div class="mt40 input-item clear">
             <label>手数：</label>
-            <b :class="['share',{'active':types =='1'}]" @click="select(1,'sell')">1手</b>
-            <b :class="['share',{'active':types =='3'}]" @click="select(3,'sell')">3手</b>
-            <b :class="['share',{'active':types =='5'}]" @click="select(5,'sell')">5手</b>
-            <b :class="['share',{'active':types =='10'}]" @click="select(10,'sell')">10手</b>
+            <b :class="['share',{'actives':types =='1'}]" @click="select(1,'sell')">1手</b>
+            <b :class="['share',{'actives':types =='3'}]" @click="select(3,'sell')">3手</b>
+            <b :class="['share',{'actives':types =='5'}]" @click="select(5,'sell')">5手</b>
+            <b :class="['share',{'actives':types =='10'}]" @click="select(10,'sell')">10手</b>
           </div>
           <!-- <div class="attion tr fColor1">范围 (0.000001,20,精度: 0.000001)</div> -->
           <!-- <div class="mt50 fColor1 ft16">交易额 {{sellTotal}} {{currency_name}}</div> -->
@@ -351,5 +351,6 @@
 input:disabled {color: #627085;cursor: not-allowed;}
 .share{display: inline-block;font-weight: normal;border: 1px solid #eee;border-radius: 2px;font-size: 14px;color: #fff;line-height: 1.2;width: 18.8%;text-align: center;padding: 5px 0;}
 b.active{background-color: #02c289;border: 1px solid #02c289;}
+b.actives{background-color: #de5959;border: 1px solid #de5959;}
 </style>
 

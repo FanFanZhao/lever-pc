@@ -6,6 +6,9 @@ import dealCenter from '@/components/dealCenter'
 import payOpts from '@/view/payOpts'
 import userSetting from '@/components/userSetting'
 import c2c from '@/components/c2c'
+import c2cOrder from '@/view/c2c/c2cOrder'
+import c2cRelease from '@/view/c2c/c2cRelease'
+import c2cTrade from '@/view/c2c/c2cTrade'
 import leverdealCenter from '@/components/lever_dealCenter'
 import login from '@/components/login'
 import register from '@/components/register'
@@ -70,7 +73,28 @@ export default new Router({
 				{
 					path:'/c2c',
 					name:'c2c',
-					component:c2c
+					component:c2c,
+					children:[
+						
+					]
+				},
+				{
+					path:'/c2cOrder',
+					name:'c2cOrder',
+					component:c2cOrder
+				
+				},
+				{
+					path:'/c2cRelease',
+					name:'c2cRelease',
+					component:c2cRelease
+				
+				},
+				{
+					path:'/c2cTrade',
+					name:'c2cTrade',
+					component:c2cTrade
+				
 				},
 				{
 					path:'/dealCenter',
