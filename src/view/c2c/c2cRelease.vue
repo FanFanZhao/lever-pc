@@ -50,7 +50,7 @@
             </div>
             <div class="tr">
               <button type="button" @click="backOrder(item.id)">撤回</button>
-              <button type="button">查看订单</button>
+              <button type="button" @click="lookOrder(item.id)">查看订单</button>
             </div>
           </li>
         </ul>
@@ -180,6 +180,10 @@ export default {
       let that = this;
       that.page = that.page + 1;
       that.getBuyList();
+    },
+    // 查看订单
+    lookOrder(ids){
+       this.$router.push({name:'c2cDetail',query:{id:ids}});
     }
   }
 };
