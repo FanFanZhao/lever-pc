@@ -33,29 +33,34 @@
         </div>
       </div>
       <div class="bot">
-        <div class="list-title flex" v-if="showList">
-          <div>名称</div>
-          <div>数量</div>
-          <div>单价</div>
-          <div>付款方式</div>
-          <div>操作</div>
-        </div>
-        <ul class="content">
+        <ul class="content" v-if="buyList.length>0">
+          <li class="flex">
+            <div class="tl">名称</div>
+            <div>数量</div>
+            <div>单价</div>
+            <div>付款方式</div>
+            <div class="tr">操作</div>
+          </li>
           <li v-for="item in buyList" :key="item.id" class="flex">
-            <div>{{item.currency_name}}</div>
-            <div>{{item.total_number}}{{item.currency_name}}</div>
+            <div class="tl">{{item.currency_name}}</div>
+            <div>{{item.total_number}} {{item.currency_name}}</div>
             <div>{{item.price}}</div>
             <div>
-              <img v-if="item.way_name == 'ali_pay'" src="../../assets/images/zfb_icon.png" />
-              <img v-if="item.way_name == 'we_chat'" src="../../assets/images/wx_icon.png" />
-              <img v-if="item.way_name == 'bank'" src="../../assets/images/bank_icon.png" />
-              </div>
-            <div>
-            <button type="button">撤回</button>
-            <button type="button">查看订单</button>
+              <img v-if="item.way == 'ali_pay'" src="../../assets/images/zfb_icon.png">
+              <img v-if="item.way == 'we_chat'" src="../../assets/images/wx_icon.png">
+              <img v-if="item.way == 'bank'" src="../../assets/images/bank_icon.png">
+            </div>
+            <div class="tr">
+              <button type="button" @click="backOrder(item.id)">撤回</button>
+              <button type="button">查看订单</button>
             </div>
           </li>
         </ul>
+        <div class="no_data tc" v-if="buyList.length<=0">
+          <img src="../../assets/images/nodata.png" alt>
+          <p class="fColor2 ft18">暂无数据</p>
+        </div>
+        <button class="more" @click="moreData();" v-html="moreText"></button>
       </div>
     </div>
   </div>
@@ -80,7 +85,8 @@ export default {
       showTradeBox: false,
       page: 1,
       types: "buy",
-      buyList: []
+      buyList: [],
+      moreText: "加载更多"
     };
   },
   created() {
@@ -95,12 +101,13 @@ export default {
   methods: {
     // 获取币种列表
     get_currency() {
+      let i = layer.load();
       this.$http({
         url: "/api/currency/list",
         method: "get",
         headers: { Authorization: this.token }
       }).then(res => {
-        //////consolelog(res);
+        layer.close(i);
         if (res.data.type == "ok") {
           this.currency_list = res.data.message.legal;
           this.currency_name = res.data.message.legal[0].name;
@@ -117,6 +124,7 @@ export default {
 
     // 获取购买币种数据列表
     getBuyList() {
+      let i = layer.load();
       let that = this;
       this.$http({
         url: "/api/c2c/seller_trade",
@@ -128,12 +136,43 @@ export default {
         },
         headers: { Authorization: this.token }
       }).then(res => {
-        //////consolelog(res);
+        layer.close(i);
         if (res.data.type == "ok") {
-          that.buyList = res.data.message.data;
-          console.log(res);
+          let listData = res.data.message.data;
+          if (listData.length > 0) {
+            that.buyList = that.buyList.concat(listData);
+          } else if (that.page == 1 && listData.length == 0) {
+          }
         }
       });
+    },
+    // 撤回订单
+    backOrder(ids) {
+      let i = layer.load();
+      this.$http({
+        url: "/api/c2c/back_send",
+        method: "post",
+        data: {
+          id: ids
+        },
+        headers: { Authorization: this.token }
+      })
+        .then(res => {
+          layer.close(i);
+          layer.msg(res.data.message);
+          setTimeout(() => {
+            location.reload();
+          }, 500);
+        })
+        .catch(res => {
+          layer.msg(res.data.message);
+        });
+    },
+    // 加载更多
+    moreData() {
+      let that = this;
+      that.page = that.page + 1;
+      that.getBuyList();
     }
   }
 };
@@ -146,6 +185,11 @@ export default {
     color: #7a98f7;
     text-align: center;
     cursor: pointer;
+    width: 100%;
+    text-align: center;
+    border: none;
+    background-color: rgba(0,0,0,0);
+
   }
   > .c2c-l {
     margin: 0 10px;
@@ -168,85 +212,46 @@ export default {
     }
     > .bot {
       color: #6b80ae;
-      > .bot-title {
-        margin: 30px 0 0;
-        font-size: 16px;
-        line-height: 40px;
-        justify-content: space-between;
-        align-items: center;
-        > div:first-child {
-          cursor: pointer;
-          span {
-            font-weight: 600;
-            line-height: 40px;
-            margin-right: 20px;
-          }
-          .active {
-            color: #7a98f7;
-            border: none;
-          }
+      .content {
+        width: 100%;
+        li {
+          width: 100%;
+          color: #c7cce6;
+          -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+          justify-content: space-between;
+          text-align: center;
+          padding: 8px 5px;
+          line-height: 24px;
         }
         > .flex {
-          height: 17px;
-          line-height: 15px;
           cursor: pointer;
           > div {
-            margin-right: 10px;
-            border: 1px solid #ccc;
-            transition: all 0.3s;
-            width: 32px;
-            border-radius: 7.5px;
-            div {
-              width: 15px;
-              height: 15px;
-              border-radius: 50%;
-              background: #fff;
-            }
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            padding: 10px 0;
           }
         }
-      }
-      > .list-title {
-        height: 40px;
-        line-height: 40px;
-        font-weight: 600;
-      }
-      .list-title,
-      ul li .content {
-        width: 100%;
-        color: #c7cce6;
-        justify-content: space-between;
-        text-align: center;
-        padding: 8px 5px;
-        line-height: 24px;
-      }
-      .content{
-        width: 100%;
-        li{
-            width: 100%;
-            color: #c7cce6;
-            -webkit-box-pack: justify;
-            -ms-flex-pack: justify;
-            justify-content: space-between;
-            text-align: center;
-            padding: 8px 5px;
-            line-height: 24px;
+        .tl {
+          text-align: left;
+        }
+        .tr {
+          text-align: right;
+        }
+        button {
+          border-radius: 3px;
+          color: white;
+          background-color: #638bd4;
+          cursor: pointer;
+          min-height: 33px;
+          min-width: 80px;
+          font-size: 14px;
+          font-weight: 600;
+          border: none;
         }
       }
-
     }
   }
-}
-
-.detailit,
-.showtrade {
-  // float: right;
-  margin-right: 20px;
-  padding: 0 10px;
-  min-width: 55px;
-  max-width: 80px;
-  color: #fff;
-  text-align: center !important;
-  cursor: pointer;
-  background: #7a98f7;
 }
 </style>
