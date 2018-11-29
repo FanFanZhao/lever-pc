@@ -5,7 +5,10 @@
     </div>
     <div class="c2c-r">
       <div class="title-top flex ft20">
-        <p v-for="(item,index) in topType" :class="{'active':index==current}" @click='changeType(index,item.type)'>{{item.title}}</p>
+        <p v-for="(item,index) in topType" :class="{'active':index==current}" @click='changeType(index,item.type,item.title)'>{{item.title}}</p>
+      </div>
+      <div class="coin-select mt20 flex">
+        <p v-for="(item,index) in coinList" :class="{'select':index==select}" @click="getnew(item.id)">{{item.name}}</p>
       </div>
       
       <div class="listbox">
@@ -53,11 +56,13 @@ export default {
       return{
         token:'',
         current:0,
+        select:0,
         type:'sell',
-        currency_id:3,
         outpage:1,
         inpage:1,
+        coinList:[],
         list:[],
+        legal_id:'',
         classify:'购买',
         topType:[{'title':"购买","type":"buy"},{'title':"出售","type":"sell"}]
       }
@@ -66,16 +71,23 @@ export default {
         this.token = window.localStorage.getItem("token") || "";
         if (this.token == "") {
           this.$router.push("/components/login");
-        };
-        this.getList('sell');
+        }; 
+        this.get_currency();
+       
     },
     methods:{
-      changeType(index,type){
+      changeType(index,type,title){
         this.current=index;
+        this.classify=title;
         this.type=type;
         this.list=[];
         this.page=1;
         this.getList(type);
+      },
+      getnew(id){
+        this.legal_id=id;
+        this.select=
+        this.getList(this.type);
       },
       // 获取币种列表
       get_currency() {
@@ -84,21 +96,21 @@ export default {
           method: "get",
           headers: { Authorization: this.token }
         }).then(res => {
-          //////consolelog(res);
+         console.log(res);
           if (res.data.type == "ok") {
-            this.currency_list = res.data.message.legal;
-            this.currency_name = res.data.message.legal[0].name;
-            this.id = res.data.message.legal[0].id;
+            this.coinList = res.data.message.legal;
+            this.legal_id=res.data.message.legal[0].id;
+            this.getList('sell');
           }
         });
       },
       // 获取买入列表
       getList(type) {
         let page = 1;
-        let currency_id =this.currency_id;
+        let legal_id =this.legal_id;
         let i = layer.load();
         this.$http({
-          url: "/api/c2c_deal_platform?type=" + type + "&page=" + page+"&currency_id="+currency_id,
+          url: "/api/c2c_deal_platform?type=" + type + "&page=" + page+"&currency_id="+legal_id,
           method: "get",
           headers: { Authorization: this.token }
         }).then(res => {
@@ -158,6 +170,15 @@ export default {
         padding: 5px 0;
         cursor: pointer;
       } 
+    }
+    .coin-select{
+      p{
+        margin-right: 10px;
+        cursor: pointer;
+      }
+      .select{
+        color: #7a98f7;
+      }
     }
     .listbox{
       .flextitle{
