@@ -41,10 +41,34 @@
               <div v-if="item.is_sure==3">已付款</div>
             </div>
             <div class="tr">
-              详情
+              <button class="btn">详情</button>
             </div>
           </li>
         </ul>
+      </div>
+    </div>
+    <!-- =========详情弹窗========== -->
+    <div class="mask" v-if="showDetail">
+      <div class="m-content">
+        <div class="title">
+            <div>详情</div>
+            <div @click="showDetail = false">x</div>
+        </div>
+        <div class="list">
+          <div class="create-date">
+            <span>创建时间：</span><span>2018-05-06</span>
+          </div>
+        </div>
+        <!-- 我发布的内容 -->
+        <div class="myC2cDetail">
+            <div>
+              <span>交易类型：</span><span>liuluil</span>
+            </div>
+            <div>
+              <span>币  种：</span><span>luiolyl</span>
+            </div>
+          </div>
+        </div>            
       </div>
     </div>
   </div>
@@ -66,7 +90,8 @@ export default {
         list:[],
         legal_id:'',
         classify:'求购',
-        topType:[{'title':"求购","type":"buy"},{'title':"出售","type":"sell"}]
+        topType:[{'title':"求购","type":"buy"},{'title':"出售","type":"sell"}],
+        showDetail:true
       }
     },
     created(){
@@ -105,17 +130,7 @@ export default {
           }
         });
       },
-      // 下单
-      order(id){
-        var that = this;
-        layer.confirm('确认下单吗？', {
-          btn: ['确认','取消'] //按钮
-        }, function(){
-          that.sureOrder(id);
-        }, function(){
-          // layer.msg('取消成功');
-        });
-      },
+
       // 下单请求
       sureOrder(id){
         var i=layer.load();
@@ -228,6 +243,56 @@ export default {
     background: #181b2a;
     margin-right: 10px;
     width: 77%;
+  }
+  .mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.7);
+    > .m-content {
+      border-radius: 4px;
+      background: #fff;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 40px 20px 30px;
+      // min-height: 400px;
+      max-height: 550px;
+      width: 400px;
+      > .title {
+        position: absolute;
+        top: 0;
+        left: 0;
+        text-align: center;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        font-size: 18px;
+        text-align: center;
+        font-weight: 600;
+        > div:last-child {
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: 0 15px;
+          cursor: pointer;
+        }
+      }
+      > div:not(.title) {
+        line-height: 32px;
+        // border-top: 1px solid #eaecef;
+      }
+      div {
+        span:first-child {
+          margin-right: 5px;
+          display: inline-block;
+          width: 70px;
+          color: #ca4141;
+        }
+      }
+    }
   }
 }
 
