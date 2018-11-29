@@ -58,8 +58,7 @@ export default {
         current:0,
         select:0,
         type:'sell',
-        outpage:1,
-        inpage:1,
+        page:1,
         coinList:[],
         list:[],
         legal_id:'',
@@ -149,7 +148,7 @@ export default {
           layer.close(i);
           if (res.data.type == "ok") {
             console.log(res);
-            layer.msg(res.data.message)
+            layer.msg(res.data.message.data.msg)
           }else{
             layer.msg(res.data.message)
           }
