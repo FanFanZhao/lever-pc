@@ -102,7 +102,7 @@ export default {
           method: "get",
           headers: { Authorization: this.token }
         }).then(res => {
-          // layer.close(i);
+          layer.close(i);
           if (res.data.type == "ok") {
             let listdata = res.data.message.data;
             console.log(listdata);
