@@ -12,8 +12,23 @@
             </div>
              <div class="swiper-pagination swiper-pagination02"></div>
         </div>
-      
-        <div class="coins-list">
+        <div class="topusdt">
+          <ul class="flex">
+            <li v-for="(item,index) in quotation" v-if='index<=3'>
+              <div class="flex ft12 between">
+                <div>
+                  <p>{{item.currency_name}}/{{item.legal_name}}</p>
+                  <p class="ft18 mt15">{{item.now_price}}</p>
+                  <p class="mt5 color47">≈{{item.now_price*6.9641.toFixed(2)}} CNY</p>
+                  <p class="mt15"><span class="color47">24H量</span> <span>{{item.volume}}</span></p>
+                </div>
+                <button :class="[{'downcolor': item.change.substring(0,1) == '-'}]">{{item.change}}</button>
+              </div>
+              
+            </li>
+          </ul>
+        </div>
+        <!-- <div class="coins-list">
           <div class="coin-tab">
             <ul class="coins">
               <li v-for="(coin,index) in quotation" :key="index" @click="nowCoin = coin.name" :class="{activeCoin:nowCoin == coin.name}">{{coin.name}}</li>
@@ -42,7 +57,7 @@
               </div>
             </li>
           </ul>
-        </div>
+        </div> -->
         <!-- <div class="feature_wrap">
             <h2>全球领先的数字资产金融服务商</h2>
             <p>为全球超过130个国家的数百万用户提供安全、可信赖的数字资产交易及资产管理服务</p>
@@ -171,9 +186,8 @@ export default {
       swiperList: [],
       coinList: [],
       coin_list: [],
-
       noticeList: [],
-      swiperImgs: []
+      swiperImgs: [],
     };
   },
   created() {
@@ -284,8 +298,10 @@ export default {
         method: "get"
       }).then(res => {
         if (res.data.type == "ok" && res.data.message.length != 0) {
-          this.quotation = res.data.message;
-          this.nowCoin = this.quotation[0].name;
+          // this.nowCoin = this.quotation[0].name;
+          var data = res.data.message;
+          this.quotation=data.find((item) => item.name == 'USDT').quotation;
+          console.log(this.quotation)
         }
       });
     },
@@ -360,6 +376,47 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+.topusdt{
+  border-top: 1px solid rgba(29,50,66,.7);
+  background-color: #0a151e;
+  color: #9eb5ca;
+  ul{
+    width: 100%;
+    li{
+      width: 25%;
+      padding: 25px 0;
+      >div{
+        border-left: 1px solid rgba(29,50,66,.7);
+        padding: 0 40px;
+      }
+      .color47{
+        color: #477a90;
+      }
+      .ml5{
+        margin-left: 5px;
+      }
+      button{
+        border: none;
+        padding: 5px 20px;
+        border-radius: 5px;
+        height: 30px;
+        background: #0d2f32;
+        color: #0d8551;
+      }
+      .downcolor{
+        color: #ef4034;
+        background: #3b2128;
+      }
+    }
+    li:hover{
+      background: #101a21;
+      >div{
+        border: none;
+      }
+    }
+    
+  }
+}
 footer{
   background: rgb(20,20,63);
   padding: 30px 0;
