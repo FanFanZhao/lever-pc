@@ -466,16 +466,11 @@ export default {
     padding: 10px;
     background: #181b2a;
     width: 23%;
-    ul {
-    }
     li {
       // padding: 0 10px;
       padding: 0 20px;
       justify-content: space-between;
       cursor: pointer;
-
-      line-height: 40px;
-
       .redColor {
         margin-left: 10px;
       }
