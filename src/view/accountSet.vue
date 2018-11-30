@@ -5,16 +5,14 @@
                 <img  src="@/assets/images/account_security.png"/>
                 </div>
             <div  class="fl ml30">
-                <p  class="ft16 fColor1">您的账号安全等级 :
-                    <span  class="ml10">低</span>
+                 <p  class="ft16 white">您的账号安全等级 :
+                    <span  class="ml10">{{lever}}</span>
                 </p>
                 <div  class="bar-bottom">
-                    <div  class="bar-top" style="width: 25%;"></div>
+                    <div  class="bar-top" :style="widthBar"></div>
                 </div>
-                <p  class="fColor2 ft14">
-                    您的账号安全等级 低，强烈建议开启更多身份验证</p>
-                <p  class="fColor2 ft14" style="display: none;">
-                    您的账号安全等级 低，恭喜您!</p>
+                 <p  class="fColor2 ft14">
+                    您的账号安全等级 {{lever}}，完善更多资料，保证账号安全</p>
             </div>
         </div>
         <ul >
@@ -86,6 +84,10 @@ export default {
             account:'未绑定',
             email:'未绑定',
             extension_code:'',
+            lever:'低',
+            widthBar:'width: 25%',
+            bar:25,
+            authen:0,
             psrc:require('@/assets/images/icon_error.png'),
             esrc:require('@/assets/images/icon_error.png')
 
@@ -116,13 +118,28 @@ export default {
                 if(res.data.type == 'ok'){
                     if(res.data.message.phone!=null){
                         this.account=res.data.message.phone;
-                        this.psrc=require('@/assets/images/success.png')
+                        this.psrc=require('@/assets/images/success.png');
+                        this.bar=this.bar+25;
                     }
                     if(res.data.message.email!=null){
                         this.email=res.data.message.email;
-                        this.esrc=require('@/assets/images/success.png')
+                        this.esrc=require('@/assets/images/success.png');
+                        this.bar=this.bar+25;
                     }
                     this.extension_code=res.data.message.extension_code;
+                    this.authen=res.data.message.review_status;
+                    if(this.authen==2){
+                        this.bar=this.bar+25;
+                    }
+                    if(this.bar==50){
+                        this.lever='中';
+                    }else if(this.bar==75){
+                        this.lever='高'; 
+                    }else if(this.bar==100){
+                        this.lever='强';
+                    }
+                    console.log(this.bar)
+                    this.widthBar='width:'+this.bar+'%';
                 }
                 }).catch(error=>{
                     
