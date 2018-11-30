@@ -39,6 +39,7 @@
               <button class="btn" @click="order(item.id)">{{classify}}</button>
             </div>
           </li>
+          <div class="tc ft12 gray mt20 curPer" v-if="list.length>=10&&showmore" @click="getMore()">加载更多...</div>
         </ul>
       </div>
     </div>
@@ -65,6 +66,7 @@ export default {
         classify:'购买',
         topType:[{'title':"购买","type":"sell"},{'title':"出售","type":"buy"}],
         bgcolor:['#5d8cc2','#6d78a8','#a2b240','#61b88e','#e35744', '#a16c92','#66756e'],
+        showmore:true
 
       }
     },
@@ -84,13 +86,13 @@ export default {
         this.type=type;
         this.list=[];
         this.page=1;
-        this.getList(type);
+        this.getList();
       },
       getnew(index,id){
         this.select=index;
         this.legal_id=id;
         this.list=[];
-        this.getList(this.type);
+        this.getList();
       },
       // 获取币种列表
       get_currency() {
@@ -108,7 +110,8 @@ export default {
         });
       },
       // 获取买入列表
-      getList(type) {
+      getList() {
+        let type = this.type;
         let page = this.page;
         let legal_id =this.legal_id;
         let i = layer.load();
@@ -128,8 +131,14 @@ export default {
               this.list = this.list.concat(listdata);
               this.page += 1;
             }
+            if(listdata.length<10){
+              this.showmore=false
+            }
           }
         });
+      },
+      getMore(){
+        this.getList();
       },
       // 下单
       order(id){
@@ -144,6 +153,7 @@ export default {
       },
       // 下单请求
       sureOrder(id){
+        var that = this;
         var i=layer.load();
         this.$http({
           url: "/api/c2c/do_legal_deal",
@@ -155,6 +165,7 @@ export default {
           if (res.data.type == "ok") {
             console.log(res);
             layer.msg(res.data.message.msg);
+            that.getList();
           }else{
             layer.msg(res.data.message)
           }

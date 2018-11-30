@@ -43,6 +43,7 @@
               <button class="btn" @click="getDetail(item.id)">详情</button>
             </div>
           </li>
+          <div class="tc ft12 gray mt20 curPer" v-if="list.length>=10&&showmore" @click="getMore()">加载更多...</div>
         </ul>
       </div>
     </div>
@@ -134,6 +135,7 @@ export default {
         topType:[{'title':"求购","type":"buy"},{'title':"出售","type":"sell"}],
         showDetail:false,
         detail:[],
+        showmore:true
       }
     },
     created(){
@@ -168,8 +170,15 @@ export default {
               this.list = this.list.concat(listdata);
               this.page += 1;
             }
+            if(listdata.length<10){
+              this.showmore=false
+            }
           }
         });
+      },
+      // 加载更多
+      getMore(){
+        this.getList();
       },
       // 详情
       getDetail(id) {
