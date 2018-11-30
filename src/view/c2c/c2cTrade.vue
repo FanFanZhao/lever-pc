@@ -53,36 +53,58 @@
           <div>详情</div>
           <div @click="showDetail = false">x</div>
         </div>
-        <div v-if="detail.status==0">
-          <span>状态</span><span>待付款</span>
+        <div v-if="detail.is_sure==0">
+          <span>状态:</span><span>待付款</span>
         </div>
-        <div v-if="detail.status==1">
-          <span>状态</span><span>已完成</span>
+        <div v-if="detail.is_sure==1">
+          <span>状态:</span><span>已完成</span>
         </div>
-        <div v-if="detail.status==2">
-          <span>状态</span><span>已取消</span>
+        <div v-if="detail.is_sure==2">
+          <span>状态:</span><span>已取消</span>
         </div>
-        <div v-if="detail.status==3">
-          <span>状态</span><span>已付款</span>
+        <div v-if="detail.is_sure==3">
+          <span>状态:</span><span>已付款</span>
         </div>
-        <div>
-          <span>买家：</span><span>{{detail.id}}</span>
-        </div>
-        <div>
-          <span>数量：</span><span></span>
+        <div v-if="detail.type=='sell'">
+          <span>卖家：</span><span>{{detail.seller_name}}</span>
         </div>
         <div>
-          <span>单价：</span><span></span>
+          <span>付款信息：</span><span>{{detail.way_name}}</span>
         </div>
         <div>
-          <span>总额：</span> <span ref="update"></span>
-        </span>
+          <span>账号：</span>
+          <span v-if="detail.way_name=='支付宝'">{{detail.sell_cash_info.alipay_account}}</span>
+          <span v-if="detail.way_name=='微信'">{{detail.sell_cash_info.wechat_account}}</span>
         </div>
         <div>
-          <!-- <span>时间：</span><span>{{detail.created_time}}</span> -->
+          <span>银行卡号：</span><span>{{detail.sell_cash_info.bank_name}}:{{detail.sell_cash_info.bank_account}}</span>
         </div>
-
-      
+        <div>
+          <span>收款人：</span><span>{{detail.hes_realname}}</span>
+        </div>
+        <div>
+          <span>联系方式：</span><span>{{detail.seller_phone}}</span>
+        </div>
+        <div>
+          <span>数量：</span><span>{{detail.number}}</span>
+        </div>
+        <div>
+          <span>单价：</span><span>{{detail.price}}</span>
+        </div>
+        <div>
+          <span>总额：</span><span>{{detail.deal_money}}</span>
+        </div>
+        <div>
+          <span>下单时间：</span><span>{{detail.create_time}}</span>
+        </div>
+        <div>
+          <span>参考号:</span><span>{{detail.id}}</span>
+        </div>
+        <!-- btnc -->
+        <div class="flex around btnbox mt20" v-if="detail.is_sure==0&&detail.type=='sell'">
+          <div class="ceilorder" @click="ceilOrder(detail.id)">取消订单</div>
+          <div class="surepay" @click="sureOrder(detail.id)">我已付款，点击确认</div>
+        </div>
       </div>            
     </div>
   </div>
@@ -106,8 +128,7 @@ export default {
         classify:'求购',
         topType:[{'title':"求购","type":"buy"},{'title':"出售","type":"sell"}],
         showDetail:false,
-        detail:{},
-        sell_cash_info:{},
+        detail:[],
       }
     },
     created(){
@@ -159,39 +180,72 @@ export default {
           layer.close(i);
           if (res.data.type == "ok") {
             console.log(res.data.message);
-
-            // this.detail.sell_cash=msg.sell_cash_info;
-            // this.detail.time=msg.format_create_time;
-            // this.detail.status=msg.is_sure;
-            // this.detail.number=msg.number;
-            // this.detail.status=msg.is_sure;
-            // this.detail.money=msg.deal_money;
-
-            // console.log(this.detail.sell_cash)
+            this.detail=res.data.message;
             this.showDetail = true;
           }
         });
     },
-
-      // 下单请求
-      sureOrder(id){
-        var i=layer.load();
-        this.$http({
-          url: "/api/c2c/do_legal_deal",
-          method: "post",
-          data:{id:id},
-          headers: { Authorization: this.token }
-        }).then(res => {
-          layer.close(i);
-          if (res.data.type == "ok") {
-            console.log(res);
-            layer.msg(res.data.message)
-          }else{
-            layer.msg(res.data.message)
-          }
-        });
-      }
+    // 取消订单
+    ceilOrder(id){
+      var that = this;
+      layer.confirm('确认取消交易？', {
+        btn: ['确认','取消'] //按钮
+      }, function(){
+        that.orderCeil(id);
+      }, function(){
+        // layer.msg('取消成功');
+      });
     },
+    orderCeil(id){
+      var that = this;
+      var i=layer.load();
+      this.$http({
+        url: "/api/c2c/user_legal_pay_cancel",
+        method: "post",
+        data:{id:id},
+        headers: { Authorization: this.token }
+      }).then(res => {
+        layer.close(i);
+        console.log(res);
+        if (res.data.type == "ok") {
+          layer.msg(res.data.message);
+          that.showDetail = false;
+        }else{
+          layer.msg(res.data.message)
+        }
+      });
+    },
+    // 确认付款
+    sureOrder(id){
+      var that = this;
+      layer.confirm('请确认您已向卖家付款,恶意点击将被冻结账户', {
+        btn: ['确认','取消'] //按钮
+      }, function(){
+        that.orderSure(id);
+      }, function(){
+        // layer.msg('取消成功');
+      });
+    },
+    orderSure(id){
+      var that = this;
+      var i=layer.load();
+      this.$http({
+        url: "/api/c2c/user_legal_pay",
+        method: "post",
+        data:{id:id},
+        headers: { Authorization: this.token }
+      }).then(res => {
+        layer.close(i);
+        console.log(res);
+        if (res.data.type == "ok") {
+          layer.msg(res.data.message);
+          that.showDetail = false;
+        }else{
+          layer.msg(res.data.message);
+        }
+      });
+    },
+  },
 }
 </script>
 <style lang='scss'>
@@ -266,8 +320,7 @@ export default {
       li:last-child{
         border-bottom: 1px solid #242840;
       }
-    }
-    
+    } 
   }
 
   > .c2c-l {
@@ -338,10 +391,22 @@ export default {
         span:first-child {
           margin-right: 5px;
           display: inline-block;
-          width: 70px;
+          width: 90px;
           color: #ca4141;
         }
       }
+      .btnbox{
+        >div{
+          padding: 3px 15px;
+          background: #689CF1;
+          border-radius: 4px;
+          color: #fff;
+          cursor: pointer;
+        }
+        .ceilorder{
+          background: #9DB5C7;
+        }
+    }
     }
   }
 }
