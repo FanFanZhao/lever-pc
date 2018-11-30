@@ -22,7 +22,7 @@
         <ul>
           <li v-for="(item,index) in list" :key="index" class="flex alcenter curPer">
             <div class="flex alcenter">
-              <p class="head">{{item.seller_name | circle}}</p>
+              <p class="head" :style="{background:item.bgcolor}">{{item.seller_name | circle}}</p>
               <p class="blue">{{item.seller_name}}</p>
             </div>
             <div class="flex center tc">
@@ -63,8 +63,9 @@ export default {
         list:[],
         legal_id:'',
         classify:'购买',
-        topType:[{'title':"购买","type":"buy"},{'title':"出售","type":"sell"}],
-        bgcolor:['#5d8cc2','#6d78a8','#a2b240','#61b88e','#e35744', '#a16c92','#66756e']
+        topType:[{'title':"购买","type":"sell"},{'title':"出售","type":"buy"}],
+        bgcolor:['#5d8cc2','#6d78a8','#a2b240','#61b88e','#e35744', '#a16c92','#66756e'],
+
       }
     },
     created(){
@@ -73,7 +74,7 @@ export default {
           this.$router.push("/components/login");
         }; 
         this.get_currency();
-        console.log(this.bgcolor[2])
+        
        
     },
     methods:{
@@ -121,6 +122,9 @@ export default {
             let listdata = res.data.message.data;
             console.log(listdata);
             if (listdata.length != 0) {
+              for(var j=0; j< listdata.length; j++) {
+                listdata[j].bgcolor = this.bgcolor[(Math.floor(Math.random() * 6 + 1)-1)];
+              }
               this.list = this.list.concat(listdata);
               this.page += 1;
             }
@@ -160,7 +164,7 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 #c2c-box {
   margin: 10px 0 10px;
   color: #c7cce6;

@@ -20,7 +20,7 @@
         <ul>
           <li v-for="(item,index) in list" :key="index" class="flex alcenter curPer">
             <div class="flex alcenter">
-              <p class="head">{{item.type=='sell'?'购买':'出售'}}</p>
+              <p :class="['head',{'sell ': item.type =='buy'}]">{{item.type=='sell'?'购买':'出售'}}</p>
               <span class="currencyName ml5 blue">{{item.currency_name}}</span>
             </div>
             <div class="tc">
@@ -30,7 +30,7 @@
             <div class="tc">
               <img v-if="item.way_name == '支付宝'" src="../../assets/images/zfb_icon.png" />
               <img v-if="item.way_name == '微信'" src="../../assets/images/wx_icon.png" />
-              <img v-if="item.way_name == '银行卡'" src="../../assets/images/bank_icon.png" />
+              <img v-if="item.way_name == '1'" src="../../assets/images/bank_icon.png" />
             </div>
             <div class="tc">{{item.create_time}}</div>
             <div class="tc">
@@ -66,21 +66,23 @@
           <span>状态:</span><span>已付款</span>
         </div>
         <div v-if="detail.type=='sell'">
-          <span>卖家：</span><span>{{detail.seller_name}}</span>
-        </div>
-        <div>
-          <span>付款信息：</span><span>{{detail.way_name}}</span>
-        </div>
-        <div>
-          <span>账号：</span>
-          <span v-if="detail.way_name=='支付宝'">{{detail.sell_cash_info.alipay_account}}</span>
-          <span v-if="detail.way_name=='微信'">{{detail.sell_cash_info.wechat_account}}</span>
-        </div>
-        <div>
-          <span>银行卡号：</span><span>{{detail.sell_cash_info.bank_name}}:{{detail.sell_cash_info.bank_account}}</span>
-        </div>
-        <div>
-          <span>收款人：</span><span>{{detail.hes_realname}}</span>
+          <div>
+            <span>卖家：</span><span>{{detail.seller_name}}</span>
+          </div>
+          <div>
+            <span>付款信息：</span><span>{{detail.way_name}}</span>
+          </div>
+          <div>
+            <span>账号：</span>
+            <span v-if="detail.way_name=='支付宝'">{{detail.sell_cash_info.alipay_account}}</span>
+            <span v-if="detail.way_name=='微信'">{{detail.sell_cash_info.wechat_account}}</span>
+          </div>
+          <div>
+            <span>银行卡号：</span><span>{{detail.sell_cash_info.bank_name}}:{{detail.sell_cash_info.bank_account}}</span>
+          </div>
+          <div>
+            <span>收款人：</span><span>{{detail.hes_realname}}</span>
+          </div>
         </div>
         <div>
           <span>联系方式：</span><span>{{detail.seller_phone}}</span>
@@ -301,6 +303,9 @@ export default {
           color: #fff;
           text-align: center;
           font-size: 14px;
+        }
+        .sell{
+          background: #e35744;
         }
         .btn{
           border-radius: 3px;
