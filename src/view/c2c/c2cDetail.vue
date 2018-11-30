@@ -281,7 +281,7 @@ export default {
             layer.close(i);
             if (res.data.type == "ok") {
               layer.msg(res.data.message);
-              this.modalShow = false;
+              that.modalShow = false;
               setTimeout(function() {
                that.getList(that.ids);
               }, 500);
@@ -301,7 +301,7 @@ export default {
     layer.confirm(
         "如果您已向卖家付款，请千万不要取消交易？",
         {
-          btn: ["付款确认", "取消"] //按钮
+          btn: ["取消确认", "取消"] //按钮
         },
         function() {
           let i = layer.load();
@@ -314,7 +314,7 @@ export default {
             layer.close(i);
             if (res.data.type == "ok") {
               layer.msg(res.data.message);
-              this.modalShow = false;
+              that.modalShow = false;
               setTimeout(function() {
                that.getList(that.ids);
               }, 500);
@@ -347,7 +347,7 @@ export default {
             layer.close(i);
             if (res.data.type == "ok") {
               layer.msg(res.data.message);
-              this.modalShow = false;
+              that.modalShow = false;
               setTimeout(function() {
                that.getList(that.ids);
               }, 500);
@@ -398,7 +398,7 @@ export default {
         }
       }
       li {
-        padding: 10px 0;
+        padding: 15px 0;
         > div {
           flex: 1;
           line-height: 36px;
@@ -443,7 +443,6 @@ export default {
       padding: 0 20px;
       justify-content: space-between;
       cursor: pointer;
-      line-height: 40px;
       .redColor {
         margin-left: 10px;
       }

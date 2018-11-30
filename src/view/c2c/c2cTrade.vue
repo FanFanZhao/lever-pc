@@ -337,7 +337,6 @@ export default {
       padding: 0 20px;
       justify-content: space-between;
       cursor: pointer;
-      line-height: 40px;
       .redColor {
         margin-left: 10px;
       }
