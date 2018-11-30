@@ -104,8 +104,11 @@
         </div>
         <!-- btnc -->
         <div class="flex around btnbox mt20" v-if="detail.is_sure==0&&detail.type=='sell'">
-          <div class="ceilorder" @click="ceilOrder(detail.id)">取消订单</div>
-          <div class="surepay" @click="sureOrder(detail.id)">我已付款，点击确认</div>
+          <div class="ceilorder tc" @click="ceilOrder(detail.id)">取消订单</div>
+          <div class="surepay tc" @click="sureOrder(detail.id)">我已付款，点击确认</div>
+        </div>
+        <div class="mt20 btnbox" v-if="detail.is_sure==3&&detail.type=='buy'">
+          <div class="surepay tc" @click="surePayed(detail.id)">确认已收款</div>
         </div>
       </div>            
     </div>
@@ -151,10 +154,9 @@ export default {
       },
       // 获取买入列表
       getList() {
-        let page = 1;
         let i = layer.load();
         this.$http({
-          url: "/api/c2c_user_deal?&page=" + page,
+          url: "/api/c2c_user_deal?&page=" + this.page,
           method: "get",
           headers: { Authorization: this.token }
         }).then(res => {
@@ -211,13 +213,14 @@ export default {
         console.log(res);
         if (res.data.type == "ok") {
           layer.msg(res.data.message);
+          that.getList();
           that.showDetail = false;
         }else{
           layer.msg(res.data.message)
         }
       });
     },
-    // 确认付款
+    // 确认我已付款
     sureOrder(id){
       var that = this;
       layer.confirm('请确认您已向卖家付款,恶意点击将被冻结账户', {
@@ -241,12 +244,44 @@ export default {
         console.log(res);
         if (res.data.type == "ok") {
           layer.msg(res.data.message);
+          that.getList();
           that.showDetail = false;
         }else{
           layer.msg(res.data.message);
         }
       });
     },
+    // 确认我已收款
+    surePayed(id){
+      var that = this;
+      layer.confirm('请确认您已收买家付款信息', {
+        btn: ['确认','取消'] //按钮
+      }, function(){
+        that.payedSure(id);
+      }, function(){
+        // layer.msg('取消成功');
+      });
+    },
+    payedSure(id){
+      var that = this;
+      var i=layer.load();
+      this.$http({
+        url: "/api/c2c/legal_deal_user_sure",
+        method: "post",
+        data:{id:id},
+        headers: { Authorization: this.token }
+      }).then(res => {
+        layer.close(i);
+        console.log(res);
+        if (res.data.type == "ok") {
+          layer.msg(res.data.message);
+          that.getList();
+          that.showDetail = false;
+        }else{
+          layer.msg(res.data.message);
+        }
+      });
+    }
   },
 }
 </script>

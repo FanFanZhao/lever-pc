@@ -109,7 +109,7 @@ export default {
       },
       // 获取买入列表
       getList(type) {
-        let page = 1;
+        let page = this.page;
         let legal_id =this.legal_id;
         let i = layer.load();
         this.$http({
