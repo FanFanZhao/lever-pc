@@ -21,13 +21,12 @@
           <li v-for="(item,index) in list" :key="index" class="flex alcenter curPer">
             <div class="flex alcenter">
               <p class="head">{{item.type=='sell'?'购买':'出售'}}</p>
-              <span class="currencyName ml5">{{item.currency_name}}</span>
+              <span class="currencyName ml5 blue">{{item.currency_name}}</span>
             </div>
-            <div class="flex center tc">
-              <span class="light_blue sellerName">{{item.deal_money}}</span>
-            
+            <div class="tc">
+              <span>{{item.number}}</span>
             </div>
-            <div class="tc">{{item.price}}</div>
+            <div class="tc light_green">{{item.deal_money}}</div>
             <div class="tc">
               <img v-if="item.way_name == '支付宝'" src="../../assets/images/zfb_icon.png" />
               <img v-if="item.way_name == '微信'" src="../../assets/images/wx_icon.png" />
@@ -230,6 +229,14 @@ export default {
         >div{
           flex: 1;
           line-height: 36px;
+        }
+        .blue{
+          color: #3b68bb;
+          font-weight: bolder;
+        }
+        .light_green{
+          color: #489972;
+          font-weight: 600;
         }
         .head{
           width: 36px;

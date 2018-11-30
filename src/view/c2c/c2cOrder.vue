@@ -23,13 +23,13 @@
           <li v-for="(item,index) in list" :key="index" class="flex alcenter curPer">
             <div class="flex alcenter">
               <p class="head">{{item.seller_name | circle}}</p>
-              <p>{{item.seller_name}}</p>
+              <p class="blue">{{item.seller_name}}</p>
             </div>
             <div class="flex center tc">
-              <span class="light_blue sellerName">{{item.surplus_number}}</span>
+              <span class="sellerName">{{item.surplus_number}}</span>
               <span class="currencyName ml5">{{item.currency_name}}</span>
             </div>
-            <div class="tc">{{item.price}}</div>
+            <div class="tc light_green ft16">{{item.price}}</div>
             <div class="tc">
               <img v-if="item.way == 'ali_pay'" src="../../assets/images/zfb_icon.png" />
               <img v-if="item.way == 'we_chat'" src="../../assets/images/wx_icon.png" />
@@ -193,6 +193,14 @@ export default {
         >div{
           flex: 1;
           line-height: 36px;
+        }
+        .blue{
+          color: #3b68bb;
+          font-weight: bolder;
+        }
+        .light_green{
+          color: #489972;
+          font-weight: 600;
         }
         .head{
           width: 36px;
