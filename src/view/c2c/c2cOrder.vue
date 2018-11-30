@@ -63,7 +63,8 @@ export default {
         list:[],
         legal_id:'',
         classify:'购买',
-        topType:[{'title':"购买","type":"buy"},{'title':"出售","type":"sell"}]
+        topType:[{'title':"购买","type":"buy"},{'title':"出售","type":"sell"}],
+        bgcolor:['#5d8cc2','#6d78a8','#a2b240','#61b88e','#e35744', '#a16c92','#66756e']
       }
     },
     created(){
@@ -72,6 +73,7 @@ export default {
           this.$router.push("/components/login");
         }; 
         this.get_currency();
+        console.log(this.bgcolor[2])
        
     },
     methods:{
@@ -148,7 +150,7 @@ export default {
           layer.close(i);
           if (res.data.type == "ok") {
             console.log(res);
-            layer.msg(res.data.message.data.msg)
+            layer.msg(res.data.message.msg);
           }else{
             layer.msg(res.data.message)
           }
