@@ -10,7 +10,7 @@
         </ul>
         <ul class="list_content fColor1 ft12">
             <li v-for="(item,index) in list_content" :key="index">
-                <span>{{item.time}}</span>
+                <span>{{item.create_time}}</span>
                 <span>{{item.price}}</span>
                 <span>{{item.number}}</span>
                 <span class="red" @click="pingcang(item.id)">平仓</span>
@@ -48,10 +48,11 @@ export default {
                         },  
                         headers: {'Authorization':  localStorage.getItem('token')},    
                     }).then(res=>{
+                        console.log(res);
                         if(res.data.type == "ok"){
                            this.more = '加载更多' 
-                           this.list_content = this.list_content.concat(res.data.message.data);
-                           if(res.data.message.data.length == 0){
+                           this.list_content = this.list_content.concat(res.data.message.order.data);
+                           if(res.data.message.order.data.length == 0){
                                this.more = '没有更多了...'
                            }
                         }else{

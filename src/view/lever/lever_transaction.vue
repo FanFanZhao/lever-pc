@@ -5,6 +5,7 @@
                 <span>我的交易</span>
             </div>
             <div class="inblock fr">
+                <span class="all" @click="links">杠杆持仓</span>
                 <span class="all" @click="all">全部</span>
             </div>
         </div>
@@ -98,6 +99,10 @@ export default {
         // },
         all(){
             this.$router.push({name:'allTransaction'})
+        },
+        // 杠杆持仓
+        links(){
+            this.$router.push({name:'leverTransaction'})
         }
       },
     mounted(){

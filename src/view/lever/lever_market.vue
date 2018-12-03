@@ -63,52 +63,12 @@
                 tradeDatas:'',
                 index2:0,
                 index1:0,
+                legal_id:window.localStorage.getItem('legal_id'),
+                currency_id:window.localStorage.getItem('currency_id'),
+                selectedId:''
             }
         },
         created:function(){
-            // this.init();
-          
-          
-            //法币列表
-            // this.$http({
-			// 		url: '/api/' + 'currency/lever',
-			// 		method:'get',
-			// 		data:{}
-			// 	}).then(res=>{
-            //         // console.log(res);
-            //         if(res.data.type == 'ok'){
-            //           this.tabList = res.data.message; 
-            //           console.log(this.curr_name)
-            //           var msg = res.data.message;
-            //           var arr_quota = [];
-            //           for(var i=0;i<msg.length;i++){
-            //               arr_quota[i] = msg[i].quotation
-            //           };
-            //           console.log(arr_quota);
-            //           this.marketList = arr_quota;
-            //         //   console.log(this.marketList);
-            //           //默认法币id和name
-            //           if(!localStorage.getItem('lever_legal_id')&&!localStorage.getItem('lever_currency_id')&&!localStorage.getItem('lever_legal_name')&&!localStorage.getItem('lever_currency_name')){
-            //             this.currency_name = msg[0].name;
-            //             this.currency_id = msg[0].id;
-            //         }else{
-            //             this.currency_name=window.localStorage.getItem('lever_currency_name');
-            //             this.currency_id=window.localStorage.getItem('lever_currency_id');
-            //         }
-                    
-
-            //      //组件间传值
-            //     //  setTimeout(() => {
-            //     //    eventBus.$emit('toTrade0',tradeDatas);
-            //     //  },1000);
-            //     //   setTimeout(() => {
-            //     //    eventBus.$emit('toExchange0',tradeDatas);
-            //     //  },1000)
-            //         }
-					
-			// 	}).catch(error=>{
-			// 		console.log(error)
-            //     })
                 if(window.localStorage.getItem('index02')&&window.localStorage.getItem('index01')){
                     this.index2= window.localStorage.getItem('index02');
                     this.index1=window.localStorage.getItem('index01')
@@ -140,8 +100,6 @@
         },
         methods:{
             changeType(index,currency,currency_id){
-                // window.localStorage.setItem('index1',index);
-                // window.localStorage.setItem('index2',null);
                 this.index1=index;
                 this.index2=null; 
                $('.currency_p p').removeClass('active_p')
@@ -150,10 +108,6 @@
                this.ids = 'a';
                this.currency_name = currency;
                this.currency_id = currency_id;
-            //    this.index1=localStorage.getItem('index1')
-            //    this.index2='NaN'
-            //    console.log(this.currency_name);
-            //    console.log(this.currency_id)
             },
             getSymbols(callback){
                 if(this.address.length<=0){
@@ -183,9 +137,7 @@
                 this.$http({
                     url: '/api/'+'quotation_new',
                     method:'post',
-                    data:{
-                        address:this.address
-                    }
+                    headers: {'Authorization':  localStorage.getItem('token')}, 
                 }).then(res=>{
                     // layer.close(index);
                     // console.log(res)
@@ -195,8 +147,6 @@
                             // console.log(res.data.message.coin_list)
                             for(var i in this.dataList){
                                 for(var j in this.marketList){
-                                    // console.log(this.dataList[i].name,this.marketList[j].symbol,this.dataList[i].name==this.marketList[j].symbol)
-
                                     if(this.dataList[i].name == this.marketList[j].symbol){
                                         // console.log(1)
                                         this.marketList[j].type=this.marketList[j].type||1
@@ -205,8 +155,6 @@
                                     }
                                 }
                             }
-                            // console.log(this.marketList)
-
                          })
                          
                     }else{
@@ -222,9 +170,7 @@
             quota_shift(idx,id,legal_name){
                 window.localStorage.setItem('index01',this.index1);
                 window.localStorage.setItem('index02',idx);
-                
                this.ids = idx;
-            //    console.log(idx,id,legal_name);
                var tradeDatas = {
                    currency_id:this.currency_id,
                    legal_id:id,
@@ -236,10 +182,46 @@
                window.localStorage.setItem('lever_legal_name',legal_name);
                window.localStorage.setItem('lever_currency_name',this.currency_name);
                location.reload()
-               //向兄弟组件传数据
-            //    eventBus.$emit('toTrade',tradeDatas);
-            //    eventBus.$emit('toExchange',tradeDatas)
             },
+            //socket连接封装
+					socket(token) {
+						let that = this;
+						$.ajax({
+							url: _API + "user/info",
+							type: "GET",
+							dataType: "json",
+							async: true,
+							beforeSend: function beforeSend(request) {
+								request.setRequestHeader("Authorization", token);
+							},
+							success: function success(data) {
+								if (data.type == 'ok') {
+									var socket = io(socket_api);
+									socket.on('connect', function(datas) {
+										socket.emit('login', data.message.id);
+										// 后端推送来消息时
+										socket.on('daymarket', function(msg) {
+											console.log(msg);
+											if (msg.type == 'daymarket') {
+												if (that.selectId && (that.selectId == msg.legal_id)) {
+													// now_price
+													let lists = that.detailList.quotation;
+													for(i in lists){
+														if(lists[i].currency_id == msg.currency_id){
+															console.log(that.detailList.quotation)
+															that.detailList.quotation[i].volume=msg.volume;
+															that.detailList.quotation[i].now_price=msg.now_price;
+															that.detailList.quotation[i].change=msg.change;
+														}
+													}
+												}
+											}
+										});
+									});
+								}
+							}
+						});
+					}
             
 
         },
@@ -260,7 +242,7 @@
 .line{width: 90%;margin: 0px auto;border-bottom: 1px solid rgb(48, 59, 75);}
 .coin-wrap{height: 395px;overflow: auto;background-color: #181b2a;}
 .coin-wrap li{height: 30px;line-height: 30px;cursor: pointer;font-size: 12px;color: #cdd6e4;}
-.coin-wrap li span{display: inline-block;width: 33%;float: left;text-align: center;}
+.coin-wrap li span{display: block;width: 33%;float: left;text-align: center;}
 .coin-wrap li span:last-child{color: #cc4951;}
 .coin-wrap li:nth-child(odd){background-color: #181b2a;}
 .coin-wrap li span.green{color: #55a067;}

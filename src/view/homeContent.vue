@@ -14,7 +14,7 @@
         </div>
         <div class="topusdt">
           <ul class="flex">
-            <li v-for="(item,index) in quotation" v-if='index<=3'>
+            <li v-for="(item,index) in quotation" :key="index" v-if='index<=3'>
               <div class="flex ft12 between" :data-name='item.currency_name+"/"+item.legal_name'>
                 <div>
                   <p>{{item.currency_name}}/{{item.legal_name}}</p>

@@ -36,7 +36,9 @@
               <div v-if="item.is_sure==2">已取消</div>
               <div v-if="item.is_sure==3">已付款</div>
             </div>
-            <div class="tr" @click="modals(item.id)">详情</div>
+            <div class="tr" @click="modals(item.id)">
+              <button class="detail-btn" type="button">详情</button>
+            </div>
           </li>
         </ul>
       </div>
@@ -371,6 +373,17 @@ export default {
   color: #c7cce6;
   .ml5 {
     margin-left: 5px;
+  }
+  .detail-btn{
+    border-radius: 3px;
+    color: white;
+    background-color: #638BD4;
+    cursor: pointer;
+    min-height: 33px;
+    min-width: 80px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
   }
   .c2c-r {
     .title-top {

@@ -5,10 +5,10 @@
     </div>
     <div class="c2c-r">
       <div class="title-top flex ft20">
-        <p v-for="(item,index) in topType" :class="{'active':index==current}" @click='changeType(index,item.type,item.title)'>{{item.title}}</p>
+        <p v-for="(item,index) in topType" :key="index" :class="{'active':index==current}" @click='changeType(index,item.type,item.title)'>{{item.title}}</p>
       </div>
       <div class="coin-select mt20 flex">
-        <p v-for="(item,index) in coinList" :class="{'select':index==select}" @click="getnew(index,item.id)">{{item.name}}</p>
+        <p v-for="(item,index) in coinList" :key="index" :class="{'select':index==select}" @click="getnew(index,item.id)">{{item.name}}</p>
       </div>
       
       <div class="listbox">
@@ -326,8 +326,6 @@ export default {
     padding: 10px;
     background: #181b2a;
     width: 23%;
-    ul {
-    }
     li {
       // padding: 0 10px;
       padding: 0 20px;
@@ -511,10 +509,6 @@ export default {
         text-align: center;
         padding: 8px 5px;
         line-height: 24px;
-        // border-top: 1px solid #4e5b85;
-        &:hover {
-          // background: #f8f8f8;
-        }
         > div:first-child {
           width: 6%;
           height: 24px;
