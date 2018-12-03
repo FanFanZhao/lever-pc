@@ -226,7 +226,9 @@
                         eventBus.$emit('tocel','updata');
                         eventBus.$emit('to_leverExchange','leverExchange')
                         console.log(res.data.message)
-                         
+                         setTimeout(function(){
+                            this.$router.push({name:'leverTransaction'})
+                        },500)
                        
                     }else{
                         layer.msg(res.data.message)
@@ -266,6 +268,9 @@
                         eventBus.$emit('to_leverExchange','leverExchange')
                         // that.buy_sell(that.legal_id,that.currency_id)
                         layer.msg(res.data.message);
+                        setTimeout(function(){
+                            this.$router.push({name:'leverTransaction'})
+                        },500)
                     }else{
                         // layer.msg(res.data.message);
                     }

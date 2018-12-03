@@ -646,10 +646,6 @@ export default {
         text-align: center;
         padding: 8px 5px;
         line-height: 24px;
-        // border-top: 1px solid #4e5b85;
-        &:hover {
-          // background: #f8f8f8;
-        }
         > div:first-child {
           width: 6%;
           height: 24px;

@@ -152,7 +152,6 @@ export default {
       that.$socket.emit("login", localStorage.getItem("user_id"));
       that.$socket.on("transaction", msg => {
         if (msg.type == "transaction") {
-          console.log(123)
           //组件间传值
           var newPrice = {
             newprice: msg.last_price,

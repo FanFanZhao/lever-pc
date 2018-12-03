@@ -176,9 +176,7 @@
                 this.$http({
                     url: '/api/'+'quotation_new',
                     method:'post',
-                    data:{
-                        address:this.address
-                    }
+                    headers: {'Authorization':  localStorage.getItem('token')}, 
                 }).then(res=>{
                     // layer.close(index);
                     // console.log(res)
@@ -250,7 +248,7 @@
 .line{width: 90%;margin: 0px auto;border-bottom: 1px solid rgb(48, 59, 75);}
 .coin-wrap{height: 395px;overflow: auto;background-color: #181b2a;}
 .coin-wrap li{height: 30px;line-height: 30px;cursor: pointer;font-size: 12px;color: #cdd6e4;}
-.coin-wrap li span{display: inline-block;width: 33%;float: left;text-align: center;}
+.coin-wrap li span{display: block;width: 33%;float: left;text-align: center;}
 .coin-wrap li span:last-child{color: #cc4951;}
 .coin-wrap li:nth-child(odd){background-color: #181b2a;}
 .coin-wrap li span.green{color: #55a067;}
