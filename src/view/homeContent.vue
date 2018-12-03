@@ -15,12 +15,12 @@
         <div class="topusdt">
           <ul class="flex">
             <li v-for="(item,index) in quotation" v-if='index<=3'>
-              <div class="flex ft12 between">
+              <div class="flex ft12 between" :data-name='item.currency_name+"/"+item.legal_name'>
                 <div>
                   <p>{{item.currency_name}}/{{item.legal_name}}</p>
-                  <p class="ft18 mt15">{{item.now_price}}</p>
-                  <p class="mt5 color47">≈{{item.now_price*6.9641.toFixed(2)}} CNY</p>
-                  <p class="mt15"><span class="color47">24H量</span> <span>{{item.volume}}</span></p>
+                  <p class="ft18 mt15 now_price">{{item.now_price}}</p>
+                  <p class="mt5 color47 now_cny">≈{{(item.now_price*6.9641).toFixed(2)}} CNY</p>
+                  <p class="mt15"><span class="color47">24H量</span> <span class="volume">{{(item.volume-0).toFixed(2)}}</span></p>
                 </div>
                 <button :class="[{'downcolor': item.change.substring(0,1) == '-'}]">{{item.change}}</button>
               </div>
@@ -208,7 +208,7 @@ export default {
       observeParents: true //修改swiper的父元素时，自动初始化swiper
     });
 
-    // this.connect();
+    this.connect();
     this.getNews();
   },
   methods: {
@@ -239,40 +239,37 @@ export default {
       var that = this;
       //console.log("socket");
       that.$socket.emit("login", localStorage.getItem("user_id"));
-      that.$socket.on("transaction", msg => {
-        var cname = msg.token;
-        var yesprice = msg.yesterday;
-        var toprice = msg.today;
-
-        var zf = 0;
-        if (toprice == yesprice) {
-          zf = 0;
-        } else if (yesprice == 0) {
-          zf = 100;
-        } else {
-          zf = (((toprice - yesprice) / yesprice) * 100).toFixed(4);
-        }
-
-        console.log(cname, yesprice, toprice, zf);
-
-        if (zf >= 0) {
-          zf = "+" + zf + "%";
+      that.$socket.on("daymarket", msg => {
+        if (msg.type == 'daymarket') {
+          console.log(msg)
+          var cname = msg.symbol;
+          var change = msg.change;
+          var now_price = msg.now_price;
+          var volume = msg.volume;
           $("div[data-name='" + cname + "']")
-            .next()
-            .css("color", "#55a067");
-        } else {
-          zf = zf + "%";
+            .find(".now_price")
+            .html(now_price);
           $("div[data-name='" + cname + "']")
-            .next()
-            .css("color", "#cc4951");
+            .find(".volume")
+            .html((volume-0).toFixed(2));
+          $("div[data-name='" + cname + "']")
+            .find(".now_cny")
+            .html((now_price *6.9641).toFixed(2)+' CNY');
+           
+          $("div[data-name='" + cname + "']")
+            .find("button")
+            .text(change+'%');
+          if(change<0){
+             $("li[data-name='" + cname + "']")
+            .find("button")
+            .addClass('downcolor');
+          }else{
+            $("li[data-name='" + cname + "']")
+            .find("button")
+            .removeClass('downcolor')
+          }
+           
         }
-        $("li div[data-name='" + cname + "']")
-          .prev()
-          .text(yesprice);
-        $("li div[data-name='" + cname + "']")
-          .html(toprice)
-          .next()
-          .html(zf);
       });
     },
     setPercent(a, b) {
@@ -386,7 +383,7 @@ export default {
       width: 25%;
       padding: 25px 0;
       >div{
-        border-left: 1px solid rgba(29,50,66,.7);
+        border-right: 1px solid rgba(29,50,66,.7);
         padding: 0 40px;
       }
       .color47{
@@ -406,6 +403,11 @@ export default {
       .downcolor{
         color: #ef4034;
         background: #3b2128;
+      }
+    }
+    li:nth-child(4){
+      >div{
+        border-right: none;
       }
     }
     li:hover{
