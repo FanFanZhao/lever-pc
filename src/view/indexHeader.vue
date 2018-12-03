@@ -95,6 +95,7 @@ export default {
         // { title: "安全设置", page: "userSetting" },
         { title: "杠杆交易", page: "leverdealCenter" },
         // { title: "我的资产", page: "homeContent" },
+        {title:"安全设置",page:"userSetting"}
       ],
       accountList: [
         // {
@@ -139,12 +140,12 @@ export default {
           title: "交易日志",
           page: "transferLog"
         },
-        {
-          src1: require("@/assets/images/z0.png"),
-          src2: require("@/assets/images/z1.png"),
-          title: '安全设置',
-          page:'userSetting',
-        },
+        // {
+        //   src1: require("@/assets/images/z0.png"),
+        //   src2: require("@/assets/images/z1.png"),
+        //   title: '安全设置',
+        //   page:'userSetting',
+        // },
         {
           src1: require("@/assets/images/icon_mine.png"),
           src2: require("@/assets/images/icon_mine_s.png"),
