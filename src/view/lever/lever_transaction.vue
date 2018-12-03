@@ -75,7 +75,7 @@ export default {
                         console.log(res)
                         // layer.close(i);
                         if(res.data.type == "ok"){
-                           this.deList = res.data.message.lever_transaction;
+                           this.deList = res.data.message.my_transaction;
                         //    this.connect();
                         }else{
                             // layer.msg(res.data.message)
