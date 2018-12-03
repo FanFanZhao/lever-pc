@@ -27,10 +27,10 @@
                 <span v-for="item in newData">{{item}}</span>
             </li> -->
             <li class="currency_p" v-for="(item,index) in marketList " :class="index==index2?'active_p':''" :key="index" @click="quota_shift(index,item.legal_id,item.legal_name,item.currency_name,item.currency_id,item.change)">
-              <p>
-                <span>{{item.currency_name}}</span>
-                <span>{{item.now_price}}</span>
-                <span :class="{'green':item.change>=0}">{{(item.change-0).toFixed(2)}}%</span>
+                <p :data-name='item.currency_name+"/"+item.legal_name'>
+                    <span>{{item.currency_name}}</span>
+                    <span class="now_price">{{item.now_price}}</span>
+                    <span :class="['change',{'green':item.change>=0}]">{{(item.change-0).toFixed(2)}}%</span>
                 </p>
             </li>
             
@@ -119,27 +119,58 @@
         },
         mounted(){
             var that =this;
-            eventBus.$on('toNew', function (data) {
-            //    console.log(data);
-               if(data){
-                    var newprice=data.newprice;
-                    var cname=data.istoken;
-                    var newup=Number(data.newup).toFixed(2);
-                    // console.log(newup) 
-                    if(newup>=0){
-                        newup="+"+Number(newup).toFixed(2)+'%';
-                        $("span[data-name='"+cname+"']").next().css('color','#55a067')
-                    }else{
-                        newup=newup+'%';
-                        $("span[data-name='"+cname+"']").next().css('color','#cc4951')
-                    }
-                    $("span[data-name='"+cname+"']").html('$'+newprice).next().html(newup);
-               }
-            }); 
-           
-
+            this.connect();
+            // eventBus.$on('toNew', function (data) {
+            //    if(data){
+            //         var newprice=data.newprice;
+            //         var cname=data.istoken;
+            //         var newup=Number(data.newup).toFixed(2);
+            //         if(newup>=0){
+            //             newup="+"+Number(newup).toFixed(2)+'%';
+            //             $("span[data-name='"+cname+"']").next().css('color','#55a067')
+            //         }else{
+            //             newup=newup+'%';
+            //             $("span[data-name='"+cname+"']").next().css('color','#cc4951')
+            //         }
+            //         $("span[data-name='"+cname+"']").html('$'+newprice).next().html(newup);
+            //    }
+            // });
         },
         methods:{
+            connect() {
+                var that = this;
+                var nums = Math.floor(Math.random() * 40) + 60;
+                var socket_user_id = new Date().getTime() + nums;
+                that.$socket.emit("login", socket_user_id);
+                that.$socket.on("daymarket", msg => {
+                    if (msg.type == 'daymarket') {
+                        console.log(msg)
+                        var cname = msg.symbol;
+                        var change = msg.change;
+                        var now_price = msg.now_price;
+                        $("p[data-name='" + cname + "']")
+                            .find(".now_price")
+                            .html(now_price);
+                        $("p[data-name='" + cname + "']")
+                            .find(".now_cny")
+                            .html((now_price *6.9641).toFixed(2)+' CNY');
+                        
+                        $("p[data-name='" + cname + "']")
+                            .find(".change")
+                            .text(change+'%');
+                        if(change<0){
+                            $("p[data-name='" + cname + "']")
+                            .find(".change")
+                            .removeClass('green');
+                        }else{
+                            $("p[data-name='" + cname + "']")
+                            .find(".change")
+                            .addClass('green')
+                        }
+                    
+                    }
+                });
+            },
             changeType(index,currency,currency_id){
                 
                 this.index1=index;
