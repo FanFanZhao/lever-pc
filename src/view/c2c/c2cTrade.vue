@@ -222,6 +222,7 @@ export default {
         console.log(res);
         if (res.data.type == "ok") {
           layer.msg(res.data.message);
+          that.page=1;
           that.getList();
           that.showDetail = false;
         }else{
@@ -253,6 +254,7 @@ export default {
         console.log(res);
         if (res.data.type == "ok") {
           layer.msg(res.data.message);
+          that.page=1;
           that.getList();
           that.showDetail = false;
         }else{
@@ -284,6 +286,7 @@ export default {
         console.log(res);
         if (res.data.type == "ok") {
           layer.msg(res.data.message);
+          that.page=1;
           that.getList();
           that.showDetail = false;
         }else{

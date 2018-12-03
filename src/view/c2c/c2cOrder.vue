@@ -165,6 +165,7 @@ export default {
           if (res.data.type == "ok") {
             console.log(res);
             layer.msg(res.data.message.msg);
+            that.page=1;
             that.getList();
           }else{
             layer.msg(res.data.message)
