@@ -139,48 +139,5 @@ export default {
     
   }
 }
-// .home {
-//   .main {
-//       overflow: hidden;
-//     .main-l {
-//       width: 360px;
-//       height: 100%;
-//       margin-top: 10px;
-//       > div {
-//         background: #181b2a;
-//         margin: 0 10px 10px;
-//       }
-//     }
-//     .main-r {
-//       padding: 0 10px 10px 360px;
-//       .parts {
-//         margin-top: 10px;
-//         max-height: 530px;
 
-//         > .part-l {
-//           background: #181b2a;
-//           min-width: 67%;
-//           padding-bottom: 20px;
-//         }
-//         > .part-r {
-//           width: 33%;
-//           > div {
-//             margin-left: 10px;
-//             background: #181b2a;
-//             height: 100%;
-//             padding-bottom: 20px;
-//           }
-//         }
-//       }
-//       >div{
-//         //  background: #181b2a;
-//          margin-top: 10px;
-//       }
-//       .depth-map {
-//         max-height: 500px;
-//         margin-top: 10px;
-//       }
-//     }
-//   }
-// }
 </style>
