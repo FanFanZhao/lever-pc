@@ -408,7 +408,7 @@ export default {
     background: rgba(0, 0, 0, 0.7);
     > .m-content {
       border-radius: 4px;
-      background: #fff;
+      background: #262a42;
       position: absolute;
       top: 40%;
       left: 50%;
