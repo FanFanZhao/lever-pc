@@ -6,7 +6,7 @@
 				<!-- <li  class="base" :class="{active:index==current}"  v-for="(tabs,index) in tabList" :key="index"  @click="goto(index,tabs.page)">{{tabs.title}}</li> -->
 				<li  class="base" ><router-link to="/" exact>首页</router-link></li>
 				<li  class="base" ><router-link to="/c2c">c2c交易</router-link></li>
-        <li  class="base" ><router-link to="/leverdealCenter">杠杆交易</router-link></li>
+        <li  class="base" ><router-link to="/lever">杠杆交易</router-link></li>
         <li  class="base" ><router-link to="/finance">我的资产</router-link></li>
 
         
