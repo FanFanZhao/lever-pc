@@ -3,7 +3,14 @@
 		<div class="content clear" style="height:60px">
 			<div class="fl"><img src="@/assets/images/logo.png" class="navbar-logo" style="width:40px;"></div>
 			<ul  class="navbar-item fl mouseDefault ml20">
-				<li  class="base" :class="{active:index==current}"  v-for="(tabs,index) in tabList" :key="index"  @click="goto(index,tabs.page)">{{tabs.title}}</li>
+				<!-- <li  class="base" :class="{active:index==current}"  v-for="(tabs,index) in tabList" :key="index"  @click="goto(index,tabs.page)">{{tabs.title}}</li> -->
+				<li  class="base" ><router-link to="/" exact>首页</router-link></li>
+				<li  class="base" ><router-link to="/c2c">c2c交易</router-link></li>
+        <li  class="base" ><router-link to="/leverdealCenter">杠杆交易</router-link></li>
+        <li  class="base" ><router-link to="/finance">我的资产</router-link></li>
+
+        
+
         <!-- <li class="base downapp" @click="showapp">APP下载
           <div class="appcode tc" v-show="appshow">
             <span></span>
@@ -14,11 +21,11 @@
 			<div class="fr">
 				<div class="account-box fl positionR curPer flex">
 					<div class="msg_wrap">
-					<div class="assets_item fColor1 fl" @mouseover="assets_over" @mouseout="assets_out" v-if="address.length>0">
+					<!-- <div class="assets_item fColor1 fl" @mouseover="assets_over" @mouseout="assets_out" v-if="address.length>0">
 						<img class="assets_icon_img" src="@/assets/images/assets.png" alt="">
 						<span class="sp">{{assets}}</span>
 						<img src="@/assets/images/arrow0.png" alt="">
-					</div>
+					</div> -->
 					<!-- <div class="order_item fColor1 fl" @mouseover="order_over" @mouseout="order_out" v-if="address.length>0">
 						<img class="order_icon_img" src="@/assets/images/order.png" alt="">
 						<span class="sp">{{orders}}</span>
@@ -31,14 +38,14 @@
 						<img src="@/assets/images/arrow0.png" alt="">
 					</div>
 					</div>
-					<div class="asset-choose ft14 fColor1" v-if="show1" @mouseover="assets_over" @mouseout="assets_out">
+					<!-- <div class="asset-choose ft14 fColor1" v-if="show1" @mouseover="assets_over" @mouseout="assets_out">
 						<p class="curPer" v-for="(item,index) in assetstList" :key="index" @click="gotoAccount(index,item.page)">
 							<img :src="item.src1" alt="">
 							<img :src="item.src2" alt="">
 							<span>{{item.title}}</span>
 						</p>
 						
-					</div>
+					</div> -->
 					<div class=" order-choose ft14 fColor1" v-if="show2" @mouseover="order_over" @mouseout="order_out" >
 						<p class="curPer" v-for="(item,index) in orderList" :key="index" @click="goto(null,item.page)">
 							<img :src="item.src1" alt="">
@@ -283,6 +290,9 @@ export default {
   .content {
     // width: 1200px;
     margin: 0 auto;
+  }
+  .router-link-active {
+    color: #7a98f7;
   }
   .msg_wrap {
     display: flex;
