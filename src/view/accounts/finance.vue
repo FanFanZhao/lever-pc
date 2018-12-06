@@ -25,7 +25,7 @@
                <li v-for="(item,index) in asset_list" :key="index">
                     <div class="content_li flex alcenter between">
                    <p class="flex1 tc">{{item.currency_name}}</p>
-                   <p class="flex1 tc">{{item.change_balance}}</p>
+                   <p class="flex1 tc">{{item.change_balance || '0.00' | toFixeds}}</p>
                    <p class="flex1 tc">{{item.lock_change_balance}}</p>
                    <!-- <p class="flex1 tc">{{item.valuation}}</p> -->
                    <!-- <p class="flex1 tc">{{item.lock_position}}</p> -->
@@ -55,7 +55,7 @@
                    <div class="hide_div" v-if="index == active01">
                        <p class="fColor2 ft12 mb15">提币地址</p>
                        <input class="address_inp fColor1 mb30" type="text" v-model="address" />
-                       <p class="fColor2 ft12 mb15 flex between alcenter"><span>数量</span><span>可用：<span class="use_num">{{balance}}</span><span>限额：<span>1500.000000000</span><span class="advance">提升额度</span></span></span></p>
+                       <p class="fColor2 ft12 mb15 flex between alcenter"><span>数量</span><span>可用：<span class="use_num">{{balance || '0.00' | toFixeds}}</span><span>限额：<span>1500.00</span><span class="advance">提升额度</span></span></span></p>
                        <label class="num_lab flex between mb30">
                             <input class="fColor1" type="text" :placeholder="min_number" v-model="number" />
                             <span>{{coinname}}</span>
@@ -97,7 +97,7 @@
                         </div>
                         <ul class="rec-list">
                             <li v-for="(reItem,reIndex) in recData[index]" :key="reIndex">
-                                <span>{{reItem.value}}</span>
+                                <span>{{reItem.value || '0.00' | toFixeds}}</span>
                                 <span>{{reItem.info}}</span>
                                 <span>{{reItem.created_time}}</span>
                             </li>

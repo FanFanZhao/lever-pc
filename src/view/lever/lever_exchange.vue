@@ -3,7 +3,7 @@
     <!-- <div class="title fColor1">交易所</div> -->
     <div class="content fColor1">
       <div class="new_price">
-        <span class="ft14">最新价 {{newData}}{{currency_name}}</span>
+        <span class="ft14">最新价 {{newData | tofixedFour}}{{currency_name}}</span>
       </div>
       <div class="exchange_title ft12 clear tc">
         <span>方向</span>

@@ -101,6 +101,7 @@ export default {
       getnew(index,id){
         this.select=index;
         this.legal_id=id;
+        this.page = 1;
         this.list=[];
         this.getList();
       },

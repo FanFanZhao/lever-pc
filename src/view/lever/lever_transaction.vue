@@ -7,6 +7,7 @@
             <div class="inblock fr">
                 <span class="all" @click="links">杠杆持仓</span>
                 <span class="all" @click="all">全部</span>
+                <span class="all" @click="recordList">交易记录</span>
             </div>
         </div>
         <div class="content">
@@ -113,7 +114,12 @@ export default {
         // 杠杆持仓
         links(){
             this.$router.push({name:'leverTransactions'})
+        },
+        // 跳转交易记录
+        recordList(){
+           this.$router.push({name:'leverList'}) 
         }
+
       },
     mounted(){
         var that = this;
@@ -164,6 +170,7 @@ export default {
 .all{
     cursor: pointer;
     color: #7a98f7;
+    margin-left: 10px;
 }
 </style>
 

@@ -458,7 +458,7 @@
 						resolution=resolution
 					}
 					$.ajax({
-						url:'http://www.965kj.net/api/currency/new_timeshar?' +
+						url:'/api/currency/new_timeshar?' +
 						// url:'http://ice.adminchao.com/api/currency/new_timeshar?' +
 						'from='+rangeStartDate+'&to='+rangeEndDate+'&symbol='+symbolInfo.name+'&period='+resolution,
 						type:'get',

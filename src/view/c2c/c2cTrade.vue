@@ -360,6 +360,7 @@ export default {
           color: #fff;
           text-align: center;
           font-size: 14px;
+          line-height: 36px;
         }
         .sell{
           background: #e35744;

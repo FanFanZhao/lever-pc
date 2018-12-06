@@ -39,6 +39,7 @@ import transferLegal from '@/view/accounts/transferLegal'
 import transferLog from '@/view/transfer_log'
 import allTransaction from '@/view/all_transaction'
 import leverTransactions from '@/view/lever_transactions'
+import leverList from '@/view/lever/leverList'
 
 import ForgetPwd from '@/components/ForgetPwd'  //忘记密码
 import ResetPwd from '@/components/ResetPwd'  //重置密码密码
@@ -131,6 +132,11 @@ export default new Router({
 					path:'/leverTransactions',
 					name:'leverTransactions',
 					component:leverTransactions
+				},
+				{
+					path:'/leverList',
+					name:'leverList',
+					component:leverList
 				},
 				
 			]
