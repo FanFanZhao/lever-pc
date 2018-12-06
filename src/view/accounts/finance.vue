@@ -1,115 +1,151 @@
 <template>
-    <div class="">
-        <div class="header fColor1">
-            <p class="fl">总资产折合：<span class="asset_num">{{totle | toFixeds}}</span><span class="asset_name"> CNY</span>
-            <!-- <span class="ft12 baseColor"> ≈ <span> -->
-              <!-- {{totle*usprice}} -->
-              <!-- {{totle}}</span>CNY</span> -->
-            <!-- <label class="min_lab ft14"><input type="checkbox" />隐藏小额资产</label><i></i><label class="inp_lab"><input  type="text"/><i></i></label> -->
-            </p>
-            <p class="fr right_text">
-                <!-- <span class="record" @click="record">财务记录</span> -->
-                <span class="address" @click="withdraw_address">提币地址管理</span>
-            </p>
-        </div>
-        <div class="content fColor1 ft12">
-           <div class="content_top flex alcenter fColor2">
-               <p class="flex1 tc">币种<i></i></p>
-               <p class="flex1 tc">可用</p>
-               <p class="flex1 tc">冻结</p>
-               <!-- <p class="flex1 tc">BTC估值<i></i></p> -->
-               <!-- <p class="flex1 tc">锁仓</p> -->
-               <p class="flex1 tc">操作</p>
-           </div>
-           <ul class="content_ul">
-               <li v-for="(item,index) in asset_list" :key="index">
-                    <div class="content_li flex alcenter between">
-                   <p class="flex1 tc">{{item.currency_name}}</p>
-                   <p class="flex1 tc">{{item.change_balance || '0.00' | toFixeds}}</p>
-                   <p class="flex1 tc">{{item.lock_change_balance}}</p>
-                   <!-- <p class="flex1 tc">{{item.valuation}}</p> -->
-                   <!-- <p class="flex1 tc">{{item.lock_position}}</p> -->
-                   <p class="flex1 tc operation">
-                       <span @click="excharge(index,item.currency)" >充币</span>
-                       <span @click="withdraw(index,item.currency)">提币</span>
-                       <!-- <span @click="exchange">兑换</span> -->
-                       <span @click="rec(index)">记录</span>
-                   </p>
-                   </div>
-                   <!--充币区-->
-                   <div class="hide_div" v-if="index == active">
-                       <p class="fColor2 ft12">充币地址</p>
-                       <p class="mt50 mb50"><span class="ft18 fColor1 excharge_address" :class="{'bg':flags}">{{excharge_address}}</span><span id="copy" @click="copy" class="copy ft14">复制</span><span class="ewm_wrap"><span class="ewm ft14" @click="show_ewm">二维码</span>
-                         <div class="ewm_img" id="code" :class="{'hide':isHide}">
-                             
-                         </div>
-                         <!-- <img class="ewm_img" :class="{'hide':isHide}" src="../../assets/images/ewm.jpg" /> -->
-                       </span></p>
-                       <p class="ft12 fColor2 mb50">查看<span class="excharge_record">充币记录</span>跟踪状态</p>
-                       <p class="ft12 fColor2 mb15">温馨提示</p>
-                       <ul class="tips_ul ft12 fColor2" style="list-style:disc inside">
-                           <li class="tips_li" style="list-style:disc inside" v-for="item in tip_list">{{item}}</li>
-                       </ul>
-                   </div>
-                   <!--提币区-->
-                   <div class="hide_div" v-if="index == active01">
-                       <p class="fColor2 ft12 mb15">提币地址</p>
-                       <input class="address_inp fColor1 mb30" type="text" v-model="address" />
-                       <p class="fColor2 ft12 mb15 flex between alcenter"><span>数量</span><span>可用：<span class="use_num">{{balance || '0.00' | toFixeds}}</span><span>限额：<span>1500.00</span><span class="advance">提升额度</span></span></span></p>
-                       <label class="num_lab flex between mb30">
-                            <input class="fColor1" type="text" :placeholder="min_number" v-model="number" />
-                            <span>{{coinname}}</span>
-                        </label>
-                       <div class="flex mb50">
-                           <div class="left_inp_wrap flex1">
-                               <p class="fColor2 ft12 mb15">
-                                   <span>手续费</span>
-                                   <span>范围：<span>{{ratenum}}</span></span>
-                               </p>
-                               <label class="range_lab flex alcenter between"><input class="fColor1"  type="text" v-model="rate" /><span>{{coinname}}</span></label>
-                           </div>
-                           <div class="right_inp_wrap flex1">
-                               <p class=" mb15">
-                                   <span class="fColor2 ft12">到账数量</span>
-                               </p>
-                               <label class="get_lab flex alcenter between"><input class="fColor1" disabled v-model="reachnum" type="number" /><span>{{coinname}}</span></label>
-                           </div>
-                       </div>
-                       <div class="flex">
-                        <div class="flex2">
-                       <p class="ft12 fColor2 mb15">温馨提示</p>
-                       <ul class="tips_ul ft12 fColor2" style="list-style:disc inside">
-                           <li class="tips_li" style="list-style:disc inside" v-for="item in tip_list01">{{item}}</li>
-                       </ul>
-                       </div>
-                       <div class="flex1 tc"><button class="withdraw_btn" @click="mention">提币</button></div>
-                       
-                       </div>
-                   </div>
-                   <!--记录区-->
-                   <div class="hide_div rec-box" v-if="index == active02">
-                       <div class="rec-con">
-
-                        <div class="rec-title">
-                            <span>数量</span>
-                            <span>记录</span>
-                            <span>时间</span>
-                        </div>
-                        <ul class="rec-list">
-                            <li v-for="(reItem,reIndex) in recData[index]" :key="reIndex">
-                                <span>{{reItem.value || '0.00' | toFixeds}}</span>
-                                <span>{{reItem.info}}</span>
-                                <span>{{reItem.created_time}}</span>
-                            </li>
-                            
-                        </ul>
-                       </div>
-                   </div>
-               </li>
-           </ul>
-           <!-- <div class="tc ft16 fColor1 mt50" v-show="asset_list.length<=0">暂无数据</div> -->
-        </div>
+  <div class>
+    <div class="header fColor1">
+      <p class="fl">
+        总资产折合：
+        <span class="asset_num">{{totle | toFixeds}}</span>
+        <span class="asset_name">CNY</span>
+        <!-- <span class="ft12 baseColor"> ≈ <span> -->
+        <!-- {{totle*usprice}} -->
+        <!-- {{totle}}</span>CNY</span> -->
+        <!-- <label class="min_lab ft14"><input type="checkbox" />隐藏小额资产</label><i></i><label class="inp_lab"><input  type="text"/><i></i></label> -->
+      </p>
+      <p class="fr right_text">
+        <!-- <span class="record" @click="record">财务记录</span> -->
+        <span class="address" @click="withdraw_address">提币地址管理</span>
+      </p>
     </div>
+    <div class="content fColor1 ft12">
+      <div class="content_top flex alcenter fColor2">
+        <p class="flex1 tc">
+          币种
+          <i></i>
+        </p>
+        <p class="flex1 tc">可用</p>
+        <p class="flex1 tc">冻结</p>
+        <!-- <p class="flex1 tc">BTC估值<i></i></p> -->
+        <!-- <p class="flex1 tc">锁仓</p> -->
+        <p class="flex1 tc">操作</p>
+      </div>
+      <ul class="content_ul">
+        <li v-for="(item,index) in asset_list" :key="index">
+          <div class="content_li flex alcenter between">
+            <p class="flex1 tc">{{item.currency_name}}</p>
+            <p class="flex1 tc">{{item.lever_balance || '0.00' | toFixeds}}</p>
+            <p class="flex1 tc">{{item.lock_lever_balance || '0.00' | toFixeds}}</p>
+            <!-- <p class="flex1 tc">{{item.valuation}}</p> -->
+            <!-- <p class="flex1 tc">{{item.lock_position}}</p> -->
+            <p class="flex1 tc operation">
+              <span @click="excharge(index,item.currency)">充币</span>
+              <span @click="withdraw(index,item.currency)">提币</span>
+              <!-- <span @click="exchange">兑换</span> -->
+              <span @click="rec(index,item.currency)">记录</span>
+            </p>
+          </div>
+          <!--充币区-->
+          <div class="hide_div" v-if="index == active">
+            <p class="fColor2 ft12">充币地址</p>
+            <p class="mt50 mb50">
+              <span class="ft18 fColor1 excharge_address" :class="{'bg':flags}">{{excharge_address}}</span>
+              <span id="copy" @click="copy" class="copy ft14">复制</span>
+              <span class="ewm_wrap">
+                <span class="ewm ft14" @click="show_ewm">二维码</span>
+                <div class="ewm_img" id="code" :class="{'hide':isHide}"></div>
+                <!-- <img class="ewm_img" :class="{'hide':isHide}" src="../../assets/images/ewm.jpg" /> -->
+              </span>
+            </p>
+            <p class="ft12 fColor2 mb50">
+              查看
+              <span class="excharge_record">充币记录</span>跟踪状态
+            </p>
+            <p class="ft12 fColor2 mb15">温馨提示</p>
+            <ul class="tips_ul ft12 fColor2" style="list-style:disc inside">
+              <li class="tips_li" style="list-style:disc inside" v-for="item in tip_list">{{item}}</li>
+            </ul>
+          </div>
+          <!--提币区-->
+          <div class="hide_div" v-if="index == active01">
+            <p class="fColor2 ft12 mb15">提币地址</p>
+            <input class="address_inp fColor1 mb30" type="text" v-model="address">
+            <p class="fColor2 ft12 mb15 flex between alcenter">
+              <span>数量</span>
+              <span>
+                可用：
+                <span class="use_num">{{balance || '0.00' | toFixeds}}</span>
+                <span>
+                  限额：
+                  <span>1500.00</span>
+                  <span class="advance">提升额度</span>
+                </span>
+              </span>
+            </p>
+            <label class="num_lab flex between mb30">
+              <input class="fColor1" type="text" :placeholder="min_number" v-model="number">
+              <span>{{coinname}}</span>
+            </label>
+            <div class="flex mb50">
+              <div class="left_inp_wrap flex1">
+                <p class="fColor2 ft12 mb15">
+                  <span>手续费</span>
+                  <span>
+                    范围：
+                    <span>{{ratenum}}</span>
+                  </span>
+                </p>
+                <label class="range_lab flex alcenter between">
+                  <input class="fColor1" type="text" v-model="rate">
+                  <span>{{coinname}}</span>
+                </label>
+              </div>
+              <div class="right_inp_wrap flex1">
+                <p class="mb15">
+                  <span class="fColor2 ft12">到账数量</span>
+                </p>
+                <label class="get_lab flex alcenter between">
+                  <input class="fColor1" disabled v-model="reachnum" type="number">
+                  <span>{{coinname}}</span>
+                </label>
+              </div>
+            </div>
+            <div class="flex">
+              <div class="flex2">
+                <p class="ft12 fColor2 mb15">温馨提示</p>
+                <ul class="tips_ul ft12 fColor2" style="list-style:disc inside">
+                  <li
+                    class="tips_li"
+                    style="list-style:disc inside"
+                    v-for="item in tip_list01"
+                  >{{item}}</li>
+                </ul>
+              </div>
+              <div class="flex1 tc">
+                <button class="withdraw_btn" @click="mention">提币</button>
+              </div>
+            </div>
+          </div>
+          <!--记录区-->
+          <div class="hide_div rec-box" v-if="index == active02">
+            <div class="rec-con">
+              <div class="rec-title">
+                <span>数量</span>
+                <span>记录</span>
+                <span>时间</span>
+              </div>
+              <ul class="rec-list">
+                <li v-for="(reItem,reIndex) in recData[index]" :key="reIndex">
+                  <span>{{reItem.value || '0.00' | toFixeds}}</span>
+                  <span>{{reItem.info}}</span>
+                  <span>{{reItem.created_time}}</span>
+                </li>
+              </ul>
+              <p class="more" @click="moreData()">{{more}}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <!-- <div class="tc ft16 fColor1 mt50" v-show="asset_list.length<=0">暂无数据</div> -->
+    </div>
+  </div>
 </template>
 <script>
 import indexHeader from "@/view/indexHeader";
@@ -119,11 +155,11 @@ import "@/lib/jquery.qrcode.min.js";
 export default {
   name: "finance",
   filters: {
-			toFixeds: function(value) {
-				value = Number(value);
-				return value.toFixed(2);
-			}
-		},
+    toFixeds: function(value) {
+      value = Number(value);
+      return value.toFixed(2);
+    }
+  },
   data() {
     return {
       totle: "",
@@ -159,7 +195,9 @@ export default {
         "USDT充币仅支持simple send的方法，使用其他方法（send all）的充币暂时无法上账，请您谅解。",
         "请勿向上述地址充值任何非USDT资产，否则资产将不可找回。",
         "USDT充币仅支持simple send的方法，使用其他方法（send all）的充币暂时无法上账，请您谅解。"
-      ]
+      ],
+      page: 1,
+      more: "加载更多"
     };
   },
   components: {
@@ -240,6 +278,7 @@ export default {
     },
     //记录
     rec(index, currency) {
+      this.currency = currency;
       if (this.flag) {
         this.flag = false;
         this.active = "a";
@@ -270,7 +309,8 @@ export default {
             console.log(res);
             that.coinname = res.message.name;
             that.balance = res.message.change_balance;
-            that.min_number = "最小提币数量" + res.message.min_number;
+            that.min_number =
+              "最小提币数量" + parseFloat(res.message.min_number).toFixed(2);
             that.minnumber = res.message.min_number;
             that.ratenum = res.message.rate + "-" + res.message.rate;
             that.reachnum = 0.0;
@@ -374,31 +414,53 @@ export default {
       })
         .then(res => {
           console.log(res.data);
-          if(res.data.type == 'ok'){
-
-              that.asset_list = res.data.message.lever_wallet.balance;
-              this.totle = res.data.message.lever_wallet.totle;
-              console.log(this.totle);
+          if (res.data.type == "ok") {
+            that.asset_list = res.data.message.lever_wallet.balance;
+            this.totle = res.data.message.lever_wallet.totle;
+            console.log(this.totle);
           } else {
-              return;
+            return;
           }
-          // this.asset_list.forEach((item, index) => {
-          //   this.$http({
-          //     url: "/api/wallet/legal_log",
-          //     method: "post",
-          //     data: { type: "change", currency: item.currency },
-          //     headers: { Authorization: this.token }
-          //   }).then(res => {
-          //     console.log(res);
-          //     if (res.data.type == "ok") {
-          //       this.recData[index] = res.data.message.list;
-          //     }
-          //   });
-          // });
+          this.asset_list.forEach((item, index) => {
+            this.$http({
+              url: "/api/wallet/legal_log",
+              method: "post",
+              data: { type: "0", currency: item.currency, page: this.page },
+              headers: { Authorization: this.token }
+            }).then(res => {
+              console.log(res);
+              if (res.data.type == "ok") {
+                this.recData[index] = res.data.message.list;
+              }
+            });
+          });
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    // 加载更多
+    moreData() {
+      let that = this;
+      that.page = that.page + 1;
+      this.$http({
+        url: "/api/wallet/legal_log",
+        method: "post",
+        data: { type: "0", currency: that.currency, page: that.page },
+        headers: { Authorization: this.token }
+      }).then(res => {
+        console.log(res);
+        if (res.data.type == "ok") {
+          var datas = that.asset_list;
+          for (let i in datas) {
+            if (that.currency == datas[i].currency) {
+              console.log(12)
+              that.recData[i] = that.recData[i].concat(res.data.message.list);
+              console.log(that.recData[i]);
+            }
+          }
+        }
+      });
     }
   },
   created() {
