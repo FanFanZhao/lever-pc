@@ -129,7 +129,7 @@
           <p class="">公告</p>
           <div class="line"></div>
           <div class="items">
-            <div class="item" v-for='(item,index) in noticeList' :key="index">
+            <div class="item" v-for='(item,index) in noticeList' :key="index" @click="goDetail(item.id)">
               <div class="content">
                 <img src="../assets/images/notbg.jpg" alt="">
                 <div class="title">{{item.title}}</div>
@@ -151,7 +151,10 @@
               <router-link to="/components/register" tag="dd">注册</router-link>
               <router-link to="/forgetPwd" tag="dd">找回密码</router-link>
             </dl>
-            <dl></dl>
+            <dl>
+              <dt>app下载</dt>
+              <dd></dd>
+            </dl>
           </div>
         </footer>
     </div>
@@ -212,6 +215,13 @@ export default {
     this.getNews();
   },
   methods: {
+    goDetail(id) {
+      var id = id;
+      this.$router.push({
+        name: "noticeDetail",
+        query: { id: id }
+      });
+    },
     getSwiper() {
       // this.$http({
       //   url: "/api/news/list?c_id=24"
@@ -445,7 +455,7 @@ footer{
     }
     dl:last-child{
       dd{
-        background: url('../assets/images/code.jpg') no-repeat;
+        background: url('../assets/images/qrcode.png') no-repeat;
         width: 100px;
         height: 100px;
         background-size: 100%;

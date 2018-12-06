@@ -7,16 +7,16 @@
 				<li  class="base" ><router-link to="/" exact>首页</router-link></li>
 				<li  class="base" ><router-link to="/c2c">c2c交易</router-link></li>
         <li  class="base" ><router-link to="/leverdealCenter">杠杆交易</router-link></li>
-        <li  class="base" ><router-link to="/lever">我的资产</router-link></li>
+        <li  class="base" ><router-link to="/finance">我的资产</router-link></li>
 
         
 
-        <!-- <li class="base downapp" @click="showapp">APP下载
+        <li class="base downapp" @click="showapp">APP下载
           <div class="appcode tc" v-show="appshow">
             <span></span>
-            <p><img src="@/assets/images/code.jpg" alt=""></p>
+            <p><img src="@/assets/images/qrcode.png" alt=""></p>
           </div>
-        </li> -->
+        </li>
 			</ul>
 			<div class="fr">
 				<div class="account-box fl positionR curPer flex">

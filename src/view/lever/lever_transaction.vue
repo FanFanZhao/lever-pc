@@ -2,7 +2,7 @@
     <div class="detail">
         <div class="title fColor1 topshadow">
             <div class="inblock">
-                <span>我的交易</span>
+                <span>当前委托</span>
             </div>
             <div class="inblock fr">
                 <span class="all" @click="links">杠杆持仓</span>
@@ -19,8 +19,8 @@
                 <ul v-for="(itm,index) in deList" :key="index" class="list-item fColor1 ft12">
                     <li class="clear">
                         <span class="fl w12">{{itm.time}}</span>
-                        <span class="fl w12">{{itm.price}}</span>
-                        <span class="fl w8">{{itm.number}}</span>
+                        <span class="fl w12">{{itm.price | tofixedFour}}</span>
+                        <span class="fl w8">{{itm.number | tofixed}}</span>
                     </li>
                 </ul>
             </div>
@@ -45,6 +45,16 @@ export default {
             currency_id:''
         }
     },
+    filters: {
+    tofixed: function(val) {
+      val = Number(val);
+      return val.toFixed(2);
+    },
+    tofixedFour: function(val) {
+      val = Number(val);
+      return val.toFixed(4);
+    },
+  },
     created(){
         this.address = localStorage.getItem('address') || '';
         this.legal_id=localStorage.getItem('legal_id');
@@ -102,7 +112,7 @@ export default {
         },
         // 杠杆持仓
         links(){
-            this.$router.push({name:'leverTransaction'})
+            this.$router.push({name:'leverTransactions'})
         }
       },
     mounted(){

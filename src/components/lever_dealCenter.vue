@@ -129,11 +129,11 @@ export default {
       }
       .tran-box{
         width: calc(100% - 606px);
-        height: 400px;
+        height: 500px;
       }
       .trade-box{
         width: 600px;
-        height: 400px;
+        height: 500px;
       }
     }
     

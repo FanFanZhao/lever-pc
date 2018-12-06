@@ -10,9 +10,9 @@
         </ul>
         <ul class="list_content fColor1 ft12">
             <li v-for="(item,index) in list_content" :key="index">
-                <span>{{item.create_time}}</span>
-                <span>{{item.price}}</span>
-                <span>{{item.number}}</span>
+                <span>{{item.time}}</span>
+                <span>{{item.price | tofixedFour}}</span>
+                <span>{{item.number | tofixed}}</span>
                 <span class="red" @click="pingcang(item.id)">平仓</span>
             </li>
         </ul>
@@ -30,6 +30,16 @@ export default {
             more:'加载更多'
         }    
     },
+    filters: {
+    tofixed: function(val) {
+      val = Number(val);
+      return val.toFixed(2);
+    },
+    tofixedFour: function(val) {
+      val = Number(val);
+      return val.toFixed(4);
+    }
+  },
     created(){
         this.legal_id=localStorage.getItem('legal_id');
         this.currency_id=localStorage.getItem('currency_id');

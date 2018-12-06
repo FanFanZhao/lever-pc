@@ -31,7 +31,7 @@
         v-for="(item,index) in marketList "
         :class="index==index2?'active_p':''"
         :key="index"
-        @click="quota_shift(index,item.legal_id,item.legal_name,item.currency_name,item.currency_id,item.change)"
+        @click="quota_shift(index,item.legal_id,item.legal_name,item.currency_name,item.currency_id,item.change,item.lever_share_num)"
       >
         <p>
           <span>{{item.currency_name}}</span>
@@ -59,7 +59,8 @@ export default {
       index2: 0,
       index1: 0,
       dataList: [],
-      selectedId: ""
+      selectedId: "",
+      shareNum:''
     };
   },
   created: function() {
@@ -95,17 +96,13 @@ export default {
             this.index2 = localStorage.getItem("index2");
           }
           this.marketList = res.data.message[index].quotation;
-          this.selectedId =
-            res.data.message[index].quotation[this.index2].legal_id;
+          this.selectedId =res.data.message[index].quotation[this.index2].legal_id;
           this.dataList = res.data.message;
+          this.shareNum = res.data.message[index].quotation[this.index2].lever_share_num;
+          window.localStorage.setItem("shareNum", this.shareNum);
           console.log(this.marketList);
           //默认法币id和name
-          if (
-            !localStorage.getItem("legal_id") &&
-            !localStorage.getItem("currency_id") &&
-            !localStorage.getItem("legal_name") &&
-            !localStorage.getItem("currency_name")
-          ) {
+          if (!localStorage.getItem("legal_id") &&!localStorage.getItem("currency_id") &&!localStorage.getItem("legal_name") &&!localStorage.getItem("currency_name")) {
             this.currency_name = msg[index].quotation[indexs].currency_name;
             this.currency_id = msg[index].quotation[indexs].currency_id;
             window.localStorage.setItem(
@@ -211,13 +208,13 @@ export default {
         });
     },
     //币种切换
-    quota_shift(idx, id, legal_name, currency_name, currency_id, change) {
+    quota_shift(idx, id, legal_name, currency_name, currency_id, change,shareNum) {
       window.localStorage.setItem("downUp", change);
       window.localStorage.setItem("legal_id_cur", currency_id);
 
       window.localStorage.setItem("index1", this.index1);
       window.localStorage.setItem("index2", idx);
-
+      window.localStorage.setItem("shareNum", shareNum);
       this.ids = idx;
       var tradeDatas = {
         currency_id: currency_id,

@@ -41,8 +41,8 @@
           </li>
           <li v-for="item in buyList" :key="item.id" class="flex">
             <div class="tl">{{item.currency_name}}</div>
-            <div>{{item.total_number}} {{item.currency_name}}</div>
-            <div>{{item.price}}</div>
+            <div>{{item.total_number || '0.00' | tofixed}} {{item.currency_name}}</div>
+            <div>{{item.price || '0.00' | tofixed}}</div>
             <div>
               <img v-if="item.way == 'ali_pay'" src="../../assets/images/zfb_icon.png">
               <img v-if="item.way == 'we_chat'" src="../../assets/images/wx_icon.png">
@@ -87,6 +87,16 @@ export default {
       buyList: [],
       moreText: "加载更多"
     };
+  },
+  filters: {
+    tofixed: function(val) {
+      val = Number(val);
+      return val.toFixed(2);
+    },
+    tofixedFour: function(val) {
+      val = Number(val);
+      return val.toFixed(4);
+    }
   },
   created() {
     this.token = window.localStorage.getItem("token") || "";

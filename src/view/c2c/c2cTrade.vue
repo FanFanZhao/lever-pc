@@ -24,9 +24,9 @@
               <span class="currencyName ml5 blue">{{item.currency_name}}</span>
             </div>
             <div class="tc">
-              <span>{{item.number}}</span>
+              <span>{{item.number || '0.00' | tofixed}}</span>
             </div>
-            <div class="tc light_green">{{item.deal_money}}</div>
+            <div class="tc light_green">{{item.deal_money || '0.00' | tofixed}}</div>
             <div class="tc">
               <img v-if="item.way_name == '支付宝'" src="../../assets/images/zfb_icon.png" />
               <img v-if="item.way_name == '微信'" src="../../assets/images/wx_icon.png" />
@@ -89,13 +89,13 @@
           <span>联系方式：</span><span>{{detail.seller_phone}}</span>
         </div>
         <div>
-          <span>数量：</span><span>{{detail.number}}</span>
+          <span>数量：</span><span>{{detail.number || '0.00' | tofixed}}</span>
         </div>
         <div>
-          <span>单价：</span><span>{{detail.price}}</span>
+          <span>单价：</span><span>{{detail.price || '0.00' | tofixed}}</span>
         </div>
         <div>
-          <span>总额：</span><span>{{detail.deal_money}}</span>
+          <span>总额：</span><span>{{detail.deal_money || '0.00' | tofixed}}</span>
         </div>
         <div>
           <span>下单时间：</span><span>{{detail.create_time}}</span>
@@ -138,6 +138,16 @@ export default {
         showmore:true
       }
     },
+    filters: {
+    tofixed: function(val) {
+      val = Number(val);
+      return val.toFixed(2);
+    },
+    tofixedFour: function(val) {
+      val = Number(val);
+      return val.toFixed(4);
+    }
+  },
     created(){
         this.token = window.localStorage.getItem("token") || "";
         if (this.token == "") {
@@ -331,7 +341,7 @@ export default {
         padding: 10px 0;
         >div{
           flex: 1;
-          line-height: 36px;
+          // line-height: 36px;
         }
         .blue{
           color: #3b68bb;
@@ -443,7 +453,7 @@ export default {
           margin-right: 5px;
           display: inline-block;
           width: 90px;
-          color: #ca4141;
+          // color: #ca4141;
         }
       }
       .btnbox{

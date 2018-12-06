@@ -26,10 +26,10 @@
               <p class="blue">{{item.seller_name}}</p>
             </div>
             <div class="flex center tc">
-              <span class="sellerName">{{item.surplus_number}}</span>
+              <span class="sellerName">{{item.surplus_number || '0.00' |tofixed}}</span>
               <span class="currencyName ml5">{{item.currency_name}}</span>
             </div>
-            <div class="tc light_green ft16">{{item.price}}</div>
+            <div class="tc light_green ft16">{{item.price || '0.00' |tofixed}}</div>
             <div class="tc">
               <img v-if="item.way == 'ali_pay'" src="../../assets/images/zfb_icon.png" />
               <img v-if="item.way == 'we_chat'" src="../../assets/images/wx_icon.png" />
@@ -70,6 +70,16 @@ export default {
 
       }
     },
+    filters: {
+    tofixed: function(val) {
+      val = Number(val);
+      return val.toFixed(2);
+    },
+    tofixedFour: function(val) {
+      val = Number(val);
+      return val.toFixed(4);
+    }
+  },
     created(){
         this.token = window.localStorage.getItem("token") || "";
         if (this.token == "") {
@@ -210,7 +220,7 @@ export default {
         padding: 10px 0;
         >div{
           flex: 1;
-          line-height: 36px;
+          // line-height: 36px;
         }
         .blue{
           color: #3b68bb;

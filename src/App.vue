@@ -34,6 +34,7 @@ export default {
                         window.localStorage.setItem('legal_name',msg[0].quotation[0].legal_name);
                         window.localStorage.setItem('currency_name',msg[0].quotation[0].currency_name);
                         var symbol= msg[0].quotation[0].currency_name+'/'+msg[0].quotation[0].legal_name;
+                        window.localStorage.setItem('shareNum',msg[0].quotation[0].lever_share_num);
                         // var priceScale=Math.pow(10,5);
                         var priceScale=100000;
                         window.localStorage.setItem('priceScale',priceScale);

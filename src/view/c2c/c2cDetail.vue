@@ -21,9 +21,9 @@
               <span class="currencyName ml5">{{item.currency_name}}</span>
             </div>
             <div class="flex center tc">
-              <span class="light_blue sellerName">{{item.deal_money}}</span>
+              <span class="light_blue sellerName">{{item.deal_money || '0.00' | tofixed}}</span>
             </div>
-            <div class="tc">{{item.price}}</div>
+            <div class="tc">{{item.price || '0.00' | tofixed}}</div>
             <div class="tc">
               <img v-if="item.way_name == '支付宝'" src="../../assets/images/zfb_icon.png">
               <img v-if="item.way_name == '微信'" src="../../assets/images/wx_icon.png">
@@ -62,21 +62,21 @@
           </div>
           <div>
             <span class="modals-left">总额：</span>
-            {{payContent.deal_money || '0.00'}}
+            {{payContent.deal_money || '0.00' | tofixed}}
           </div>
           <div>
             <span class="modals-left">姓名：</span>
             {{payContent.user_cash_info.real_name}}
           </div>
-          <div>
+          <div v-if="payContent.user_cash_info.bank_account">
             <span class="modals-left">卡号：</span>
             {{payContent.user_cash_info.bank_account}}
           </div>
-          <div>
+          <div v-if="payContent.user_cash_info.wechat_account">
             <span class="modals-left">微信：</span>
             {{payContent.user_cash_info.wechat_account}}
           </div>
-          <div>
+          <div v-if="payContent.user_cash_info.alipay_account">
             <span class="modals-left">支付宝：</span>
             {{payContent.user_cash_info.alipay_account}}
           </div>
@@ -101,15 +101,15 @@
           </div>
           <div>
             <span class="modals-left">总额：</span>
-            {{payContent.deal_money || '0.00'}}
+            {{payContent.deal_money || '0.00' | tofixed}}
           </div>
           <div>
             <span class="modals-left">单价：</span>
-            {{payContent.price}}
+            {{payContent.price || '0.00' | tofixed}}
           </div>
           <div>
             <span class="modals-left">数量：</span>
-            {{payContent.number}}{{payContent.currency_name}}
+            {{payContent.number || '0.00' | tofixed}}{{payContent.currency_name}}
           </div>
           <div>
             <span class="modals-left">时间：</span>
@@ -159,6 +159,16 @@ export default {
       pannelShow: false,
       modalBtnShow: false
     };
+  },
+   filters: {
+    tofixed: function(val) {
+      val = Number(val);
+      return val.toFixed(2);
+    },
+    tofixedFour: function(val) {
+      val = Number(val);
+      return val.toFixed(4);
+    }
   },
   created() {
     let that = this;

@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <div class="header fColor1">
-            <p class="fl">总资产折合：<span class="asset_num">{{totle | toFixeds}}</span><span class="asset_name"> USDT</span>
+            <p class="fl">总资产折合：<span class="asset_num">{{totle | toFixeds}}</span><span class="asset_name"> CNY</span>
             <!-- <span class="ft12 baseColor"> ≈ <span> -->
               <!-- {{totle*usprice}} -->
               <!-- {{totle}}</span>CNY</span> -->
