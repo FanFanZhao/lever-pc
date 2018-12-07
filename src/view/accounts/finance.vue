@@ -28,7 +28,7 @@
         <p class="flex1 tc">操作</p>
       </div>
       <ul class="content_ul">
-        <li v-for="(item,index) in asset_list" :key="index">
+        <li v-for="(item,index) in asset_list" v-if="item.is_legal == 1 && item.is_lever == 1" :key="index">
           <div class="content_li flex alcenter between">
             <p class="flex1 tc">{{item.currency_name}}</p>
             <p class="flex1 tc">{{item.lever_balance || '0.00' | toFixeds}}</p>
@@ -40,6 +40,7 @@
               <span @click="withdraw(index,item.currency)">提币</span>
               <!-- <span @click="exchange">兑换</span> -->
               <span @click="rec(index,item.currency)">记录</span>
+              <!-- <span @click="transfer(index,item.currency)">划转</span> -->
             </p>
           </div>
           <!--充币区-->
@@ -145,6 +146,39 @@
       </ul>
       <!-- <div class="tc ft16 fColor1 mt50" v-show="asset_list.length<=0">暂无数据</div> -->
     </div>
+    <!-- 划转弹窗 -->
+    <div class="transfer-modal flex" v-show="transferData.modalShow">
+      <div class="transfer-mask">
+        <div class="transfer-header">
+          <h3>划转</h3>
+          <p @click="closes()">X</p>
+        </div>
+        <div class="transfer-content">
+          <div>
+            <p>币种</p>
+            <p>{{transferData.transferName}}</p>
+            <p>可用余额</p>
+            <p>{{transferData.transferBalance}}</p>
+          </div>
+          <div>
+            <p>从</p>
+            <select v-model="transferData.start">
+              <option v-for="item in balanceList" :value="item">{{item}}</option>
+            </select>
+          </div>
+          <div>
+            <p>至</p>
+            <select v-model="transferData.end">
+              <option v-for="item in balanceList" :value="item">{{item}}</option>
+            </select>
+          </div>
+          <div>
+            <p>划转数量</p>
+            <input type="text" placeholder="请输入划转数量">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -197,7 +231,15 @@ export default {
         "USDT充币仅支持simple send的方法，使用其他方法（send all）的充币暂时无法上账，请您谅解。"
       ],
       page: 1,
-      more: "加载更多"
+      more: "加载更多",
+      balanceList: ["c2c账户", "杠杆账户"],
+      transferData: {
+        modalShow: false,
+        transferName: "",
+        transferBalance: "",
+        start: "",
+        end: ""
+      }
     };
   },
   components: {
@@ -453,6 +495,11 @@ export default {
           }
         }
       });
+    },
+    // 划转
+    transfer(index, currency) {
+      let that = this;
+      that.transferData.modalShow = true;
     }
   },
   created() {
@@ -628,11 +675,41 @@ input {
     }
   }
 }
-.more{
+.more {
   width: 100%;
   line-height: 40px;
   text-align: center;
   cursor: pointer;
+}
+// 划转弹窗
+.transfer-modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+}
+.transfer-mask {
+  width: 500px;
+  background-color: #262a42;
+  margin: 0 auto;
+  border-radius: 5px;
+}
+.transfer-header {
+  line-height: 40px;
+  text-align: center;
+  position: relative;
+}
+.transfer-header p {
+  position: absolute;
+  right: 10px;
+  top: 0;
 }
 </style>
 

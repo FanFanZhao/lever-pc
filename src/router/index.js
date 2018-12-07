@@ -30,6 +30,7 @@ import region from '@/view/region'
 import chargeRecord from '@/view/chargeRecord'
 import new_account from '@/components/new_account'
 import finance from '@/view/accounts/finance'
+import transfer from '@/view/accounts/transfer'
 import lever from '@/view/accounts/lever'
 import finanrec from '@/view/accounts/finanrec'
 import manger from '@/view/accounts/lever_manger'
@@ -255,6 +256,11 @@ export default new Router({
 					path:'/finance',
 					name:'finance',
 					component:finance
+				},
+				{
+					path:'/transfer',
+					name:'transfer',
+					component:transfer
 				},
 				{
 					path:'/lever',

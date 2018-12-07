@@ -1,25 +1,24 @@
 <template>
     <div>
         <div class="top">
-            <p>法币账户  总资产折合：{{totle}}（USDT）<span class='ft12 all_account'><span class=""></span>≈ <span>{{totle*usprice}}</span> CNY</span></p>
+            <p>C2C账户  总资产折合：{{totle}}CNY</p>
         </div>
         <ul class="list">
-            <li v-for="(item,index) in list" :key="index" @click="go_legalAccount(item.currency)">
+            <li v-for="(item,index) in list" :key="index" v-if="item.is_legal == 1 && item.is_lever == 1" @click="go_legalAccount(item.currency)">
                 <p class="legal_name">{{item.currency_name}}</p>
                 <div class="balance_detail">
                     <div class="use_balance flex1">
-                       <p class="ft12 mincny">可用</p>
-                       <p class="use_balance_num">{{item.legal_balance}}</p>
+                       <p class="ft12 mincny">币种</p>
+                       <p class="use_balance_num">{{item.currency_name}}</p>
                     </div>
                     <div class="flex1">
-                       <p class="ft12 mincny">冻结</p>
-                       <p class="lock_balance_num">{{item.lock_legal_balance}}</p>
+                       <p class="ft12 mincny">可用</p>
+                       <p class="lock_balance_num">{{item.legal_balance || '0.00' | toFixeds}}</p>
                     </div>
                     <div class="convert flex1">
-                       <p class="ft12 mincny">折合</p>
-                       <!-- <p class="lock_balance_num">{{item.legal_balance}}{{item.lock_legal_balance}}{{usprice}}{{item.ustd_price}}（CNY）</p> -->
+                       <p class="ft12 mincny">冻结</p>
                        <p class="lock_balance_num">
-                           {{(item.legal_balance - 0 + (item.lock_legal_balance-0))*item.ustd_price*usprice}}
+                           {{item.lock_legal_balance || '0.00' | toFixeds}}
                        </p>
                     </div>
                 </div>
@@ -36,6 +35,12 @@ export default {
         //   usprice:''
         }
     },
+    filters: {
+    toFixeds: function(value) {
+      value = Number(value);
+      return value.toFixed(2);
+    }
+  },
     created(){
        this.token = localStorage.getItem('token') || '';
     },
@@ -102,7 +107,8 @@ export default {
    }
    .use_balance_num,.lock_balance_num,.lock_balance_num{
        color: #fff;
-       padding: 5px 0;
+       padding: 10px 0;
+       margin-top: 5px;
    }
    .list li{
        border-bottom: 1px solid #1B2A3E;

@@ -22,7 +22,7 @@
       </li>
     </ul>
     <ul class="list_content fColor1 ft12">
-      <li v-for="(item,index) in list_content" :key="index" class="flex">
+      <li v-for="(item,index) in list_content" :key="index" class="flex alcenter">
         <span class="width2">{{item.type == 1? '买入':'卖出'}} {{item.symbol}} x{{item.share}}</span>
         <span class="width1">{{item.price || '0.00' | tofixedFour}}</span>
         <span class="width1">{{item.update_price || '0.00' | tofixedFour}}</span>

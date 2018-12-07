@@ -17,7 +17,7 @@
             开始交易
           </div>
           <div class="clear available" v-else>
-            <span class="fl fColor1">可用 {{user_legal | tofixedFour}} {{currency_name}}</span>
+            <span class="fl fColor1">可用 {{user_legal | tofixedFour}} {{legal_name}}</span>
             <!-- <span class="fr baseColor curPer" @click="goNext('account')">充币</span> -->
           </div>
           <!-- <div class="mt40 input-item clear">
@@ -29,15 +29,22 @@
             <label>倍数：</label>
             <select class="buy_multiple" v-model="buyInfo.buy_selected" @change="selectMuit('buy')">
               <option disabled value>请选择倍数</option>
-              <option v-for="(item,index) in multiple" :key="index" :value="index">{{item}}</option>
+              <option v-for="(item,index) in multiple" :key="index" :value="item.value">{{item.value}}倍</option>
             </select>
           </div>
           <div class="mt40 input-item clear">
             <label>手数：</label>
-            <b :class="['share',{'active':type =='1'}]" @click="select(1,'buy')">1手</b>
-            <b :class="['share',{'active':type =='3'}]" @click="select(3,'buy')">3手</b>
-            <b :class="['share',{'active':type =='5'}]" @click="select(5,'buy')">5手</b>
-            <b :class="['share',{'active':type =='10'}]" @click="select(10,'buy')">10手</b>
+            <div>
+              <b v-for="item in shareList" :key="item.value"  :class="['share',{'active':type ==item.value}]" @click="select(item.value,'buy')">{{item.value}}手</b>
+              <!-- <b :class="['share',{'active':type =='3'}]" @click="select(3,'buy')">3手</b>
+              <b :class="['share',{'active':type =='5'}]" @click="select(5,'buy')">5手</b>
+              <b :class="['share',{'active':type =='10'}]" @click="select(10,'buy')">10手</b>
+              <b :class="['share',{'active':type =='1'}]" @click="select(1,'buy')">1手</b>
+              <b :class="['share',{'active':type =='3'}]" @click="select(3,'buy')">3手</b>
+              <b :class="['share',{'active':type =='5'}]" @click="select(5,'buy')">5手</b>
+              <b :class="['share',{'active':type =='10'}]" @click="select(10,'buy')">10手</b> -->
+            </div>
+            
           </div>
           <div class="lever-total fColor1">
             <p class="clearfix mt15">
@@ -68,7 +75,7 @@
             开始交易
           </div>
           <div class="clear available" v-else>
-            <span class="fl fColor1">可用 {{user_currency | tofixedFour}} {{legal_name}}</span>
+            <!-- <span class="fl fColor1">可用 {{user_currency | tofixedFour}} {{legal_name}}</span> -->
             <!-- <span class="fr baseColor curPer" @click="goNext('account')">充币</span> -->
           </div>
           <!-- <div class="mt40 input-item clear">
@@ -84,15 +91,18 @@
               @change="selectMuit('sell')"
             >
               <option disabled value>请选择倍数</option>
-              <option v-for="(item,index) in multiple" :key="index" :value="index">{{item}}</option>
+              <option v-for="(item,index) in multiple" :key="index" :value="item.value">{{item.value}}倍</option>
             </select>
           </div>
           <div class="mt40 input-item clear">
             <label>手数：</label>
-            <b :class="['share',{'actives':types =='1'}]" @click="select(1,'sell')">1手</b>
-            <b :class="['share',{'actives':types =='3'}]" @click="select(3,'sell')">3手</b>
+            <div>
+              <b v-for="item in shareList" :key="item.value"  :class="['share',{'actives':types == item.value}]" @click="select(item.value,'sell')">{{item.value}}手</b>
+            </div>
+            
+            <!-- <b :class="['share',{'actives':types =='3'}]" @click="select(3,'sell')">3手</b>
             <b :class="['share',{'actives':types =='5'}]" @click="select(5,'sell')">5手</b>
-            <b :class="['share',{'actives':types =='10'}]" @click="select(10,'sell')">10手</b>
+            <b :class="['share',{'actives':types =='10'}]" @click="select(10,'sell')">10手</b> -->
           </div>
           <div class="lever-total fColor1">
             <p class="clearfix mt15">
@@ -237,7 +247,8 @@ export default {
       trandeFreeBuy: "",
       lastPrice:'',
       buyType:'',
-      comfirmShow:false
+      comfirmShow:false,
+      shareList:[]
     };
   },
   created() {
@@ -313,10 +324,11 @@ export default {
         .then(res => {
           console.log(res);
           if (res.data.type == "ok") {
-            this.multiple = res.data.message.multiple;
+            this.multiple = res.data.message.multiple.muit;
             this.user_currency = res.data.message.all_levers;
             this.user_legal = res.data.message.user_lever;
-            this.lastPrice = res.data.message.
+            this.lastPrice = res.data.message.last_price;
+            this.shareList = res.data.message.multiple.share;
             // console.log(res.data)
             this.buyInfo.buyPrice = 0;
             this.buyInfo.buyNum = 0;
@@ -356,7 +368,7 @@ export default {
                           pricesTotal = parseFloat(bond - prices).toFixed(4);
                           muitNum = parseFloat(that.sellInfo.sell_selected).toFixed(4);
                           share = parseFloat(that.types).toFixed(4);
-                          var shareNum = parseFloat(localStorage.getItem('shareNum')).toFixed(4);
+                          var shareNum = parseFloat(list[i].lever_share_num).toFixed(4);
                           var totalPrice = parseFloat(pricesTotal * share * shareNum).toFixed(4);
                           var bondsValue = parseFloat((totalPrice - 0) / (muitNum - 0)).toFixed(4);
                           var tradeFreeValue = parseFloat((totalPrice * transactionFee) / 100).toFixed(4);
@@ -367,7 +379,7 @@ export default {
                           pricesTotal = parseFloat(bond + prices).toFixed(4);
                           muitNum = parseFloat(that.buyInfo.buy_selected);
                           share = parseFloat(that.type).toFixed(4);
-                          var shareNum = parseFloat(localStorage.getItem('shareNum')).toFixed(4);
+                          var shareNum = parseFloat(list[i].lever_share_num).toFixed(4);
                           var totalPrice = parseFloat(pricesTotal * share * shareNum).toFixed(4);
                           var bondsValue = parseFloat((totalPrice - 0) / (muitNum - 0)).toFixed(4);
                           var tradeFreeValue = parseFloat((totalPrice * transactionFee) / 100).toFixed(4);
@@ -414,10 +426,13 @@ export default {
                   pricesTotal = parseFloat(bond - prices).toFixed(4);
                   muitNum = parseFloat(that.sellInfo.sell_selected).toFixed(4);
                   share = parseFloat(that.types).toFixed(4);
-                  var shareNum = parseFloat(localStorage.getItem('shareNum')).toFixed(4);
+                  var shareNum = parseFloat(list[i].lever_share_num).toFixed(4);
                   var totalPrice = parseFloat(pricesTotal * share * shareNum).toFixed(4);
                   var bondsValue = parseFloat((totalPrice - 0) / (muitNum - 0)).toFixed(4);
                   var tradeFreeValue = parseFloat((totalPrice * transactionFee) / 100).toFixed(4);
+                  console.log(shareNum);
+                  console.log(muitNum);
+                  console.log(share);
                   that.totalPrice = bond;
                   that.trandeFree = tradeFreeValue
                   that.bons = bondsValue;
@@ -425,7 +440,7 @@ export default {
                   pricesTotal = parseFloat(bond + prices).toFixed(4);
                   muitNum = parseFloat(that.buyInfo.buy_selected);
                   share = parseFloat(that.type).toFixed(4);
-                  var shareNum = parseFloat(localStorage.getItem('shareNum')).toFixed(4);
+                  var shareNum = parseFloat(list[i].lever_share_num).toFixed(4);
                   var totalPrice = parseFloat(pricesTotal * share * shareNum).toFixed(4);
                   var bondsValue = parseFloat((totalPrice - 0) / (muitNum - 0)).toFixed(4);
                   var tradeFreeValue = parseFloat((totalPrice * transactionFee) / 100).toFixed(4);
@@ -498,11 +513,13 @@ export default {
               that.$router.push({ name: "leverTransactions" });
             }, 500);
           } else {
-            // layer.msg(res.data.message);
+            layer.msg(res.data.message);
+            that.comfirmShow = false;
           }
         })
         .catch(error => {
           console.log(error);
+          that.comfirmShow = false;
         });
     }
   },
@@ -613,6 +630,7 @@ input:disabled {
   width: 18.8%;
   text-align: center;
   padding: 5px 0;
+  margin-right: 3.14px;
 }
 b.active {
   background-color: #02c289;
