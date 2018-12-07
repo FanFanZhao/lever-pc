@@ -219,7 +219,6 @@ export default {
     },
     //充币
     excharge(index, currency) {
-      console.log(currency);
       this.currency = currency;
       if (this.flag) {
         this.flag = false;
@@ -306,7 +305,6 @@ export default {
         },
         success: function(res) {
           if (res.type == "ok") {
-            console.log(res);
             that.coinname = res.message.name;
             that.balance = res.message.change_balance;
             that.min_number =
@@ -360,7 +358,6 @@ export default {
           request.setRequestHeader("Authorization", that.token);
         },
         success: function(res) {
-          console.log(res);
           if (res.type == "ok") {
             layer.alert(res.message);
             setTimeout(() => {
@@ -405,7 +402,6 @@ export default {
     },
     getdata() {
       var that = this;
-      console.log(that.token);
       this.$http({
         url: "/api/" + "wallet/list",
         method: "post",
@@ -413,11 +409,9 @@ export default {
         headers: { Authorization: that.token }
       })
         .then(res => {
-          console.log(res.data);
           if (res.data.type == "ok") {
             that.asset_list = res.data.message.lever_wallet.balance;
             this.totle = res.data.message.lever_wallet.totle;
-            console.log(this.totle);
           } else {
             return;
           }
@@ -449,14 +443,12 @@ export default {
         data: { type: "0", currency: that.currency, page: that.page },
         headers: { Authorization: this.token }
       }).then(res => {
-        console.log(res);
         if (res.data.type == "ok") {
           var datas = that.asset_list;
           for (let i in datas) {
             if (that.currency == datas[i].currency) {
-              console.log(12)
+              that.active02 = i;
               that.recData[i] = that.recData[i].concat(res.data.message.list);
-              console.log(that.recData[i]);
             }
           }
         }
@@ -465,22 +457,6 @@ export default {
   },
   created() {
     this.token = localStorage.getItem("token") || "";
-    // this.address=localStorage.getItem('address') || '';
-    // console.log(this.address)
-    // if(this.address){
-    //     this.$http({
-    //         url:'/api/'+'money/rechange?user_id='+this.address,
-    //         type:'GET'
-    //     }).then(res=>{
-    //         console.log(res)
-    //         this.addr=res.data.message.company_eth_address;
-    //         this.url='http://qr.liantu.com/api.php?&w=300&text='+res.data.message.company_eth_address;
-    //         var content = this.addr;
-    //         // var clipboard = new Clipboard('#copy')
-    //     }).catch(error=>{
-    //         return error
-    //     })
-    // }
   },
 
   mounted() {
@@ -651,6 +627,12 @@ input {
       border-top: 1px solid #181b2a;
     }
   }
+}
+.more{
+  width: 100%;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
 }
 </style>
 

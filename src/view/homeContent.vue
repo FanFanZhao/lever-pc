@@ -14,12 +14,12 @@
         </div>
         <div class="topusdt">
           <ul class="flex">
-            <li v-for="(item,index) in quotation" :key="index" v-if='index<=3'>
+            <li v-for="(item,index) in quotation" v-if="item.currency_name == 'BTC' || item.currency_name == 'ETH' || item.currency_name == 'BCH' || item.currency_name == 'LTC' || item.currency_name == 'EOS' " :key="index">
               <div class="flex ft12 between" :data-name='item.currency_name+"/"+item.legal_name'>
                 <div>
                   <p>{{item.currency_name}}/{{item.legal_name}}</p>
-                  <p class="ft18 mt15 now_price">{{item.now_price}}</p>
-                  <p class="mt5 color47 now_cny">≈{{(item.now_price*6.9641).toFixed(2)}} CNY</p>
+                  <p class="ft18 mt15 now_price">{{(item.now_price - 0).toFixed(4)}}</p>
+                  <!-- <p class="mt5 color47 now_cny">≈{{(item.now_price*6.9641).toFixed(2)}} CNY</p> -->
                   <p class="mt15"><span class="color47">24H量</span> <span class="volume">{{(item.volume-0).toFixed(2)}}</span></p>
                 </div>
                 <button :class="[{'downcolor': item.change.substring(0,1) == '-'}]">{{item.change}}</button>
@@ -258,13 +258,13 @@ export default {
           var volume = msg.volume;
           $("div[data-name='" + cname + "']")
             .find(".now_price")
-            .html(now_price);
+            .html((now_price -0).toFixed(4));
           $("div[data-name='" + cname + "']")
             .find(".volume")
-            .html((volume-0).toFixed(2));
+            .html((volume-0).toFixed(4));
           $("div[data-name='" + cname + "']")
             .find(".now_cny")
-            .html((now_price *6.9641).toFixed(2)+' CNY');
+            .html((now_price *6.9641).toFixed(4)+' CNY');
            
           $("div[data-name='" + cname + "']")
             .find("button")
