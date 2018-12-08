@@ -52,7 +52,7 @@ export default {
       isShow: 0,
       tabList: [],
       marketList: [],
-      newData: ["MTS", "$0.076128", "-1.11%"],
+      newData: ["BitEX", "$0.076128", "-1.11%"],
       legal_index: this.$route.params.legal_index,
       currency_index: this.$route.params.currency_index,
       tradeDatas: "",
@@ -65,6 +65,7 @@ export default {
   },
   created: function() {
     this.socket(localStorage.getItem("token"));
+    let that = this;
     //法币列表
     this.$http({
       url: "/api/" + "currency/quotation_new",
@@ -74,37 +75,34 @@ export default {
     })
       .then(res => {
         if (res.data.type == "ok") {
-          this.tabList = res.data.message;
+          that.tabList = res.data.message;
           var msg = res.data.message;
           var arr_quota = [];
-          //   for(var i=0;i<msg.length;i++){
-          //       arr_quota[i] = msg[i].quotation
-          //   };
-          console.log(this.tabList);
+          console.log(that.tabList);
           let index = 0;
           let indexs = 0;
           if (!localStorage.getItem("index1")) {
-            index = this.index1;
+            index = that.index1;
           } else {
             index = localStorage.getItem("index1");
-            this.index1 = localStorage.getItem("index1");
+            that.index1 = localStorage.getItem("index1");
           }
           if (!localStorage.getItem("index2")) {
-            indexs = this.index2;
+            indexs = that.index2;
           } else {
             indexs = localStorage.getItem("index2");
-            this.index2 = localStorage.getItem("index2");
+            that.index2 = localStorage.getItem("index2");
           }
-          this.marketList = res.data.message[index].quotation;
-          this.selectedId =res.data.message[index].quotation[this.index2].legal_id;
-          this.dataList = res.data.message;
-          this.shareNum = res.data.message[index].quotation[this.index2].lever_share_num;
-          window.localStorage.setItem("shareNum", this.shareNum);
-          console.log(this.marketList);
+          that.marketList = res.data.message[index].quotation;
+          that.selectedId =res.data.message[index].quotation[that.index2].legal_id;
+          that.dataList = res.data.message;
+          that.shareNum = res.data.message[index].quotation[that.index2].lever_share_num;
+          window.localStorage.setItem("shareNum", that.shareNum);
+          console.log(that.shareNum);
           //默认法币id和name
           if (!localStorage.getItem("legal_id") &&!localStorage.getItem("currency_id") &&!localStorage.getItem("legal_name") &&!localStorage.getItem("currency_name")) {
-            this.currency_name = msg[index].quotation[indexs].currency_name;
-            this.currency_id = msg[index].quotation[indexs].currency_id;
+            that.currency_name = msg[index].quotation[indexs].currency_name;
+            that.currency_id = msg[index].quotation[indexs].currency_id;
             window.localStorage.setItem(
               "currency_name",
               msg[index].quotation[indexs].currency_name
@@ -130,8 +128,8 @@ export default {
               msg[index].quotation[indexs].currency_id
             );
           } else {
-            this.currency_name = window.localStorage.getItem("currency_name");
-            this.currency_id = window.localStorage.getItem("currency_id");
+            that.currency_name = window.localStorage.getItem("currency_name");
+            that.currency_id = window.localStorage.getItem("currency_id");
           }
         }
       })
