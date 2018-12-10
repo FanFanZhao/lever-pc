@@ -13,8 +13,8 @@
               <router-link to="/forgetPwd" tag="dd">找回密码</router-link>
             </dl>
             <dl>
-              <dt>app下载</dt>
-              <dd></dd>
+              <!-- <dt>app下载</dt>
+              <dd></dd> -->
             </dl>
           </div>
         </footer>

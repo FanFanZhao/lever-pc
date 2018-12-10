@@ -11,12 +11,12 @@
 
         
 
-        <li class="base downapp" @click="showapp">APP下载
+        <!-- <li class="base downapp" @click="showapp">APP下载
           <div class="appcode tc" v-show="appshow">
             <span></span>
             <p><img src="@/assets/images/qrcode.png" alt=""></p>
           </div>
-        </li>
+        </li> -->
 			</ul>
 			<div class="fr">
 				<div class="account-box fl positionR curPer flex">
