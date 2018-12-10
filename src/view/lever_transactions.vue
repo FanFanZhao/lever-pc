@@ -87,7 +87,10 @@
         <div class="stopModal">
           <span :class="['stopall',{'alls':selectType == 'all'}]" @click="selectStop('all')">全部平仓</span>
           <span :class="['stopbuy',{'buys':selectType == 'buy'}]" @click="selectStop('buy')">只平多单</span>
-          <span :class="['stopsell',{'sells':selectType == 'sell'}]" @click="selectStop('sell')">只平空单</span>
+          <span
+            :class="['stopsell',{'sells':selectType == 'sell'}]"
+            @click="selectStop('sell')"
+          >只平空单</span>
         </div>
         <div class="stop-modal-btns">
           <button type="button" @click="closeStopModal()">取消</button>
@@ -115,9 +118,8 @@ export default {
       presentPrice: "",
       riskRate: "",
       totalPro: "",
-      stopModal:false,
-      selectType:'all'
-      
+      stopModal: false,
+      selectType: "all"
     };
   },
   created() {
@@ -248,12 +250,21 @@ export default {
         if (that.list_content[i].id == ids) {
           that.modalId = that.list_content[i].id;
           that.presentPrice = parseFloat(that.list_content[i].price).toFixed(2);
-          that.targetProfit = parseFloat(
-            that.list_content[i].target_profit_price
-          ).toFixed(2);
-          that.stopLose = parseFloat(
-            that.list_content[i].stop_loss_price
-          ).toFixed(2);
+          if (that.list_content[i].target_profit_price > 0) {
+            that.targetProfit = parseFloat(
+              that.list_content[i].target_profit_price
+            ).toFixed(2);
+          } else {
+            that.targetProfit = that.presentPrice;
+          }
+          if (that.list_content[i].stop_loss_price > 0) {
+            that.stopLose = parseFloat(
+              that.list_content[i].stop_loss_price
+            ).toFixed(2);
+          } else {
+            that.stopLose = that.presentPrice;
+          }
+
           if (that.list_content[i].type == 1) {
             that.modalProfit = (
               that.targetProfit - parseFloat(that.list_content[i].price)
@@ -363,29 +374,29 @@ export default {
         });
     },
     // 一键平仓
-    stopTotal(){
+    stopTotal() {
       let that = this;
       that.stopModal = true;
     },
     // 关闭一键平仓弹窗
-    closeStopModal(){
+    closeStopModal() {
       let that = this;
       that.stopModal = false;
     },
     // 选择平仓类型
-    selectStop(types){
+    selectStop(types) {
       let that = this;
       that.selectType = types;
     },
-    comfirmModal(){
+    comfirmModal() {
       let that = this;
       console.log(that.selectType);
       let num = 0;
-      if(that.selectType == 'all'){
+      if (that.selectType == "all") {
         num = 0;
-      }else if(that.selectType == 'buy'){
+      } else if (that.selectType == "buy") {
         num = 1;
-      }else{
+      } else {
         num = 2;
       }
       this.$http({
@@ -403,17 +414,15 @@ export default {
             that.list_content = [];
             that.init();
           } else {
-             that.stopModal = false;
+            that.stopModal = false;
             layer.msg(res.data.message);
           }
         })
         .catch(error => {
-           that.stopModal = false;
+          that.stopModal = false;
           console.log(error);
         });
     }
-    
-
   }
 };
 </script>
@@ -477,15 +486,15 @@ ul li div span {
   display: block;
   text-align: center;
 }
-.width1{
+.width1 {
   width: 9%;
   text-align: center;
 }
-.width2{
+.width2 {
   width: 13%;
   text-align: center;
 }
-.width3{
+.width3 {
   width: 20%;
   text-align: center;
 }
@@ -587,47 +596,46 @@ ul li div span {
   line-height: 33px;
   text-align: center;
 }
-.stopModal{
+.stopModal {
   margin: 20px 15px;
   text-align: center;
   padding-bottom: 20px;
-
 }
-.stopModal span{
+.stopModal span {
   padding: 6px 15px;
   border-radius: 4px;
 }
-.stopall{
+.stopall {
   border: 1px solid #638bd4;
   color: #638bd4;
   margin-right: 10px;
 }
-.alls{
+.alls {
   color: #fff;
   background-color: #638bd4;
 }
-.stopbuy{
+.stopbuy {
   border: 1px solid #0d8551;
   color: #0d8551;
   margin-right: 10px;
 }
-.buys{
+.buys {
   color: #fff;
   background-color: #0d8551;
 }
-.stopsell{
+.stopsell {
   border: 1px solid #cc4951;
   color: #cc4951;
 }
-.sells{
+.sells {
   color: #fff;
   background-color: #cc4951;
 }
-.stop-modal-btns{
+.stop-modal-btns {
   width: 100%;
   font-size: 0;
 }
-.stop-modal-btns button{
+.stop-modal-btns button {
   width: 50%;
   float: left;
   font-size: 14px;
@@ -637,7 +645,7 @@ ul li div span {
   outline: none;
   color: #fff;
 }
-.stop-modal-btns button:last-child{
+.stop-modal-btns button:last-child {
   background-color: #689cf1;
 }
 </style>

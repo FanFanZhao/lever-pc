@@ -29,22 +29,23 @@
             <label>倍数：</label>
             <select class="buy_multiple" v-model="buyInfo.buy_selected" @change="selectMuit('buy')">
               <option disabled value>请选择倍数</option>
-              <option v-for="(item,index) in multiple" :key="index" :value="item.value">{{item.value}}倍</option>
+              <option
+                v-for="(item,index) in multiple"
+                :key="index"
+                :value="item.value"
+              >{{item.value}}倍</option>
             </select>
           </div>
           <div class="mt40 input-item clear">
             <label>手数：</label>
             <div>
-              <b v-for="item in shareList" :key="item.value"  :class="['share',{'active':type ==item.value}]" @click="select(item.value,'buy')">{{item.value}}手</b>
-              <!-- <b :class="['share',{'active':type =='3'}]" @click="select(3,'buy')">3手</b>
-              <b :class="['share',{'active':type =='5'}]" @click="select(5,'buy')">5手</b>
-              <b :class="['share',{'active':type =='10'}]" @click="select(10,'buy')">10手</b>
-              <b :class="['share',{'active':type =='1'}]" @click="select(1,'buy')">1手</b>
-              <b :class="['share',{'active':type =='3'}]" @click="select(3,'buy')">3手</b>
-              <b :class="['share',{'active':type =='5'}]" @click="select(5,'buy')">5手</b>
-              <b :class="['share',{'active':type =='10'}]" @click="select(10,'buy')">10手</b> -->
+              <b
+                v-for="item in shareList"
+                :key="item.value"
+                :class="['share',{'active':type ==item.value}]"
+                @click="select(item.value,'buy')"
+              >{{item.value}}手</b>
             </div>
-            
           </div>
           <div class="lever-total fColor1">
             <p class="clearfix mt15">
@@ -91,18 +92,27 @@
               @change="selectMuit('sell')"
             >
               <option disabled value>请选择倍数</option>
-              <option v-for="(item,index) in multiple" :key="index" :value="item.value">{{item.value}}倍</option>
+              <option
+                v-for="(item,index) in multiple"
+                :key="index"
+                :value="item.value"
+              >{{item.value}}倍</option>
             </select>
           </div>
           <div class="mt40 input-item clear">
             <label>手数：</label>
             <div>
-              <b v-for="item in shareList" :key="item.value"  :class="['share',{'actives':types == item.value}]" @click="select(item.value,'sell')">{{item.value}}手</b>
+              <b
+                v-for="item in shareList"
+                :key="item.value"
+                :class="['share',{'actives':types == item.value}]"
+                @click="select(item.value,'sell')"
+              >{{item.value}}手</b>
             </div>
-            
+
             <!-- <b :class="['share',{'actives':types =='3'}]" @click="select(3,'sell')">3手</b>
             <b :class="['share',{'actives':types =='5'}]" @click="select(5,'sell')">5手</b>
-            <b :class="['share',{'actives':types =='10'}]" @click="select(10,'sell')">10手</b> -->
+            <b :class="['share',{'actives':types =='10'}]" @click="select(10,'sell')">10手</b>-->
           </div>
           <div class="lever-total fColor1">
             <p class="clearfix mt15">
@@ -245,10 +255,10 @@ export default {
       bonsBuy: "",
       totalPriceBuy: "",
       trandeFreeBuy: "",
-      lastPrice:'',
-      buyType:'',
-      comfirmShow:false,
-      shareList:[]
+      lastPrice: "",
+      buyType: "",
+      comfirmShow: false,
+      shareList: []
     };
   },
   created() {
@@ -262,7 +272,7 @@ export default {
     tofixedFour: function(val) {
       val = Number(val);
       return val.toFixed(4);
-    },
+    }
   },
   mounted() {
     var that = this;
@@ -298,7 +308,7 @@ export default {
         return;
       }
       that.comfirmShow = true;
-      that.buyType =1;
+      that.buyType = 1;
     },
     sellCoin() {
       var that = this;
@@ -307,8 +317,7 @@ export default {
         return;
       }
       that.comfirmShow = true;
-      that.buyType =2;
-      
+      that.buyType = 2;
     },
     //买入、卖出记录
     buy_sell(legals_id, currencys_id) {
@@ -344,66 +353,125 @@ export default {
     select(options, values) {
       let that = this;
       that.shares = options;
-      if (this.sellInfo.sell_selected == "") {
-      }else{
-        this.$http({
-                url: "/api/" + "currency/quotation_new",
-                method: "get",
-                data: {},
-                headers: { Authorization: localStorage.getItem("token") }
-              })
-                .then(res => {
-                  if (res.data.type == "ok") {
-                    var list = res.data.message[0].quotation;
-                    for (let i in list) {
-                      if (that.currency_id == list[i].currency_id) {
-                        var spread = parseFloat(list[i].spread).toFixed(4);
-                        var transactionFee = parseFloat(list[i].lever_trade_fee).toFixed(4);
-                        var bond = parseFloat(localStorage.getItem('lastPrice')).toFixed(4);
-                        var prices = parseFloat((bond * spread) / 100).toFixed(4);
-                        var pricesTotal = 0;
-                        var muitNum = 0;
-                        var share = 0;
-                        if (values == "sell") {
-                          pricesTotal = parseFloat(bond - prices).toFixed(4);
-                          muitNum = parseFloat(that.sellInfo.sell_selected).toFixed(4);
-                          share = parseFloat(that.types).toFixed(4);
-                          var shareNum = parseFloat(list[i].lever_share_num).toFixed(4);
-                          var totalPrice = parseFloat(pricesTotal * share * shareNum).toFixed(4);
-                          var bondsValue = parseFloat((totalPrice - 0) / (muitNum - 0)).toFixed(4);
-                          var tradeFreeValue = parseFloat((totalPrice * transactionFee) / 100).toFixed(4);
-                          that.totalPrice = bond;
-                          that.trandeFree = tradeFreeValue
-                          that.bons = bondsValue;
-                        } else {
-                          pricesTotal = parseFloat(bond + prices).toFixed(4);
-                          muitNum = parseFloat(that.buyInfo.buy_selected);
-                          share = parseFloat(that.type).toFixed(4);
-                          var shareNum = parseFloat(list[i].lever_share_num).toFixed(4);
-                          var totalPrice = parseFloat(pricesTotal * share * shareNum).toFixed(4);
-                          var bondsValue = parseFloat((totalPrice - 0) / (muitNum - 0)).toFixed(4);
-                          var tradeFreeValue = parseFloat((totalPrice * transactionFee) / 100).toFixed(4);
-                          that.totalPriceBuy = bond;
-                          that.trandeFreeBuy = tradeFreeValue
-                          that.bonsBuy = bondsValue;
-                        }
-                      }
-                    }
-                  }
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-      }
       if (values == "buy") {
         that.type = options;
       } else {
         that.types = options;
       }
+      if (values == "sell" && that.sellInfo.sell_selected != "") {
+        var i = layer.load();
+        this.$http({
+          url: "/api/" + "currency/quotation_new",
+          method: "get",
+          data: {},
+          headers: { Authorization: localStorage.getItem("token") }
+        })
+          .then(res => {
+            if (res.data.type == "ok") {
+              var list = res.data.message[0].quotation;
+              for (let i in list) {
+                if (that.currency_id == list[i].currency_id) {
+                  var spread = parseFloat(list[i].spread).toFixed(4);
+                  var transactionFee = parseFloat(
+                    list[i].lever_trade_fee
+                  ).toFixed(4);
+                  var bond = parseFloat(
+                    localStorage.getItem("lastPrice")
+                  ).toFixed(4);
+                  var prices = parseFloat((bond * spread) / 100).toFixed(4);
+                  var pricesTotal = 0;
+                  var muitNum = 0;
+                    pricesTotal = parseFloat(bond - prices).toFixed(4);
+                    muitNum = parseFloat(that.sellInfo.sell_selected).toFixed(
+                      4
+                    );
+                   var share = parseFloat(options).toFixed(4);
+                    console.log(share);
+                    console.log(muitNum);
+                    var shareNum = parseFloat(list[i].lever_share_num).toFixed(
+                      4
+                    );
+                    var totalPrice = parseFloat(
+                      pricesTotal * share * shareNum
+                    ).toFixed(4);
+                    var bondsValue = parseFloat(
+                      (totalPrice - 0) / (muitNum - 0)
+                    ).toFixed(4);
+                    var tradeFreeValue = parseFloat(
+                      (totalPrice * transactionFee) / 100
+                    ).toFixed(4);
+                    that.totalPrice = parseFloat(bond * share).toFixed(4);
+                    that.trandeFree = tradeFreeValue;
+                    that.bons = bondsValue;
+                }
+              }
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+          setTimeout(function(){
+            layer.close(i)
+          },1500)
+      } else if (values == "buy" && that.buyInfo.buy_selected != "") {
+        var i = layer.load();
+        this.$http({
+          url: "/api/" + "currency/quotation_new",
+          method: "get",
+          data: {},
+          headers: { Authorization: localStorage.getItem("token") }
+        })
+          .then(res => {
+            if (res.data.type == "ok") {
+              var list = res.data.message[0].quotation;
+              for (let i in list) {
+                if (that.currency_id == list[i].currency_id) {
+                  var spread = parseFloat(list[i].spread).toFixed(4);
+                  var transactionFee = parseFloat(
+                    list[i].lever_trade_fee
+                  ).toFixed(4);
+                  var bond = parseFloat(
+                    localStorage.getItem("lastPrice")
+                  ).toFixed(4);
+                  var prices = parseFloat((bond * spread) / 100).toFixed(4);
+                  var pricesTotal = 0;
+                  var muitNum = 0;
+                    pricesTotal = parseFloat(bond + prices).toFixed(4);
+                    muitNum = parseFloat(that.buyInfo.buy_selected);
+                   var share = parseFloat(options).toFixed(4);
+                    console.log(share);
+                    console.log(muitNum);
+                    var shareNum = parseFloat(list[i].lever_share_num).toFixed(
+                      4
+                    );
+                    var totalPrice = parseFloat(
+                      pricesTotal * share * shareNum
+                    ).toFixed(4);
+                    var bondsValue = parseFloat(
+                      (totalPrice - 0) / (muitNum - 0)
+                    ).toFixed(4);
+                    var tradeFreeValue = parseFloat(
+                      (totalPrice * transactionFee) / 100
+                    ).toFixed(4);
+                    that.totalPriceBuy = (bond * share).toFixed(4);
+                    that.trandeFreeBuy = tradeFreeValue;
+                    that.bonsBuy = bondsValue;
+                }
+              }
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+          setTimeout(function(){
+            layer.close(i)
+          },1500)
+      }
     },
     // 选择倍数
     selectMuit(type) {
       let that = this;
+      var i = layer.load();
       this.$http({
         url: "/api/" + "currency/quotation_new",
         method: "get",
@@ -416,8 +484,12 @@ export default {
             for (let i in list) {
               if (that.currency_id == list[i].currency_id) {
                 var spread = parseFloat(list[i].spread).toFixed(4);
-                var transactionFee = parseFloat(list[i].lever_trade_fee).toFixed(4);
-                var bond = parseFloat(localStorage.getItem('lastPrice')).toFixed(4);
+                var transactionFee = parseFloat(
+                  list[i].lever_trade_fee
+                ).toFixed(4);
+                var bond = parseFloat(
+                  localStorage.getItem("lastPrice")
+                ).toFixed(4);
                 var prices = parseFloat((bond * spread) / 100).toFixed(4);
                 var pricesTotal = 0;
                 var muitNum = 0;
@@ -427,25 +499,37 @@ export default {
                   muitNum = parseFloat(that.sellInfo.sell_selected).toFixed(4);
                   share = parseFloat(that.types).toFixed(4);
                   var shareNum = parseFloat(list[i].lever_share_num).toFixed(4);
-                  var totalPrice = parseFloat(pricesTotal * share * shareNum).toFixed(4);
-                  var bondsValue = parseFloat((totalPrice - 0) / (muitNum - 0)).toFixed(4);
-                  var tradeFreeValue = parseFloat((totalPrice * transactionFee) / 100).toFixed(4);
+                  var totalPrice = parseFloat(
+                    pricesTotal * share * shareNum
+                  ).toFixed(4);
+                  var bondsValue = parseFloat(
+                    (totalPrice - 0) / (muitNum - 0)
+                  ).toFixed(4);
+                  var tradeFreeValue = parseFloat(
+                    (totalPrice * transactionFee) / 100
+                  ).toFixed(4);
                   console.log(shareNum);
                   console.log(muitNum);
                   console.log(share);
-                  that.totalPrice = bond;
-                  that.trandeFree = tradeFreeValue
+                  that.totalPrice = parseFloat(bond * share).toFixed(4);
+                  that.trandeFree = tradeFreeValue;
                   that.bons = bondsValue;
                 } else {
                   pricesTotal = parseFloat(bond + prices).toFixed(4);
                   muitNum = parseFloat(that.buyInfo.buy_selected);
                   share = parseFloat(that.type).toFixed(4);
                   var shareNum = parseFloat(list[i].lever_share_num).toFixed(4);
-                  var totalPrice = parseFloat(pricesTotal * share * shareNum).toFixed(4);
-                  var bondsValue = parseFloat((totalPrice - 0) / (muitNum - 0)).toFixed(4);
-                  var tradeFreeValue = parseFloat((totalPrice * transactionFee) / 100).toFixed(4);
-                  that.totalPriceBuy = bond;
-                  that.trandeFreeBuy = tradeFreeValue
+                  var totalPrice = parseFloat(
+                    pricesTotal * share * shareNum
+                  ).toFixed(4);
+                  var bondsValue = parseFloat(
+                    (totalPrice - 0) / (muitNum - 0)
+                  ).toFixed(4);
+                  var tradeFreeValue = parseFloat(
+                    (totalPrice * transactionFee) / 100
+                  ).toFixed(4);
+                  that.totalPriceBuy = parseFloat(bond * share).toFixed(4);
+                  that.trandeFreeBuy = tradeFreeValue;
                   that.bonsBuy = bondsValue;
                 }
               }
@@ -455,40 +539,41 @@ export default {
         .catch(error => {
           console.log(error);
         });
-      if (type == "buy") {
-      }
+        setTimeout(function(){
+            layer.close(i)
+          },1500)
     },
     // 关闭买入卖出弹窗
-    closeMosal(){
+    closeMosal() {
       let that = this;
       that.comfirmShow = false;
     },
     // 下单确认
-    comfirm(){
+    comfirm() {
       let that = this;
       let data;
-      if(that.buyType == 2){
+      if (that.buyType == 2) {
         data = {
-            legal_id: that.legal_id,
-            currency_id: that.currency_id,
-            multiple: that.sellInfo.sell_selected,
-            share: that.types,
-            type: 2
-           }
-      }else{
+          legal_id: that.legal_id,
+          currency_id: that.currency_id,
+          multiple: that.sellInfo.sell_selected,
+          share: that.types,
+          type: 2
+        };
+      } else {
         data = {
-            legal_id: that.legal_id,
-            currency_id: that.currency_id,
-            multiple: that.buyInfo.buy_selected,
-            share: that.type,
-            type: 1
-        }
+          legal_id: that.legal_id,
+          currency_id: that.currency_id,
+          multiple: that.buyInfo.buy_selected,
+          share: that.type,
+          type: 1
+        };
       }
       var i = layer.load();
       this.$http({
         url: "/api/" + that.sellInfo.url,
         method: "post",
-        data:data,
+        data: data,
         headers: { Authorization: localStorage.getItem("token") }
       })
         .then(res => {
@@ -496,14 +581,14 @@ export default {
           layer.close(i);
           // layer.msg(res.data.message)
           if (res.data.type == "ok") {
-            if(that.buyType == 2){
+            if (that.buyType == 2) {
               that.sellInfo.sellPrice = 0;
               that.sellInfo.sellNum = 0;
-            }else{
+            } else {
               that.buyInfo.buyPrice = 0;
               that.buyInfo.buyNum = 0;
             }
-            
+
             eventBus.$emit("buyTrade", "tradebuy");
             eventBus.$emit("tocel", "updata");
             eventBus.$emit("to_leverExchange", "leverExchange");
@@ -640,7 +725,7 @@ b.actives {
   background-color: #de5959;
   border: 1px solid #de5959;
 }
-.comfirm-modal{
+.comfirm-modal {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -653,7 +738,7 @@ b.actives {
   align-items: center;
   color: #c7cce6;
 }
-.comfirm-modal-content{
+.comfirm-modal-content {
   width: 500px;
   background-color: #262a42;
   margin: 0 auto;
@@ -669,7 +754,7 @@ b.actives {
   right: 10px;
   top: 0;
 }
-.comfirm-modal-content li{
+.comfirm-modal-content li {
   line-height: 40px;
   margin: 0 20px;
 }
