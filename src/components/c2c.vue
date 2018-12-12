@@ -334,7 +334,7 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 #c2c-box {
   margin: 10px 0 10px;
   .btn-green {
@@ -408,7 +408,6 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 999;
-    color: #333;
     background: rgba(0, 0, 0, 0.7);
     > .m-content {
       border-radius: 4px;

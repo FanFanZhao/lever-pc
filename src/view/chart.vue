@@ -125,7 +125,7 @@
                         }],
                         series: [{
                                 type: 'candlestick',
-                                name: 'BitEX',
+                                name: 'MTS',
                                 color: 'green',
                                 lineColor: 'green',
                                 upColor: 'red',
