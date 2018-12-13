@@ -119,7 +119,8 @@ export default {
       riskRate: "",
       totalPro: "",
       stopModal: false,
-      selectType: "all"
+      selectType: "all",
+      shareNum:'',
     };
   },
   created() {
@@ -242,44 +243,57 @@ export default {
       this.page++;
       this.init();
     },
-    // 设置止盈止损
+     // 设置止盈止损
     stopLoss(ids) {
       let that = this;
       that.modalShow = true;
       for (let i in that.list_content) {
         if (that.list_content[i].id == ids) {
+          that.shareNum = that.list_content[i].share;
           that.modalId = that.list_content[i].id;
           that.presentPrice = parseFloat(that.list_content[i].price).toFixed(2);
+          that.openPrice = parseFloat(
+            that.list_content[i].update_price
+          ).toFixed(2);
           if (that.list_content[i].target_profit_price > 0) {
             that.targetProfit = parseFloat(
               that.list_content[i].target_profit_price
             ).toFixed(2);
           } else {
-            that.targetProfit = that.presentPrice;
+            that.targetProfit = that.openPrice;
           }
           if (that.list_content[i].stop_loss_price > 0) {
             that.stopLose = parseFloat(
               that.list_content[i].stop_loss_price
             ).toFixed(2);
           } else {
-            that.stopLose = that.presentPrice;
+            that.stopLose = that.openPrice;
           }
 
           if (that.list_content[i].type == 1) {
-            that.modalProfit = (
-              that.targetProfit - parseFloat(that.list_content[i].price)
-            ).toFixed(2);
-            that.modalStop = (
-              parseFloat(that.list_content[i].price).toFixed(2) - that.stopLose
-            ).toFixed(2);
+            that.orderType = "buy";
+            if (that.list_content[i].target_profit_price > 0) {
+              that.modalProfit = (((that.targetProfit - parseFloat(that.list_content[i].price)) - 0) * (that.list_content[i].share - 0)).toFixed(2);
+            } else {
+              that.modalProfit = "0.00";
+            }
+            if (that.list_content[i].stop_loss_price > 0) {
+              that.modalStop = (((parseFloat(that.list_content[i].price).toFixed(2) -that.stopLose) - 0) * (that.list_content[i].share - 0)).toFixed(2);
+            } else {
+              that.modalStop = "0.00";
+            }
           } else {
-            that.modalProfit = (
-              parseFloat(that.list_content[i].price).toFixed(2) -
-              that.targetProfit
-            ).toFixed(2);
-            that.modalStop = (
-              that.stopLose - parseFloat(that.list_content[i].price)
-            ).toFixed(2);
+            that.orderType = "sell";
+            if (that.list_content[i].target_profit_price > 0) {
+              that.modalProfit = (((parseFloat(that.list_content[i].price).toFixed(2) -that.targetProfit)-0) * (that.list_content[i].share - 0)).toFixed(2);
+            } else {
+              that.modalProfit = "0.00";
+            }
+            if (that.list_content[i].stop_loss_price > 0) {
+              that.modalStop = (((that.stopLose - parseFloat(that.list_content[i].price)) -0) * (that.list_content[i].share - 0)).toFixed(2);
+            } else {
+              that.modalStop = "0.00";
+            }
           }
         }
       }
@@ -287,53 +301,95 @@ export default {
     // 加
     add(type) {
       let that = this;
-      if (type == 1) {
-        that.targetProfit = (parseFloat(that.targetProfit) + 0.01).toFixed(2);
-        that.modalProfit = (parseFloat(that.modalProfit) + 0.01).toFixed(2);
-      } else {
-        that.stopLose = (parseFloat(that.stopLose) + 0.01).toFixed(2);
-        that.modalStop = (parseFloat(that.modalStop) + 0.01).toFixed(2);
+      if (that.orderType == "buy") {
+        if (type == 1) {
+          that.targetProfit = (parseFloat(that.targetProfit) + 0.01).toFixed(2);
+          that.modalProfit = (((parseFloat(that.targetProfit) - that.presentPrice) -0) * (that.shareNum - 0)).toFixed(2);
+        } else {
+          that.stopLose = (parseFloat(that.stopLose) + 0.01).toFixed(2);
+          that.modalStop = (((that.presentPrice - that.stopLose) - 0) * (that.shareNum - 0)).toFixed(2);
+        }
+      }else{
+        if (type == 1) {
+          that.targetProfit = (parseFloat(that.targetProfit) + 0.01).toFixed(2);
+          that.modalProfit = ((parseFloat(that.presentPrice - that.targetProfit) - 0) * (that.shareNum - 0)).toFixed(2);
+        } else {
+          that.stopLose = (parseFloat(that.stopLose) + 0.01).toFixed(2);
+          that.modalStop = (((parseFloat(that.stopLose -  that.presentPrice)) -0) * (that.shareNum - 0)).toFixed(2);
+        }
       }
     },
     // 减
     reduce(type) {
       let that = this;
-      if (type == 1) {
-        if (that.targetProfit > 0) {
-          that.targetProfit = (parseFloat(that.targetProfit) - 0.01).toFixed(2);
-          that.modalProfit = (parseFloat(that.modalProfit) - 0.01).toFixed(2);
+      if (that.orderType == "buy") {
+        if (type == 1) {
+          if (that.targetProfit > 0) {
+            that.targetProfit = (parseFloat(that.targetProfit) - 0.01).toFixed(2);
+            that.modalProfit = (((parseFloat(that.targetProfit) - that.presentPrice) -0) * (that.shareNum - 0)).toFixed(2);
+          } else {
+            layer.msg("设置的值必须大于0");
+          }
         } else {
-          layer.msg("设置的值必须大于0");
+          if (that.stopLose > 0) {
+            that.stopLose = (parseFloat(that.stopLose) - 0.01).toFixed(2);
+            that.modalStop = (((that.presentPrice - that.stopLose)- 0) * (that.shareNum - 0)).toFixed(2);
+          } else {
+            layer.msg("设置的值必须大于0");
+          }
         }
-      } else {
-        if (that.stopLose > 0) {
-          that.stopLose = (parseFloat(that.stopLose) - 0.01).toFixed(2);
-          that.modalStop = (parseFloat(that.modalStop) - 0.01).toFixed(2);
+      }else{
+        if (type == 1) {
+          if (that.targetProfit > 0) {
+            that.targetProfit = (parseFloat(that.targetProfit) - 0.01).toFixed(2);
+            that.modalProfit = (((that.presentPrice - that.targetProfit) - 0) * (that.shareNum - 0)).toFixed(2);
+          } else {
+            layer.msg("设置的值必须大于0");
+          }
         } else {
-          layer.msg("设置的值必须大于0");
+          if (that.stopLose > 0) {
+            that.stopLose = (parseFloat(that.stopLose) - 0.01).toFixed(2);
+            that.modalStop = (((parseFloat(that.stopLose -  that.presentPrice)) - 0) * (that.shareNum - 0)).toFixed(2);
+          } else {
+            layer.msg("设置的值必须大于0");
+          }
         }
       }
     },
     // 输入框输入
     inputValue(type) {
       let that = this;
-      if (type == 1) {
-        let inputModal = (
-          parseFloat(that.targetProfit) - parseFloat(that.presentPrice)
-        ).toFixed(2);
-        if (inputModal > 0) {
-          that.modalProfit = inputModal;
+      if (that.orderType == "buy") {
+        if (type == 1) {
+          let inputModal = (((parseFloat(that.targetProfit) - parseFloat(that.presentPrice))- 0) * (that.shareNum - 0)).toFixed(2);
+          if (inputModal > 0) {
+            that.modalProfit = inputModal;
+          } else {
+            that.modalProfit = 0.0;
+          }
         } else {
-          that.modalProfit = 0.0;
+          let inputModal = (((parseFloat(that.presentPrice) - parseFloat(that.stopLose)) - 0) * (that.shareNum - 0)).toFixed(2);
+          if (inputModal > 0) {
+            that.modalStop = inputModal;
+          } else {
+            that.modalStop = 0.0;
+          }
         }
       } else {
-        let inputModal = (
-          parseFloat(that.presentPrice) - parseFloat(that.stopLose)
-        ).toFixed(2);
-        if (inputModal > 0) {
-          that.modalStop = inputModal;
+        if (type == 1) {
+          let inputModal = (((parseFloat(that.presentPrice) - parseFloat(that.targetProfit)) - 0) * (that.shareNum - 0)).toFixed(2);
+          if (inputModal > 0) {
+            that.modalProfit = inputModal;
+          } else {
+            that.modalProfit = 0.0;
+          }
         } else {
-          that.modalStop = 0.0;
+          let inputModal = (((parseFloat(that.stopLose) - parseFloat(that.presentPrice)) -0) * (that.shareNum - 0)).toFixed(2);
+          if (inputModal > 0) {
+            that.modalStop = inputModal;
+          } else {
+            that.modalStop = 0.0;
+          }
         }
       }
     },
